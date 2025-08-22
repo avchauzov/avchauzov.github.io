@@ -15,7 +15,7 @@ jobs:
       - name: Setup Ruby and Bundler 💎
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1' # Use the Ruby version compatible with your project
+          ruby-version: "3.1" # Use the Ruby version compatible with your project
           bundler-cache: true # Caches gems for faster builds
 
       - name: Build Jekyll site 🏗️
