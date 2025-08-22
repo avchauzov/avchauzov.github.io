@@ -1,0 +1,38 @@
+name: Build and Deploy Jekyll Site
+
+on:
+  push:
+    branches:
+      - main # Or your default branch, e.g., master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby and Bundler 💎
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1' # Use the Ruby version compatible with your project
+          bundler-cache: true # Caches gems for faster builds
+
+      - name: Build Jekyll site 🏗️
+        run: bundle exec jekyll build
+
+      - name: Deploy to GitHub Pages 🚀
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
