@@ -1,5 +1,10 @@
 name: Build and Deploy Jekyll Site
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 on:
   push:
     branches:
