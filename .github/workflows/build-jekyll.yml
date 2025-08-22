@@ -23,6 +23,13 @@ jobs:
           ruby-version: "3.2" # Use the Ruby version compatible with your project
           bundler-cache: true # Caches gems for faster builds
 
+      - name: Setup Python 🐍
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install Jupyter
+        run: pip install jupyter
+
       - name: Build Jekyll site 🏗️
         run: bundle exec jekyll build
 
