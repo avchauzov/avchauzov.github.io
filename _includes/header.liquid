@@ -82,7 +82,7 @@
               {% else %}
                 {% assign is_active = false %}
                 {% if p.permalink == '/' %}
-                  {% if page.url == '/index.html' or page.layout == 'post' or page.layout == 'blog' %}
+                  {% if page.url == '/index.html' or page.layout == 'post' %}
                     {% assign is_active = true %}
                   {% endif %}
                 {% else %}
