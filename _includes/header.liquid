@@ -57,6 +57,7 @@
           </li>
 
           <!-- Other pages -->
+          {% raw %}
           {% assign sorted_pages = site.pages | sort: 'nav_order' %}
           {% for p in sorted_pages %}
             {% if p.nav and p.autogen == null %}
@@ -98,18 +99,21 @@
                   </div>
                 </li>
               {% else %}
-                {% assign parent_link = p.permalink | remove: 'index.html' %}
-                <li class="nav-item {% if page.url contains parent_link %}active{% endif %}">
-                  {%- if p.permalink contains '://' -%}
-                    {%- assign url = p.permalink -%}
-                  {%- elsif p.permalink contains '/blog/' -%}
-                    {%- assign url = '/blog/' -%}
-                  {%- else -%}
-                    {%- assign url = p.url -%}
-                  {%- endif %}
-                  <a class="nav-link" href="{{ url | relative_url }}">
+                {% assign is_active = false %}
+                {% if p.permalink == '/' %}
+                  {% if page.url == '/' or page.layout == 'post' or page.layout == 'blog' %}
+                    {% assign is_active = true %}
+                  {% endif %}
+                {% else %}
+                  {% assign parent_link = p.permalink | remove: 'index.html' %}
+                  {% if page.url contains parent_link %}
+                    {% assign is_active = true %}
+                  {% endif %}
+                {% endif %}
+                <li class="nav-item {% if is_active %}active{% endif %}">
+                  <a class="nav-link" href="{{ p.url | relative_url }}">
                     {{- p.title }}
-                    {% if page.url contains p.url %}
+                    {% if is_active %}
                       <span class="sr-only">(current)</span>
                     {% endif %}
                   </a>
@@ -117,6 +121,7 @@
               {% endif %}
             {% endif %}
           {% endfor %}
+          {% endraw %}
           {% if site.search_enabled %}
             <!-- Search -->
             <li class="nav-item">
@@ -129,7 +134,6 @@
             <!-- Toogle theme mode -->
             <li class="toggle-container">
               <button id="light-toggle" title="Change theme">
-                <i class="ti ti-sun-moon" id="light-toggle-system"></i>
                 <i class="ti ti-moon-filled" id="light-toggle-dark"></i>
                 <i class="ti ti-sun-filled" id="light-toggle-light"></i>
               </button>
