@@ -81,15 +81,10 @@
                 </li>
               {% else %}
                 {% assign is_active = false %}
-                {% if p.permalink == '/' %}
-                  {% if page.url == '/index.html' or page.layout == 'post' %}
-                    {% assign is_active = true %}
-                  {% endif %}
-                {% else %}
-                  {% assign parent_link = p.permalink | remove: 'index.html' %}
-                  {% if page.url contains parent_link %}
-                    {% assign is_active = true %}
-                  {% endif %}
+                {% if page.permalink == p.permalink %}
+                  {% assign is_active = true %}
+                {% elsif p.permalink == '/' and page.layout == 'post' %}
+                  {% assign is_active = true %}
                 {% endif %}
                 <li class="nav-item {% if is_active %}active{% endif %}">
                   {% assign page_url = p.url | remove: 'index.html' %}
