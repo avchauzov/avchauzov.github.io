@@ -9,19 +9,19 @@ ninja.data = [{
     handler: () => {
       window.location.href = "/";
     },
-  },{id: "nav-about",
-          title: "about",
-          description: "",
-          section: "Navigation",
-          handler: () => {
-            window.location.href = "/about/";
-          },
-        },{id: "nav-blog",
+  },{id: "nav-blog",
           title: "blog",
           description: "",
           section: "Navigation",
           handler: () => {
             window.location.href = "/index.html";
+          },
+        },{id: "nav-about",
+          title: "about",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/about/";
           },
         },{id: "post-a-post-with-plotly-js",
         
