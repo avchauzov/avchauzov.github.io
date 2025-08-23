@@ -17,6 +17,36 @@
 
   <!-- Body -->
   <body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
+    <div style="position: fixed; bottom: 0; left: 0; background: rgba(255, 255, 255, 0.9); color: black; z-index: 9999; padding: 10px; font-size: 12px; border: 2px solid red; max-width: 500px; font-family: monospace;">
+      <p style="margin:0;"><b>Текущая страница (page.url):</b> {{ page.url }}</p>
+      <p style="margin:0;"><b>Макет (page.layout):</b> {{ page.layout }}</p>
+      <hr style="margin: 5px 0;">
+      <b>Проверка меню на активность:</b>
+      <ul style="margin: 0; padding-left: 20px;">
+        {% assign sorted_pages_debug = site.pages | sort: 'nav_order' %}
+        {% for p_debug in sorted_pages_debug %}
+          {% if p_debug.nav and p_debug.autogen == null %}
+            <li>
+              <i>{{ p_debug.title }}:</i>
+              {% assign is_active_debug = false %}
+              {% if p_debug.permalink == '/' %}
+                {% if page.url == '/index.html' or page.layout == 'post' or page.layout == 'blog' %}
+                  {% assign is_active_debug = true %}
+                {% endif %}
+              {% else %}
+                {% assign parent_link_debug = p_debug.permalink | remove: 'index.html' %}
+                {% if page.url contains parent_link_debug %}
+                  {% assign is_active_debug = true %}
+                {% endif %}
+              {% endif %}
+              <b>
+                {%- if is_active_debug %}АКТИВЕН{% else %}неактивен{% endif -%}
+              </b>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
     <!-- Header -->
     {% include header.liquid %}
 
