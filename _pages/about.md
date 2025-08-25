@@ -2,7 +2,6 @@
 layout: about
 title: about
 permalink: /about/
-subtitle: Senior AI Architect | Enterprise NLP & Intelligent Systems
 nav: true
 nav_order: 2
 
@@ -22,7 +21,8 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-Senior AI Architect with 7+ years building enterprise-scale AI solutions, specializing in multilingual NLP, smart infrastructure, and government-ready AI systems for strategic projects.
+Senior AI Architect with 7+ years building enterprise-scale AI solutions, specializing in production LLMs, scalable ML infrastructure, and end-to-end
+AI system architecture that drives measurable business impact.
 
 I've built 25+ AI systems processing 10K+ requests, driving $1M+ revenue and 40% cost reduction. My expertise spans the full AI lifecycle from research to production, with particular focus on:
 
