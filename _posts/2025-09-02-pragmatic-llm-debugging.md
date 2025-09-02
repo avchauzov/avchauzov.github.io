@@ -2,6 +2,7 @@
 layout: full-width
 title: "Pragmatic LLM Debugging: A Survival Guide to Chaos"
 description: My approach to breaking down complex RAG and agent systems when time is short, golden datasets are missing, and quality needs a fast boost.
+date: 2025-09-02 00:00:00 +0000
 ---
 
 Lately, I've been diving deep into prototyping and debugging LLM applications — from RAG to multimodal agents. The circumstances are almost always the same: no time for complex solutions, no perfect datasets, and a pressing need for high quality right now (or yesterday). This forced me to develop a pragmatic, almost detective-like approach to debugging, which I want to share.
