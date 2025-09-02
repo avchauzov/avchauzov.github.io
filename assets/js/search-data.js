@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "books-the-godfather",
+        },{id: "post-pragmatic-llm-debugging-a-survival-guide-to-chaos",
+        
+          title: "Pragmatic LLM Debugging: A Survival Guide to Chaos",
+        
+        description: "My approach to breaking down complex RAG and agent systems when time is short, golden datasets are missing, and quality needs a fast boost.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/pragmatic-llm-debugging/";
+          
+        },
+      },{id: "books-the-godfather",
           title: 'The Godfather',
           description: "",
           section: "Books",handler: () => {
