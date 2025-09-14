@@ -91,9 +91,9 @@ This new approach was remarkably effective. The system achieved a stable ranking
 
 This isn't just a story about one PoC; it's about a scalable pattern for building trustworthy AI systems in the enterprise. This hybrid approach is directly applicable to other high-stakes domains:
 
-- Finance: For credit scoring or fraud detection, where an LLM can parse transaction notes for features, but a deterministic model must make the final risk assessment.
-- Legal Tech: For ranking documents by relevance in e-discovery, where an LLM can summarize documents, but a rule-based engine ranks them based on specific legal criteria.
-- Industrial Safety: For analyzing sensor data, where an LLM might interpret anomalous text-based alerts, but a state machine or rule engine must decide whether to trigger a shutdown.
+- **Finance**: For credit scoring or fraud detection, where an LLM can parse transaction notes for features, but a deterministic model must make the final risk assessment.
+- **Legal Tech**: For ranking documents by relevance in e-discovery, where an LLM can summarize documents, but a rule-based engine ranks them based on specific legal criteria.
+- **Industrial Safety**: For analyzing sensor data, where an LLM might interpret anomalous text-based alerts, but a state machine or rule engine must decide whether to trigger a shutdown.
 
 The pattern allows businesses to leverage the power of LLMs for what they do best — understanding unstructured data — while cordoning off the critical decision-making logic in a component that is stable, auditable, and transparent.
 
