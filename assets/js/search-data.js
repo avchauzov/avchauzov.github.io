@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-pragmatic-llm-debugging-a-survival-guide-to-chaos",
+        },{id: "post-vlm-pipeline-debugging-lessons-from-visual-monitoring",
+        
+          title: "VLM Pipeline Debugging: Lessons from Visual Monitoring",
+        
+        description: "Hard-won insights from building PoC VLM pipelines for visual monitoring, where hallucinations hide in plain sight, preprocessing decisions make or break everything, and the question is: can we forget classical CV?",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/vlm-pipeline-debugging-visual-monitoring-lessons/";
+          
+        },
+      },{id: "post-pragmatic-llm-debugging-a-survival-guide-to-chaos",
         
           title: "Pragmatic LLM Debugging: A Survival Guide to Chaos",
         
