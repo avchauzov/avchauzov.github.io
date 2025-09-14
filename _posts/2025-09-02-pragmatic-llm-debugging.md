@@ -16,9 +16,7 @@ When a system behaves unpredictably, my first reaction is to **disconnect everyt
 After simplifying, I begin a step-by-step analysis, where each component is tested separately. Think of it as examining every clue at a crime scene.
 
 - **For RAG Systems:** I follow the entire chain. First, I check what the retriever is actually finding. Are the chunks relevant? Is context being lost? **LLM-as-a-Judge** with a simple boolean score (e.g., 'relevant' or 'not relevant') can do 80% of the job and help to **check retrieval quality without manual labeling.**
-
 - **For Multimodal Systems (VLMs):** If the input is an image, I verify what the model "sees" in the crop. Problems often arise from incorrect preprocessing (tiny crop or noisy context) or when the model hallucinates details that aren't there — a classic multimodal hallucination. Crucially, I also step back and ask: **is the model even capable of performing** this task, or are we asking for the impossible?
-
 - **For Agentic Systems:** **Modular testing** is key. I break down complex instructions into simple prompts and test one after another, increasing complexity. With tracing tools like Langfuse, you can see the agent's entire "thoughts" and pinpoint exactly **where its logic went off track.** More classical ML tools like W&B are also useful, but on the later stages, especially if we have custom metrics to observe.
 
 ### Step 3: The Pursuit of Consistency

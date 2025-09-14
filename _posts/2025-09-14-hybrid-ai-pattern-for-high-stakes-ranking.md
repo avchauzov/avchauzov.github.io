@@ -53,14 +53,13 @@ if ranking_history:
 The breakthrough came when we redefined the agents' roles. Instead of having one agent handle both understanding and judgment, we split the responsibilities — a classic hybrid AI pattern.
 
 - **LLM for Perception & Feature Extraction**: The MCP agents' primary role became extracting specific, structured attributes from unstructured text. They were no longer asked "what's important?" but rather "find the value for this specific field."
-
 - **Deterministic Engine for Judgment & Ranking**: The Summarizer was stripped of its reasoning capabilities and rebuilt as a deterministic engine that applied a formulaic, weighted-scoring model to the structured data provided by the other agents.
 
 We replaced simplistic criteria with medically relevant, quantifiable metrics:
 
-- Approval Status: FDA Approved = 100, Phase 3 Trials = 50, Pre-clinical = 10.
-- Evidence Level: Based on the GRADE framework. Level A (High) = 100, Level B (Moderate) = 70, Level C (Low) = 30.
-- Contraindication Score: A risk factor where lower is better. We inverted it for scoring: (1 - num_critical_contraindications / 10) \* 100.
+- **Approval Status**: FDA Approved = 100, Phase 3 Trials = 50, Pre-clinical = 10.
+- **Evidence Level**: Based on the GRADE framework. Level A (High) = 100, Level B (Moderate) = 70, Level C (Low) = 30.
+- **Contraindication Score**: A risk factor where lower is better. We inverted it for scoring: (1 - num_critical_contraindications / 10) \* 100.
 
 The core of the new Summarizer was a clear, auditable function. A key part of its robustness was handling missing data gracefully with default values.
 
@@ -93,9 +92,7 @@ This new approach was remarkably effective. The system achieved a stable ranking
 This isn't just a story about one PoC; it's about a scalable pattern for building trustworthy AI systems in the enterprise. This hybrid approach is directly applicable to other high-stakes domains:
 
 - Finance: For credit scoring or fraud detection, where an LLM can parse transaction notes for features, but a deterministic model must make the final risk assessment.
-
 - Legal Tech: For ranking documents by relevance in e-discovery, where an LLM can summarize documents, but a rule-based engine ranks them based on specific legal criteria.
-
 - Industrial Safety: For analyzing sensor data, where an LLM might interpret anomalous text-based alerts, but a state machine or rule engine must decide whether to trigger a shutdown.
 
 The pattern allows businesses to leverage the power of LLMs for what they do best — understanding unstructured data — while cordoning off the critical decision-making logic in a component that is stable, auditable, and transparent.
