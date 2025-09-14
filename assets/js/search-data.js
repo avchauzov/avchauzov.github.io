@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-vlm-pipeline-debugging-lessons-from-visual-monitoring",
+        },{id: "post-our-agents-argued-endlessly-here-39-s-how-a-hybrid-ai-pattern-tamed-llm-chaos",
+        
+          title: "Our Agents Argued Endlessly. Here&#39;s How a Hybrid AI Pattern Tamed LLM Chaos....",
+        
+        description: "A deep dive into building a medical ranking PoC where pure LLM reasoning failed, and how a hybrid pattern combining LLM feature extraction with a deterministic rule engine achieved stable, auditable results.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/hybrid-ai-pattern-for-high-stakes-ranking/";
+          
+        },
+      },{id: "post-vlm-pipeline-debugging-lessons-from-visual-monitoring",
         
           title: "VLM Pipeline Debugging: Lessons from Visual Monitoring",
         
