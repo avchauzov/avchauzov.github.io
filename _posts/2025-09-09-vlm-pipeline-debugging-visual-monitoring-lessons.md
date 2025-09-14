@@ -2,7 +2,7 @@
 layout: full-width
 title: "VLM Pipeline Debugging: Lessons from Visual Monitoring"
 description: "Hard-won insights from building PoC VLM pipelines for visual monitoring, where hallucinations hide in plain sight, preprocessing decisions make or break everything, and the question is: can we forget classical CV?"
-date: 2025-09-14 00:00:00 +0000
+date: 2025-09-09 00:00:00 +0000
 ---
 
 Building VLM pipelines for visual monitoring has taught me that multimodal systems fail in uniquely creative ways. Like pure language models, VLMs can hallucinate objects that aren't there, misinterpret spatial relationships, and confidently describe non-existent details. And validating them is harder. Here's what I've learned from countless proof-of-concept iterations.
