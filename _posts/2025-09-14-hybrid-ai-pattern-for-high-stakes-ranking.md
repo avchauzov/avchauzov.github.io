@@ -14,6 +14,7 @@ The goal of our PoC was to rank medical drugs based on a variety of data sources
 ## The Architecture: A Structured Multi-Agent Workflow
 
 Our initial architecture was a modular graph built with LangGraph. It was not a simple hierarchy, but a structured workflow designed for clarity and control:
+
 1.  A **Reviewer Agent** would receive the initial query (e.g., "Find treatments for Type 2 Diabetes").
 2.  It would then dispatch tasks to multiple, specialized **Model Context Protocol (MCP) Agents**. Each of these agents was responsible for a specific data source, using the **MCP to access medical knowledge bases**, clinical trial results, and FDA databases — not for inter-agent communication.
 3.  Finally, a **Summarizer Agent** would collect the structured outputs from all MCP agents to synthesize and rank the final list.
@@ -59,7 +60,7 @@ We replaced simplistic criteria with medically relevant, quantifiable metrics:
 
 - Approval Status: FDA Approved = 100, Phase 3 Trials = 50, Pre-clinical = 10.
 - Evidence Level: Based on the GRADE framework. Level A (High) = 100, Level B (Moderate) = 70, Level C (Low) = 30.
-- Contraindication Score: A risk factor where lower is better. We inverted it for scoring: (1 - num_critical_contraindications / 10) * 100.
+- Contraindication Score: A risk factor where lower is better. We inverted it for scoring: (1 - num_critical_contraindications / 10) \* 100.
 
 The core of the new Summarizer was a clear, auditable function. A key part of its robustness was handling missing data gracefully with default values.
 
