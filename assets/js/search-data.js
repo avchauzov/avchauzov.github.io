@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-our-agents-argued-endlessly-here-39-s-how-a-hybrid-ai-pattern-tamed-llm-chaos",
+        },{id: "post-why-vision-language-models-ignore-visual-evidence-and-how-to-fix-it",
+        
+          title: "Why Vision-Language Models Ignore Visual Evidence (And How to Fix It)",
+        
+        description: "VLMs have a strong contextual bias, prioritizing &#39;logical&#39; conclusions over visual facts. We fixed this in a production case by explicitly telling the model to ignore what it thought it knew.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/vlm-context-bias-case-study/";
+          
+        },
+      },{id: "post-our-agents-argued-endlessly-here-39-s-how-a-hybrid-ai-pattern-tamed-llm-chaos",
         
           title: "Our Agents Argued Endlessly. Here&#39;s How a Hybrid AI Pattern Tamed LLM Chaos....",
         
