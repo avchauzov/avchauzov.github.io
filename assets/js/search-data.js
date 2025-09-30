@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-why-vision-language-models-ignore-visual-evidence-and-how-to-fix-it",
+        },{id: "post-how-qdrant-39-s-scalar-quantization-cut-our-rag-latency-by-3x",
+        
+          title: "How Qdrant&#39;s Scalar Quantization Cut Our RAG Latency by 3x",
+        
+        description: "A deep dive into how we cut RAG retrieval latency by 3x and costs by 65% using Qdrant&#39;s scalar quantization and a hybrid storage strategy, without sacrificing search quality.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/qdrant-quantization-cuts-rag-latency/";
+          
+        },
+      },{id: "post-why-vision-language-models-ignore-visual-evidence-and-how-to-fix-it",
         
           title: "Why Vision-Language Models Ignore Visual Evidence (And How to Fix It)",
         
