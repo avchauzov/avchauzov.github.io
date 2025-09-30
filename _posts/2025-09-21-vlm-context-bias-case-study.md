@@ -46,8 +46,8 @@ This instruction acts as a form of **causal intervention**. It effectively block
 
 For anyone building production-ready VLM systems, especially for analytical tasks, these lessons are critical:
 
-1.  **Explicitly Ignore Context:** When precision matters more than a narrative description, it's worth adding a negative constraint that tells the model to "ignore the context" and focus on specific visual features.
-2.  **Use Visual Prompts:** Guide the model’s attention by using bounding boxes or other visual cues to designate the exact area of focus.
-3.  **Add "Hard Negatives" to Fine-Tuning:** If you are fine-tuning a model, enrich your dataset with examples that directly contradict common sense priors. For instance, include images of "a worker (X) in a factory context (Y), but who is NOT doing a work-related action (Z)."
+1.  **Explicitly Ignore Context**: When precision matters more than a narrative description, it's worth adding a negative constraint that tells the model to "ignore the context" and focus on specific visual features.
+2.  **Use Visual Prompts**: Guide the model’s attention by using bounding boxes or other visual cues to designate the exact area of focus.
+3.  **Add "Hard Negatives" to Fine-Tuning**: If you are fine-tuning a model, enrich your dataset with examples that directly contradict common sense priors. For instance, include images of "a worker (X) in a factory context (Y), but who is NOT doing a work-related action (Z)."
 
 Remember: Modern VLMs are less like genuine seeing systems and more like **reasoning engines with a visual input**. They perceive the world through the heavy filter of textual correlations learned from their training data. To get accurate results, you have to actively guide them away from these cognitive shortcuts.
