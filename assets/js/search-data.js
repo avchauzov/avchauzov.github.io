@@ -23,15 +23,15 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-",
+        },{id: "post-llm-orchestration-a-pragmatic-guide-to-complexity",
         
-          title: "",
+          title: "LLM Orchestration: A Pragmatic Guide to Complexity",
         
-        description: "",
+        description: "Most production apps are simple chains, yet everyone is building agents. Here’s a clear framework on when you really need loops, graphs, and agents in your LLM app.",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2025/2025-10-02-llm-orchestration-pragmatic-guide/";
+            window.location.href = "/blog/2025/llm-orchestration-pragmatic-guide/";
           
         },
       },{id: "post-how-qdrant-39-s-scalar-quantization-cut-our-rag-latency-by-3x",
