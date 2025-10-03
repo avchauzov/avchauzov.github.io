@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-how-qdrant-39-s-scalar-quantization-cut-our-rag-latency-by-3x",
+        },{id: "post-",
+        
+          title: "",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/2025-10-02-llm-orchestration-pragmatic-guide/";
+          
+        },
+      },{id: "post-how-qdrant-39-s-scalar-quantization-cut-our-rag-latency-by-3x",
         
           title: "How Qdrant&#39;s Scalar Quantization Cut Our RAG Latency by 3x",
         
