@@ -59,7 +59,7 @@ Don't start with complexity. Evolve based on need.
 3.  Move to a **Graph** only when your Chain or Router frequently fails on edge cases that require **retries or validation loops**.
 4.  Use an **Agent** only when the task is truly unpredictable.
 
-**A simple test**: If you can express the entire workflow using `if/else` and `for` loops, stick with a Chain or Router (at most a Graph). Only reach for an Agent when even the *sequence* of steps is unpredictable.
+**A simple test**: If you can express the entire workflow using `if/else` and `for` loops, stick with a Chain or Router (at most a Graph). Only reach for an Agent when even the _sequence_ of steps is unpredictable.
 
 <p align="center">
 <i>Don't add an agent because it's trendy. Add one only when your Chain, Router, or Graph has failed repeatedly.</i>
