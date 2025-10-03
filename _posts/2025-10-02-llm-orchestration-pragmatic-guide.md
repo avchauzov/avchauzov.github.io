@@ -44,12 +44,16 @@ This is a pragmatic guide to choosing the right orchestration pattern.
 
 More complexity means higher operational costs. Based on research, the trade-offs are clear:
 
+---
+
 | Pattern                         | Latency       | Cost Profile                                       | Debugging |
 | ------------------------------- | ------------- | -------------------------------------------------- | --------- |
 | **Chain**                       | Low           | Baseline                                           | Easy      |
 | **Router**                      | Low           | -85% (in some cases, by routing to cheaper models) | Easy      |
 | **Graph**                       | Moderate-High | +Linear                                            | Hard      |
 | **Agent / Multi-Agent Systems** | High (50s+)   | **3.7x+**                                          | Very Hard |
+
+---
 
 ### The Pragmatic Migration Path
 
