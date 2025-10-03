@@ -4,7 +4,7 @@ description: "Most production apps are simple chains, yet everyone is building a
 date: 2025-10-02 00:00:00 +0000
 ---
 
-The hype around "agents" often overshadows a simple truth: **over 95% of production LLM apps are simple Chains or Routers**. Many developers are building complex, token-burning state machines for tasks that don't require them.
+In my experience, **the vast majority of production LLM apps are simple Chains or Routers**. Many developers are building complex, token-burning state machines for tasks that don't require them, and then spend even more tokens debugging them.
 
 This is a pragmatic guide to choosing the right orchestration pattern.
 
@@ -37,11 +37,11 @@ This is a pragmatic guide to choosing the right orchestration pattern.
 
 - You **cannot predict the sequence of steps in advance**. The task is open-ended and requires dynamic planning.
 - The LLM needs to **decide which tools to call and in what order** based on intermediate results.
-- **Example**: A research agent that iteratively searches Google, reads web pages, synthesizes findings, and decides on its next search query.
+- **Example**: A research agent that iteratively searches the Web, parses pages, synthesizes findings, and decides on its next search query.
 
 ### The Real Cost of Complexity
 
-More complexity means higher operational costs. The trade-offs are clear:
+More complexity means higher operational costs. Based on research, the trade-offs are clear:
 
 | Pattern                         | Latency       | Cost Profile                                       | Debugging |
 | ------------------------------- | ------------- | -------------------------------------------------- | --------- |
@@ -54,13 +54,13 @@ More complexity means higher operational costs. The trade-offs are clear:
 
 Don't start with complexity. Evolve based on need.
 
-1.  **Always start with a Chain.** It’s simple, cheap, and easy to debug.
-2.  Add a **Router** when you notice cost or quality anomalies for certain requests that could be handled by different models.
+1.  **Always start with a Chain.** It's simple, cheap, and easy to debug.
+2.  Add a **Router** when you notice cost or quality anomalies for certain requests that could be handled by different models or logic.
 3.  Move to a **Graph** only when your Chain or Router frequently fails on edge cases that require **retries or validation loops**.
 4.  Use an **Agent** only when the task is truly unpredictable.
 
-**A simple test**: If you can write all the logic in `if/else` and `for` loops, you need a Graph _at most_. If even the _sequence of steps_ is unpredictable, only then reach for an Agent.
+**A simple test**: If you can express the entire workflow using `if/else` and `for` loops, stick with a Chain or Router (at most a Graph). Only reach for an Agent when even the *sequence* of steps is unpredictable.
 
-<p align="center"\>
-<i>Don't add an agent because it's trendy. Add one because your Chain, Router, Graph failed, repeatedly.</i>
+<p align="center">
+<i>Don't add an agent because it's trendy. Add one only when your Chain, Router, or Graph has failed repeatedly.</i>
 </p>
