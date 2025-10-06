@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-llm-orchestration-a-pragmatic-guide-to-complexity",
+        },{id: "post-hybrid-retrieval-with-rrf-solving-the-score-normalization-problem",
+        
+          title: "Hybrid Retrieval with RRF: Solving the Score Normalization Problem",
+        
+        description: "Pure vector search isn&#39;t always enough. Weighted averaging of BM25 and vector scores breaks due to incompatible scales. Reciprocal Rank Fusion solves this by using ranks instead of scores.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/hybrid-retrieval-rrf-rank-fusion/";
+          
+        },
+      },{id: "post-llm-orchestration-a-pragmatic-guide-to-complexity",
         
           title: "LLM Orchestration: A Pragmatic Guide to Complexity",
         
