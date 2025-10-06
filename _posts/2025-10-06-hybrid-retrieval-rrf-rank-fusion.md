@@ -21,11 +21,15 @@ This approach is flawed because BM25 and cosine similarity scores exist in diffe
 
 Consider a concrete example with three documents:
 
+---
+
 | Document | BM25 Score | BM25 Rank | Norm. BM25 | Vector Score | Vector Rank | Combined (α=0.5) | Final Rank |
 | -------- | ---------- | --------- | ---------- | ------------ | ----------- | ---------------- | ---------- |
 | Doc A    | 15.2       | #1        | 1.0        | 0.73         | #3          | **0.865**        | **#1**     |
 | Doc B    | 4.8        | #3        | 0.0        | 0.91         | #1          | 0.455            | #3         |
 | Doc C    | 8.1        | #2        | 0.33       | 0.85         | #2          | 0.590            | #2         |
+
+---
 
 **Doc B** ranks #1 in vector search (most semantically relevant) and #3 in BM25. **Doc A** ranks #1 in BM25 but #3 in vector search. After weighted averaging with `α=0.5`, **Doc A wins the final ranking** despite being semantically weakest.
 
