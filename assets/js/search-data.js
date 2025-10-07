@@ -89,6 +89,17 @@ ninja.data = [{
             window.location.href = "/blog/2025/vlm-pipeline-debugging-visual-monitoring-lessons/";
           
         },
+      },{id: "post-ml-metrics-for-undefined-projects-3-critical-mistakes",
+        
+          title: "ML Metrics for Undefined Projects: 3 Critical Mistakes",
+        
+        description: "When building ML solutions without established playbooks, the wrong approach to metrics and validation can derail projects before you prove they work. A pragmatic framework for research, baselines, and deployment constraints.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/ml-metrics-undefined-projects-framework/";
+          
+        },
       },{id: "post-pragmatic-llm-debugging-a-survival-guide-to-chaos",
         
           title: "Pragmatic LLM Debugging: A Survival Guide to Chaos",
@@ -97,7 +108,7 @@ ninja.data = [{
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2025/pragmatic-llm-debugging/";
+            window.location.href = "/blog/2025/pragmatic-llm-debugging-copy/";
           
         },
       },{id: "books-the-godfather",
