@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-hybrid-retrieval-with-rrf-solving-the-score-normalization-problem",
+        },{id: "post-",
+        
+          title: "",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/2025-10-10-llm-judge-position-bias-swapping/";
+          
+        },
+      },{id: "post-hybrid-retrieval-with-rrf-solving-the-score-normalization-problem",
         
           title: "Hybrid Retrieval with RRF: Solving the Score Normalization Problem",
         
