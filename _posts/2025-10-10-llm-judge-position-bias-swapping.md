@@ -1,8 +1,8 @@
 ---
-**layout**: full-width
-**title**: "Mitigating Positional Bias in LLM-as-a-Judge Evaluation: The Swapping Technique"
-**description**: "Large Language Model judges often exhibit a strong preference for the first presented option (position bias). A position-swapping methodology significantly improves agreement with human ratings."
-**date**: 2025-10-10 00:00:00 +0000
+layout: full-width
+title: "Mitigating Positional Bias in LLM-as-a-Judge Evaluation: The Swapping Technique"
+description: "Large Language Model judges often exhibit a strong preference for the first presented option (position bias). A position-swapping methodology significantly improves agreement with human ratings."
+date: 2025-10-10 00:00:00 +0000
 ---
 
 LLM-as-a-Judge evaluation pipelines often suffer from a subtle but critical issue: position bias. In a standard pairwise comparison task, where a model evaluates two responses and selects the superior one, there's a consistent pattern. One position - typically the first - gets favored. For instance, in one observed scenario, **Response A was favored in 68% of evaluations**, irrespective of actual quality difference.
