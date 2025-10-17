@@ -23,15 +23,15 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-",
+        },{id: "post-mitigating-positional-bias-in-llm-as-a-judge-evaluation-the-swapping-technique",
         
-          title: "",
+          title: "Mitigating Positional Bias in LLM-as-a-Judge Evaluation: The Swapping Technique",
         
-        description: "",
+        description: "Large Language Model judges often exhibit a strong preference for the first presented option (position bias). A position-swapping methodology significantly improves agreement with human ratings.",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2025/2025-10-10-llm-judge-position-bias-swapping/";
+            window.location.href = "/blog/2025/llm-judge-position-bias-swapping/";
           
         },
       },{id: "post-hybrid-retrieval-with-rrf-solving-the-score-normalization-problem",
