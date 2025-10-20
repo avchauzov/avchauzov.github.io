@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-mitigating-positional-bias-in-llm-as-a-judge-evaluation-the-swapping-technique",
+        },{id: "post-the-chunk-size-dilemma-identifying-the-optimal-value-in-rag-systems",
+        
+          title: "The Chunk Size Dilemma: Identifying the Optimal Value in RAG Systems",
+        
+        description: "Finding the optimal chunk size is non-trivial: too small loses context, too large dilutes semantics through mean pooling. A systematic methodology for identifying the sweet spot.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/chunk-size-optimization-rag-systems/";
+          
+        },
+      },{id: "post-mitigating-positional-bias-in-llm-as-a-judge-evaluation-the-swapping-technique",
         
           title: "Mitigating Positional Bias in LLM-as-a-Judge Evaluation: The Swapping Technique",
         
