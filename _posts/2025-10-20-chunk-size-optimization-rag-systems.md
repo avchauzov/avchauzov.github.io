@@ -31,11 +31,15 @@ This is analogous to creating a movie poster by overlaying every frame; the resu
 
 Systematic evaluation across document types reveals distinct optimal ranges:
 
+---
+
 | Document Type                   | Optimal Range   | Observed Metrics (e.g., 512 tokens)                         |
 | :------------------------------ | :-------------- | :---------------------------------------------------------- |
 | **Technical Documentation**     | 256–512 tokens  | P@3 (Precision at 3): 0.78, Relevance: 0.82, Latency: 180ms |
 | **Long-Form Articles/Research** | 512–1024 tokens | P@3: 0.81, Relevance: 0.85, Latency: 240ms                  |
 | **FAQ/Short-Form Content**      | 128–256 tokens  | P@3: 0.84, Relevance: 0.88, Latency: 120ms                  |
+
+---
 
 These findings highlight a clear pattern: **semantic density** (tokens per concept) varies significantly across document types, necessitating tailored chunk size strategies rather than one-size-fits-all approaches.
 
