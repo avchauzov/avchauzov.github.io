@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-the-chunk-size-dilemma-identifying-the-optimal-value-in-rag-systems",
+        },{id: "post-structured-output-engineering-for-production-llms",
+        
+          title: "Structured Output Engineering for Production LLMs",
+        
+        description: "Transitioning from 85% parse rates to production-grade reliability. Constrained Decoding guarantees format, Pydantic ensures correctness, token optimization cuts costs by 50%.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/structured-output-engineering-llms/";
+          
+        },
+      },{id: "post-the-chunk-size-dilemma-identifying-the-optimal-value-in-rag-systems",
         
           title: "The Chunk Size Dilemma: Identifying the Optimal Value in RAG Systems",
         
