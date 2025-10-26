@@ -11,7 +11,7 @@ Production systems demand deterministic data, but LLMs operate probabilistically
 
 In production environments, the failure rate from invalid JSON outputs often reaches **15%**, leading to API failures and costly retries. Failures include extraneous markdown wrappers (e.g., \`\`\`json) or syntax violations.
 
-Activating native API features like **JSON Mode** (e.g., in OpenAI API) raises the syntactic parse rate to **~98%**. However, relying solely on syntactic guarantees introduces a more damaging issue: **syntactically correct JSON does not equal semantically useful data**.
+Activating native API features like **JSON Mode** (e.g., in **OpenAI API**) raises the syntactic parse rate to **~98%**. However, relying solely on syntactic guarantees introduces a more damaging issue: **syntactically correct JSON does not equal semantically useful data**.
 
 ### The Semantic Integrity Challenge
 
@@ -22,7 +22,7 @@ This **semantic hallucination** creates significant operational costs:
 - **Hallucination Rate**: Structured outputs exhibit a **20-30%** hallucination rate without semantic validation.
 - **Cost Impact**: Failed extractions require **3x retries**, adding cost and latency.
 
-Critical point: while **Constrained Decoding** guarantees the _format_ at generation time, only **Pydantic validation** can effectively detect and handle semantic or business logic errors _post-generation_.
+Critical point: while **Constrained Decoding** guarantees the _format_ at generation time, only **Pydantic** validation can effectively detect and handle semantic or business logic errors _post-generation_.
 
 ## Core Methodologies for Structured Generation
 
@@ -34,11 +34,15 @@ Three approaches address this challenge, each with distinct trade-offs.
 
 While guaranteeing syntactic correctness, CD introduces significant trade-offs:
 
+---
+
 | Metric            | Observation                 | Impact                                                                                                                         |
 | :---------------- | :-------------------------- | :----------------------------------------------------------------------------------------------------------------------------- |
 | **Parse rate**    | **100%**                    | Essential for pipeline reliability.                                                                                            |
 | **Task accuracy** | ↓ **27%** (GSM8K benchmark) | **Token misalignment**: CD forces the model to select grammatically valid but sub-optimal tokens, degrading reasoning quality. |
 | **TPOT overhead** | 30-46 ms vs 15 ms baseline  | Computational cost of logit masking.                                                                                           |
+
+---
 
 **TPOT** - **Time Per Output Token** - measures the average time required to generate each token after the first.
 
@@ -60,11 +64,15 @@ For tasks requiring complex reasoning (e.g., multi-step logic), forcing structur
 - **Step 1: Free-form Reasoning**. A powerful LLM generates the answer and detailed reasoning in natural language, preserving maximum task accuracy.
 - **Step 2: Structure Extraction**. A smaller, cheaper LLM extracts the final structured data from the natural language output.
 
+---
+
 | Metric            | Observation                   | Trade-off                          |
 | :---------------- | :---------------------------- | :--------------------------------- |
 | **Task Accuracy** | **0%** degradation            | Accuracy is preserved.             |
 | **F1 Score**      | ↑ **10-15%** on complex tasks | Improved extraction quality.       |
 | **Latency/Cost**  | ↑ **150 ms** / **1.5x** cost  | Requires two sequential API calls. |
+
+---
 
 Use this when reasoning accuracy outweighs marginal cost savings.
 
@@ -94,7 +102,7 @@ This validates if the output is valid JSON (pass/fail `json.loads()`).
 
 ### 2. Structural Compliance (100% target)
 
-This ensures the parsed JSON adheres to the data types, field constraints, and required fields defined in the Pydantic schema (pass/fail `PydanticModel(**output)`).
+This ensures the parsed JSON adheres to the data types, field constraints, and required fields defined in the Pydantic schema (pass/fail `PydanticModel(output)`).
 
 ### 3. Semantic Accuracy (>90% target)
 

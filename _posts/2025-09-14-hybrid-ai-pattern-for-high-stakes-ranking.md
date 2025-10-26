@@ -13,13 +13,13 @@ The goal of our PoC was to rank medical drugs based on a variety of data sources
 
 ## The Architecture: A Structured Multi-Agent Workflow
 
-Our initial architecture was a modular graph built with LangGraph. It was not a simple hierarchy, but a structured workflow designed for clarity and control:
+Our initial architecture was a modular graph built with **LangGraph**. It was not a simple hierarchy, but a structured workflow designed for clarity and control:
 
-1.  A **Reviewer Agent** would receive the initial query (e.g., "Find treatments for Type 2 Diabetes").
-2.  It would then dispatch tasks to multiple, specialized **Model Context Protocol (MCP) Agents**. Each of these agents was responsible for a specific data source, using the **MCP to access medical knowledge bases**, clinical trial results, and FDA databases — not for inter-agent communication.
-3.  Finally, a **Summarizer Agent** would collect the structured outputs from all MCP agents to synthesize and rank the final list.
+1. A **Reviewer Agent** would receive the initial query (e.g., "Find treatments for Type 2 Diabetes").
+2. It would then dispatch tasks to multiple, specialized **Model Context Protocol (MCP) Agents**. Each of these agents was responsible for a specific data source, using the **MCP** to access medical knowledge bases, clinical trial results, and FDA databases — not for inter-agent communication.
+3. Finally, a **Summarizer Agent** would collect the structured outputs from all MCP agents to synthesize and rank the final list.
 
-The orchestration was handled by LangGraph; the problem emerged within the logical "brain" of the Summarizer.
+The orchestration was handled by **LangGraph**; the problem emerged within the logical "brain" of the Summarizer.
 
 ## The Anatomy of a Loop: When Pure Reasoning Fails
 
@@ -28,7 +28,7 @@ Our first implementation gave the Summarizer agent autonomy to reason about the 
 In initial tests, the reasoning-first agent often **exceeded 50+ iterations without converging**, cycling through similar top candidates. The financial cost was staggering:
 
 - **~50 iterations** × 4 agents × ~1,000 tokens/call = **~200,000 tokens**
-- Using **gpt-4.1-mini** (at ~$0.001 per 1k mixed tokens), this cost **~$0.20** per query for a result that was fundamentally unusable.
+- Using **gpt-4.1-mini** (at ~\$0.001 per 1k mixed tokens), this cost **~$0.20** per query for a result that was fundamentally unusable.
 
 To combat this, we had to add explicit loop detection mechanisms — a clear sign that our core approach was flawed.
 

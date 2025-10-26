@@ -5,15 +5,15 @@ description: "Finding the optimal chunk size is non-trivial: too small loses con
 date: 2025-10-20 00:00:00 +0000
 ---
 
-RAG systems face a fundamental architectural challenge that directly impacts both retrieval accuracy and generation quality: **chunk size selection**. In one of my production RAG deployments, suboptimal chunking has been observed to degrade retrieval precision by 15-25% and increase answer hallucination rates by 20-30%.
+RAG systems face a fundamental architectural challenge that directly impacts both retrieval accuracy and generation quality: **chunk size selection**. In one of my production RAG deployments, suboptimal chunking has been observed to degrade retrieval precision by **15-25%** and increase answer hallucination rates by **20-30%**.
 
 The problem manifests as a paradox: smaller chunks preserve semantic precision but lose critical context, while larger chunks maintain context but dilute semantic meaning through embedding aggregation. This creates a narrow optimization window where retrieval quality peaks.
 
 ## The Mean Pooling Problem
 
-Most embedding models (BERT-based, sentence-transformers, `text-embedding-3-small`) use **mean pooling** to generate fixed-size vectors from variable-length text. This operation averages token embeddings across the sequence:
+Most embedding models (**BERT**-based, **sentence-transformers**, `text-embedding-3-small`) use **mean pooling** to generate fixed-size vectors from variable-length text. This operation averages token embeddings across the sequence:
 
-```
+```python
 embedding_chunk = mean(embedding_token1, embedding_token2, ..., embedding_tokenN)
 ```
 
@@ -23,7 +23,7 @@ As chunk size increases, this averaging process progressively dilutes semantic s
 - 256 tokens: tangential example
 - 512 tokens: unrelated context from document structure
 
-The resulting embedding represents a "blurred average" of all three components, weakening retrieval precision for queries targeting the core concept. If the query specifically asks about the "core technical concept", the embedding must compete with noise from 768 tokens of irrelevant content (75% of the chunk), reducing cosine similarity scores by 20-35% in observed cases.
+The resulting embedding represents a "blurred average" of all three components, weakening retrieval precision for queries targeting the core concept. If the query specifically asks about the "core technical concept", the embedding must compete with noise from **768 tokens** of irrelevant content (**75%** of the chunk), reducing cosine similarity scores by **20-35%** in observed cases.
 
 This is analogous to creating a movie poster by overlaying every frame; the result contains all information but loses specificity.
 

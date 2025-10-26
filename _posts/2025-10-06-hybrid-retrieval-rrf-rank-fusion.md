@@ -5,9 +5,9 @@ description: "Pure vector search isn't always enough. Weighted averaging of BM25
 date: 2025-10-06 00:00:00 +0000
 ---
 
-Vector search excels at semantic understanding but fails on exact matches: product codes, error messages, and abbreviations. The obvious solution is combining BM25 lexical scores with vector similarity. The problem? Their scores are incompatible, and naive normalization can even make results worse.
+Vector search excels at semantic understanding but fails on exact matches: product codes, error messages, and abbreviations. The obvious solution is combining **BM25** lexical scores with vector similarity. The problem? Their scores are incompatible, and naive normalization can even make results worse.
 
-Reciprocal Rank Fusion (RRF) solves this by ignoring scores entirely and using **document ranks** instead. It's simple, requires minimal tuning, and works effectively in production.
+**Reciprocal Rank Fusion (RRF)** solves this by ignoring scores entirely and using **document ranks** instead. It's simple, requires minimal tuning, and works effectively in production.
 
 ## Why Weighted Averaging Fails
 
@@ -17,7 +17,7 @@ The naive approach to hybrid search uses weighted combination of scores:
 combined_score = alpha * vector_score + (1 - alpha) * normalized_bm25_score
 ```
 
-This approach is flawed because BM25 and cosine similarity scores exist in different spaces and, more importantly, come from **different distributions**. BM25 scores are unbounded, while cosine similarity lives in the `[0, 1]` range.
+This approach is flawed because **BM25** and cosine similarity scores exist in different spaces and, more importantly, come from **different distributions**. **BM25** scores are unbounded, while cosine similarity lives in the `[0, 1]` range.
 
 Consider a concrete example with three documents:
 

@@ -5,13 +5,13 @@ description: "Large Language Model judges often exhibit a strong preference for 
 date: 2025-10-10 00:00:00 +0000
 ---
 
-LLM-as-a-Judge evaluation pipelines often suffer from a subtle but critical issue: position bias. In a standard pairwise comparison task, where a model evaluates two responses and selects the superior one, there's a consistent pattern. One position - typically the first - gets favored. For instance, in one observed scenario, **Response A was favored in 68% of evaluations**, irrespective of actual quality difference.
+LLM-as-a-Judge evaluation pipelines often suffer from a subtle but critical issue: **position bias**. In a standard pairwise comparison task, where a model evaluates two responses and selects the superior one, there's a consistent pattern. One position - typically the first - gets favored. For instance, in one observed scenario, **Response A was favored in 68% of evaluations**, irrespective of actual quality difference.
 
 This phenomenon, known as **position bias**, is one of the most pervasive and misleading issues in automated LLM evaluation.
 
 ### Mechanisms Driving Positional Preference
 
-LLM judges display a consistent tendency to favor the answer presented in the first positional slot. Analysis indicates that judge models select the first response in 68% of comparisons, even when human annotators clearly prefer the second option. This happens because:
+LLM judges display a consistent tendency to favor the answer presented in the first positional slot. Analysis indicates that judge models select the first response in **68%** of comparisons, even when human annotators clearly prefer the second option. This happens because:
 
 - **Training Patterns**: The model's training data may contain patterns where preferred or correct items are more likely to appear early in sequences.
 - **Attention Mechanisms**: The inherent functionality of transformer architectures can lead to a disproportionate weighting or prioritization of tokens that appear earlier in the input sequence.
