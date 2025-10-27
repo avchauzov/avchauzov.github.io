@@ -1,5 +1,5 @@
 ---
-layout: full-width
+layout: default
 title: "Mitigating Positional Bias in LLM-as-a-Judge Evaluation: The Swapping Technique"
 description: "Large Language Model judges often exhibit a strong preference for the first presented option (position bias). A position-swapping methodology significantly improves agreement with human ratings."
 date: 2025-10-10 00:00:00 +0000

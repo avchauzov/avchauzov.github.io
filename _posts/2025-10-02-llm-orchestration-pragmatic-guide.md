@@ -1,5 +1,5 @@
 ---
-layout: full-width
+layout: default
 title: "LLM Orchestration: A Pragmatic Guide to Complexity"
 description: "Most production apps are simple chains, yet everyone is building agents. Here’s a clear framework on when you really need loops, graphs, and agents in your LLM app."
 date: 2025-10-02 00:00:00 +0000

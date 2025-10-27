@@ -1,5 +1,5 @@
 ---
-layout: full-width
+layout: default
 title: "VLM Pipeline Debugging: Lessons from Visual Monitoring"
 description: "Hard-won insights from building PoC VLM pipelines for visual monitoring, where hallucinations hide in plain sight, preprocessing decisions make or break everything, and the question is: can we forget classical CV?"
 date: 2025-09-09 00:00:00 +0000

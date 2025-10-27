@@ -1,5 +1,5 @@
 ---
-layout: full-width
+layout: default
 title: "Structured Output Engineering for Production LLMs"
 description: "Transitioning from 85% parse rates to production-grade reliability. Constrained Decoding guarantees format, Pydantic ensures correctness, token optimization cuts costs by 50%."
 date: 2025-10-24 00:00:00 +0000

@@ -1,5 +1,5 @@
 ---
-layout: full-width
+layout: default
 title: "How Qdrant's Scalar Quantization Cut Our RAG Latency by 3x"
 description: "A deep dive into how we cut RAG retrieval latency by 3x and costs by 65% using Qdrant's scalar quantization and a hybrid storage strategy, without sacrificing search quality."
 date: 2025-09-28 00:00:00 +0000
