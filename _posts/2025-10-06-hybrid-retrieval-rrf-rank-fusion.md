@@ -144,7 +144,7 @@ Based on published benchmarks and case studies, hybrid retrieval with RRF typica
 
 **Quality improvements**:
 
-- Recall on queries with specific identifiers: +25-30%
+- Recall on queries with specific identifiers: +25–30%
 - Overall recall improvement: up to 30% compared to single-method retrieval
 - NDCG@k improvements: hybrid search consistently ranks highest across benchmark datasets
 

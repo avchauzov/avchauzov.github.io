@@ -24,7 +24,7 @@ Production systems show different results. Adding neural rerankers introduces la
 
 **Latency kills throughput**. Bi-encoders work fast because they precompute document embeddings offline, enabling approximate nearest neighbor (ANN) search in milliseconds. **Reranking cannot leverage precomputation** - it must evaluate the interaction between a specific query and document.
 
-Pointwise LLM rerankers demonstrate **2-2.7x higher latency** than listwise alternatives due to sequential autoregressive decoding. In-context ranking with full fine-tuning exhibits exponential latency growth. At `N=500` documents, query latency reaches **~1.15 seconds** on a 7B model. Even efficient alternatives like ColBERT still increase query latency compared to pure vector search.
+Pointwise LLM rerankers demonstrate **2–2.7x higher latency** than listwise alternatives due to sequential autoregressive decoding. In-context ranking with full fine-tuning exhibits exponential latency growth. At `N=500` documents, query latency reaches **~1.15 seconds** on a 7B model. Even efficient alternatives like ColBERT still increase query latency compared to pure vector search.
 
 This computational load restricts practical application to small candidate sets - typically `k≤50`. **The high per-query computational cost** makes them unsuitable for high-throughput systems or initial retrieval stages.
 

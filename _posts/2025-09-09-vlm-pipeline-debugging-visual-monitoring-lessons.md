@@ -13,7 +13,7 @@ Image preprocessing is where most VLM pipelines silently break. I've seen system
 
 My debugging rule: **always inspect what the model actually sees**. I save intermediate preprocessing outputs and manually verify that critical information survives the pipeline. A monitoring system that crops out the very gauge it's supposed to read is worse than useless.
 
-### Surface vs. Deep Understanding
+### Surface vs Deep Understanding
 
 VLMs excel at surface-level scene description but falter on operational details. They'll accurately describe a "worker in a reflective vest near a control panel" but won't understand if the worker is actually operating it or just walking past. Often, in response to a general query, the model would give a vague "interacts." To get specifics, I had to refine the prompt to "describe only physical interaction" to filter out false positives. This surface-level competence can be dangerously misleading in safety-critical systems.
 

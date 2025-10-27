@@ -5,7 +5,7 @@ description: "Finding the optimal chunk size is non-trivial: too small loses con
 date: 2025-10-20 00:00:00 +0000
 ---
 
-RAG systems face a fundamental architectural challenge that directly impacts both retrieval accuracy and generation quality: **chunk size selection**. In one of my production RAG deployments, suboptimal chunking has been observed to degrade retrieval precision by **15-25%** and increase answer hallucination rates by **20-30%**.
+RAG systems face a fundamental architectural challenge that directly impacts both retrieval accuracy and generation quality: **chunk size selection**. In one of my production RAG deployments, suboptimal chunking has been observed to degrade retrieval precision by **15–25%** and increase answer hallucination rates by **20–30%**.
 
 The problem manifests as a paradox: smaller chunks preserve semantic precision but lose critical context, while larger chunks maintain context but dilute semantic meaning through embedding aggregation. This creates a narrow optimization window where retrieval quality peaks.
 
@@ -23,7 +23,7 @@ As chunk size increases, this averaging process progressively dilutes semantic s
 - 256 tokens: tangential example
 - 512 tokens: unrelated context from document structure
 
-The resulting embedding represents a "blurred average" of all three components, weakening retrieval precision for queries targeting the core concept. If the query specifically asks about the "core technical concept", the embedding must compete with noise from **768 tokens** of irrelevant content (**75%** of the chunk), reducing cosine similarity scores by **20-35%** in observed cases.
+The resulting embedding represents a "blurred average" of all three components, weakening retrieval precision for queries targeting the core concept. If the query specifically asks about the "core technical concept", the embedding must compete with noise from **768 tokens** of irrelevant content (**75%** of the chunk), reducing cosine similarity scores by **20–35%** in observed cases.
 
 This is analogous to creating a movie poster by overlaying every frame; the result contains all information but loses specificity.
 
@@ -43,7 +43,7 @@ Systematic evaluation across document types reveals distinct optimal ranges:
 
 These findings highlight a clear pattern: **semantic density** (tokens per concept) varies significantly across document types, necessitating tailored chunk size strategies rather than one-size-fits-all approaches.
 
-Critical finding: **Chunks exceeding 1024 tokens showed 20-30% degradation** in retrieval precision across all document types, while chunks below 128 tokens suffered from context fragmentation, reducing answer quality by 25%.
+Critical finding: **Chunks exceeding 1024 tokens showed 20–30% degradation** in retrieval precision across all document types, while chunks below 128 tokens suffered from context fragmentation, reducing answer quality by 25%.
 
 ## The Context Window Constraint
 
@@ -111,10 +111,10 @@ Overlapping chunks mitigate context loss at boundaries:
 chunks = chunk_with_overlap(document, size=512, overlap=64)  # ~12% overlap
 ```
 
-- **Benefit**: Reduces context fragmentation by 15-20%
-- **Cost**: 10-15% storage increase, minimal retrieval latency impact
+- **Benefit**: Reduces context fragmentation by 15–20%
+- **Cost**: 10–15% storage increase, minimal retrieval latency impact
 
-Empirical testing shows sliding window with ~10% overlap provides the best cost-benefit ratio, improving precision by 12-18% with minimal overhead.
+Empirical testing shows sliding window with ~10% overlap provides the best cost-benefit ratio, improving precision by 12–18% with minimal overhead.
 
 ### Sentence-Aware Chunking
 

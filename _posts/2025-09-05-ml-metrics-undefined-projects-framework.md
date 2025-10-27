@@ -23,7 +23,7 @@ When a project is undefined (and therefore business metrics aren't clear), my in
 
 A model that can't be deployed will not become a product.
 
-**What works**: Set hard limits upfront and communicate them. If your model needs 2 seconds to respond but users expect 500ms, you know immediately that you need to rethink the architecture. Always measure both success metrics **and** proximity to deployment constraints (latency, cost, memory). This dual tracking helps you understand when to stop optimizing or when to split the task into smaller, deployable pieces.
+**What works**: Set hard limits upfront and communicate them. If your model needs **2s** to respond but users expect **500ms**, you know immediately that you need to rethink the architecture. Always measure both success metrics **and** proximity to deployment constraints (latency, cost, memory). This dual tracking helps you understand when to stop optimizing or when to split the task into smaller, deployable pieces.
 
 ### Mistake #3: No Baseline, No Validation
 
@@ -35,7 +35,7 @@ We all know it, most of us forget it. A simple baseline with proper business met
 
 Before writing any training code:
 
-- **Research phase**: Study 5-10 production case studies and their metrics
+- **Research phase**: Study 5–10 production case studies and their metrics
 - **Business metric definition**: Define minimum viable improvement threshold
 - **Baseline building and measuring**: Test if rules/heuristics can solve this (at least partially)
 - **Deployment constraints**: Set max cost per prediction and latency limits
