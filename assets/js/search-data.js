@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-structured-output-engineering-for-production-llms",
+        },{id: "post-the-reranking-trap-when-cross-encoders-make-things-worse",
+        
+          title: "The Reranking Trap: When Cross-Encoders Make Things Worse",
+        
+        description: "Cross-encoders and LLM rerankers promise better retrieval precision, but the 200% latency penalty, diversity collapse, and production failures reveal when this expensive step becomes counterproductive.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/reranking-trap/";
+          
+        },
+      },{id: "post-structured-output-engineering-for-production-llms",
         
           title: "Structured Output Engineering for Production LLMs",
         
