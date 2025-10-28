@@ -31,4 +31,6 @@ Finally, the most important point, which underpins this entire approach:
 <i>Every decision the system makes must be explainable with human logic. If I can't explain why an agent chose a particular tool or why a RAG system gave a specific answer, then we don't understand the system.</i>
 </p>
 
+---
+
 This pragmatic approach — from simplification to a detailed breakdown — helps me quickly manage complex systems that, at first glance, seem like uncontrollable black boxes. It proves that even without perfect conditions, a structured, iterative process can lead to high-quality results.

@@ -166,4 +166,4 @@ chunks = hierarchical_chunk(document, levels=['section', 'paragraph'])
 
 Chunk size optimization is not a one-time configuration but a **continuous calibration process**. The optimal range varies by document type, query patterns, and embedding model characteristics. Systematic evaluation using retrieval precision and answer relevance metrics, combined with sliding window overlap, provides a robust methodology for identifying and maintaining the sweet spot between context preservation and semantic precision.
 
-The 2x difference in retrieval quality between naive chunking (fixed 1024 tokens) and optimized chunking (document-aware 512 tokens with overlap) justifies the investment in empirical testing. For production RAG systems, chunk size should be treated as a **first-class hyperparameter** deserving rigorous optimization.
+The 2x difference in retrieval quality between naive chunking (fixed 1,024 tokens) and optimized chunking (document-aware 512 tokens with overlap) justifies the investment in empirical testing. For production RAG systems, chunk size should be treated as a **first-class hyperparameter** deserving rigorous optimization.

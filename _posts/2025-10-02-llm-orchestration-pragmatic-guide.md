@@ -66,6 +66,8 @@ Don't start with complexity. Evolve based on need.
 
 **A simple test**: If you can express the entire workflow using `if/else` and `for` loops, stick with a Chain or Router (at most a Graph). Only reach for an Agent when even the _sequence_ of steps is unpredictable.
 
+---
+
 <p align="center">
 <i>Don't add an agent because it's trendy. Add one only when your Chain, Router, or Graph has failed repeatedly.</i>
 </p>
