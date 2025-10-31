@@ -88,7 +88,7 @@ Passing the full **JSON Schema** in the prompt generates up to **4x** more input
 
 A non-minified JSON output contains substantial whitespace and newlines that consume output tokens. Explicitly instructing the LLM to "**Return minified JSON**" (e.g., `{"name":"Product","rating":5}`) leads to a **50%** reduction in output tokens for typical schemas, resulting in cost savings and a ~30ms latency reduction.
 
-**Caution:** While YAML is human-readable, it is **~66%** less efficient than minified JSON due to its reliance on semantic whitespace.
+**Caution**: While YAML is human-readable, it is **~66%** less efficient than minified JSON due to its reliance on semantic whitespace.
 
 ## A Three-Dimensional Validation Strategy
 

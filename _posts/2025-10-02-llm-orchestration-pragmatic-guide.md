@@ -59,7 +59,7 @@ More complexity means higher operational costs. Based on research, the trade-off
 
 Don't start with complexity. Evolve based on need.
 
-1.  **Always start with a Chain.** It's simple, cheap, and easy to debug.
+1.  **Always start with a Chain**. It's simple, cheap, and easy to debug.
 2.  Add a **Router** when you notice cost or quality anomalies for certain requests that could be handled by different models or logic.
 3.  Move to a **Graph** only when your Chain or Router frequently fails on edge cases that require **retries or validation loops**.
 4.  Use an **Agent** only when the task is truly unpredictable.

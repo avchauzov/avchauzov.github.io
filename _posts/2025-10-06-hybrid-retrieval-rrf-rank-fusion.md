@@ -136,7 +136,7 @@ if __name__ == "__main__":
 **Key Considerations**:
 
 - **Retrieval Window**: It's good practice to fetch more results from each retriever than you ultimately need (e.g., 2x your target). This gives RRF a larger pool of candidates to fuse and re-rank.
-- **The k parameter**: While `k=60` is a balanced default, you can experiment. A lower `k` (e.g., 10-20) gives more weight to top ranks, while a higher `k` (e.g., 80-100) flattens the curve, giving deeper results more influence.
+- **The k parameter**: While `k=60` is a balanced default, you can experiment. A lower `k` (e.g., 10–20) gives more weight to top ranks, while a higher `k` (e.g., 80–100) flattens the curve, giving deeper results more influence.
 
 ## Production Results
 

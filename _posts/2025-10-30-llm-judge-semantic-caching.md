@@ -42,11 +42,11 @@ Fast embedding filter + deeper judge validation. Two stages, different purposes.
 
 ### The Latency Problem
 
-**Critical constraint: TTFT budget**. TTFT (Time To First Token) is what users actually feel—how long until they see the first word. The judge adds a full inference cycle. For a 7B model processing ~150 tokens, expect **150-250ms overhead**.
+**Critical constraint: TTFT budget**. TTFT (Time To First Token) is what users actually feel—how long until they see the first word. The judge adds a full inference cycle. For a 7B model processing ~150 tokens, expect **150–250ms overhead**.
 
 Do the math: if your target TTFT is 300ms and exact-match caching delivers 240ms, adding a 200ms judge makes things worse.
 
-**Graceful failure is mandatory**. Judge is an optimization, not a dependency. Set aggressive timeout (200-350ms). Any failure (timeout, API error, parse error) must default to cache miss and proceed to generation. Never block user requests waiting for judge.
+**Graceful failure is mandatory**. Judge is an optimization, not a dependency. Set aggressive timeout (200–350ms). Any failure (timeout, API error, parse error) must default to cache miss and proceed to generation. Never block user requests waiting for judge.
 
 ### Economics: When Judge Calls Pay Off
 
@@ -54,7 +54,7 @@ Do the math: if your target TTFT is 300ms and exact-match caching delivers 240ms
 
 **Paraphrase-heavy workloads see immediate wins**. I've seen this work best in customer support systems where users ask the same thing 20 different ways ("reset password" vs "can't log in" vs "forgot credentials"). Technical documentation queries with varied terminology but identical intent.
 
-High semantic match rate (40-60% from embeddings) means the judge converts many near-misses into hits.
+High semantic match rate (40–60% from embeddings) means the judge converts many near-misses into hits.
 
 ### Skip It When
 
