@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-the-reranking-trap-when-cross-encoders-make-things-worse",
+        },{id: "post-semantic-prompt-caching-when-llm-judge-beats-exact-match",
+        
+          title: "Semantic Prompt Caching: When LLM-Judge Beats Exact Match",
+        
+        description: "Standard prompt caching requires exact prefix match. LLM-Judge validates semantic equivalence, rescuing cache hits on paraphrases while adding controllable latency overhead.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/llm-judge-semantic-caching/";
+          
+        },
+      },{id: "post-the-reranking-trap-when-cross-encoders-make-things-worse",
         
           title: "The Reranking Trap: When Cross-Encoders Make Things Worse",
         
