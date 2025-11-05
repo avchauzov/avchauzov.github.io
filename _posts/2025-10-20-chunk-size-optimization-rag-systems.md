@@ -51,7 +51,7 @@ Chunk size is fundamentally constrained by the embedding model's **maximum input
 
 While modern models support larger windows (8K+), using the full capacity for chunk size risks severe semantic dilution through mean pooling. The challenge lies in finding the balance: chunks must fit within model limits while remaining small enough to preserve semantic precision.
 
-Documents with complex inter-dependencies - such as legal contracts with cross-referenced clauses or multi-step technical procedures - require models with sufficient input capacity. Otherwise, forced truncation causes critical information loss, particularly when concepts span multiple sections or require understanding of non-local context.
+Documents with complex inter-dependencies — such as legal contracts with cross-referenced clauses or multi-step technical procedures — require models with sufficient input capacity. Otherwise, forced truncation causes critical information loss, particularly when concepts span multiple sections or require understanding of non-local context.
 
 ## Systematic Optimization Methodology
 

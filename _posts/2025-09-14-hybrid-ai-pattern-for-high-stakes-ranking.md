@@ -35,7 +35,7 @@ To combat this, we had to add explicit loop detection mechanisms — a clear sig
 ```python
 # Early stopping mechanisms to prevent infinite loops
 if current_ranking in ranking_history:
-    logger.info("🛑 EARLY STOPPING: Exact ranking repetition detected")
+    logger.info("EARLY STOPPING: Exact ranking repetition detected")
     break
 
 # Check for minimal changes (similarity > 95%)
@@ -44,7 +44,7 @@ if ranking_history:
         None, str(previous_ranking), str(current_ranking)
     ).ratio()
     if similarity > 0.95:
-        logger.info("🛑 EARLY STOPPING: Changes below threshold")
+        logger.info("EARLY STOPPING: Changes below threshold")
         break
 ```
 

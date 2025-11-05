@@ -206,7 +206,7 @@ This system uses three **Bounded Contexts** to form a resilient pipeline:
 The data flow is decoupled using **Domain Events**:
 
 ```text
-[User Request] → [TriageAgent] → (Publishes 'TicketClassified' Event)
+[User Request] → [TriageAgent] → (Publishes "TicketClassified" Event)
                                         |
                                         +--> [BillingAgent] (Subscribes)
                                         |

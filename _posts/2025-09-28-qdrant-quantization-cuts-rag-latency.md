@@ -63,4 +63,4 @@ The quantized vectors sit in RAM, enabling a quick preliminary search. At this s
 
 ### The Main Takeaway
 
-When debugging algorithm performance, we often focus on a subset of parameters while treating everything else as "good defaults". The real wins come from questioning **all assumptions at once** - algorithm, storage, memory architecture. Nothing is optimal until you prove it is.
+When debugging algorithm performance, we often focus on a subset of parameters while treating everything else as "good defaults". The real wins come from questioning **all assumptions at once** — algorithm, storage, memory architecture. Nothing is optimal until you prove it is.

@@ -5,7 +5,7 @@ description: "Transitioning from 85% parse rates to production-grade reliability
 date: 2025-10-24 00:00:00 +0000
 ---
 
-Production systems demand deterministic data, but LLMs operate probabilistically. Traditional prompt engineering for JSON output achieves only **~85%** parse rates - a critical failure point in production RAG systems. These methodologies form **Structured Output Engineering**, shifting focus from valid syntax to guaranteed semantic integrity while minimizing operational costs.
+Production systems demand deterministic data, but LLMs operate probabilistically. Traditional prompt engineering for JSON output achieves only **~85%** parse rates — a critical failure point in production RAG systems. These methodologies form **Structured Output Engineering**, shifting focus from valid syntax to guaranteed semantic integrity while minimizing operational costs.
 
 ## The Production Problem: Format Guarantee vs Semantic Correctness
 
@@ -22,7 +22,7 @@ This **semantic hallucination** creates significant operational costs:
 - **Hallucination Rate**: Structured outputs exhibit a **20–30%** hallucination rate without semantic validation.
 - **Cost Impact**: Failed extractions require **3x retries**, adding cost and latency.
 
-Critical point: while **Constrained Decoding** guarantees the _format_ at generation time, only **Pydantic** validation can effectively detect and handle semantic or business logic errors _post-generation_.
+Critical point: while **Constrained Decoding** guarantees the **format** at generation time, only **Pydantic** validation can effectively detect and handle semantic or business logic errors **post-generation**.
 
 ## Core Methodologies for Structured Generation
 
@@ -30,7 +30,7 @@ Three approaches address this challenge, each with distinct trade-offs.
 
 ### Constrained Decoding (CD): Format Purity at a Cost
 
-**CD** achieves a **100%** parse rate by applying **logit post-processing** - masking all invalid tokens at each generation step according to a formal grammar (like JSON Schema). Frameworks like `outlines` and models like **Mistral** and **Llama** utilize this approach for self-hosted deployments.
+**CD** achieves a **100%** parse rate by applying **logit post-processing** — masking all invalid tokens at each generation step according to a formal grammar (like JSON Schema). Frameworks like `outlines` and models like **Mistral** and **Llama** utilize this approach for self-hosted deployments.
 
 While guaranteeing syntactic correctness, CD introduces significant trade-offs:
 
@@ -44,16 +44,16 @@ While guaranteeing syntactic correctness, CD introduces significant trade-offs:
 
 ---
 
-**TPOT** - **Time Per Output Token** - measures the average time required to generate each token after the first.
+**TPOT** — **Time Per Output Token** — measures the average time required to generate each token after the first.
 
 ### Runtime Validation (Pydantic): The Semantic Safety Net
 
-The **Pydantic + Runtime Validation** approach uses a standard LLM call (often with native JSON Mode for high initial quality) and subsequently validates the output against a **Pydantic data model**. This model enforces structural constraints _and_ custom business logic.
+The **Pydantic + Runtime Validation** approach uses a standard LLM call (often with native JSON Mode for high initial quality) and subsequently validates the output against a **Pydantic data model**. This model enforces structural constraints **and** custom business logic.
 
 **Pydantic's Role**:
 
 1. **Structural Compliance**: Ensures data types and constraints match requirements (e.g., an extracted `rating` must be an integer between 1 and 5).
-2. **Semantic Validation**: Allows custom logic via `@field_validator` to check the data's _meaning_ against the source context (e.g., if the review text contains "terrible," the validated rating must be < 3). This is the primary defense against semantic hallucinations.
+2. **Semantic Validation**: Allows custom logic via `@field_validator` to check the data's **meaning** against the source context (e.g., if the review text contains "terrible," the validated rating must be < 3). This is the primary defense against semantic hallucinations.
 
 The `instructor` library facilitates this by automating the retry loop: a `ValidationError` from Pydantic feeds back to the LLM, enabling **self-correction (reasking)** in subsequent calls. Each failed validation adds an additional API call and ~200ms of latency.
 
@@ -82,7 +82,7 @@ These generation approaches require careful token management to control costs.
 
 ### Input Optimization: Schema Verbosity Reduction
 
-Passing the full **JSON Schema** in the prompt generates up to **4x** more input tokens than necessary. By converting the full schema to compact, human-readable **Type-Definitions** (e.g., `name: string`, `tags: string[]`), you achieve substantial cost savings - reducing the cost of schema transmission by up to **76%** per request.
+Passing the full **JSON Schema** in the prompt generates up to **4x** more input tokens than necessary. By converting the full schema to compact, human-readable **Type-Definitions** (e.g., `name: string`, `tags: string[]`), you achieve substantial cost savings — reducing the cost of schema transmission by up to **76%** per request.
 
 ### Output Optimization: Minified JSON Payloads
 
@@ -118,7 +118,7 @@ Even with proper validation, production systems face specific edge cases.
 
 The first request using a new or modified schema with **Constrained Decoding frameworks** (e.g., vLLM, Outlines) can incur a **2–60 second** latency penalty. This occurs because the system must first **compile** the JSON Schema into an executable format (like a Context-Free Grammar or **Finite State Machine (FSM)**).
 
-**Solution: Schema Pre-warming**. Send a dummy request for every critical schema _before_ serving user traffic to force the initial compilation, ensuring subsequent user requests benefit from the cached, compiled grammar.
+**Solution: Schema Pre-warming**. Send a dummy request for every critical schema **before** serving user traffic to force the initial compilation, ensuring subsequent user requests benefit from the cached, compiled grammar.
 
 ### Complex String and Code Escaping
 

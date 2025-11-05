@@ -4,7 +4,15 @@
 
 // Typography
 
-p,
+// Base typography for paragraphs
+p {
+  color: var(--global-text-color);
+  font-size: 1rem; // 16px base
+  line-height: 1.6; // 160% for comfortable reading
+  font-weight: 400; // Normal weight, avoid thin fonts
+  margin-bottom: 1.25em; // Adequate spacing between paragraphs
+}
+
 h1,
 h2,
 h3,
@@ -168,6 +176,7 @@ ul.task-list input[type="checkbox"] {
 
 .card {
   background-color: var(--global-card-bg-color);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); // Modern, soft shadow
 
   .card-img {
     width: 100%;
@@ -915,6 +924,13 @@ html.transition *:after {
 
 // Extra Markdown style (post Customization)
 .post {
+  // Ensure proper padding for post content
+  padding: 1.5rem 0;
+
+  @media (min-width: 576px) {
+    padding: 2rem 0;
+  }
+
   .post-meta {
     color: var(--global-text-color-light);
     font-size: 0.875rem;

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Why Vision-Language Models Ignore Visual Evidence (And How to Fix It)"
-description: "VLMs have a strong contextual bias, prioritizing 'logical' conclusions over visual facts. We fixed this in a production case by explicitly telling the model to ignore what it thought it knew."
+description: "VLMs have a strong contextual bias, prioritizing \"logical\" conclusions over visual facts. We fixed this in a production case by explicitly telling the model to ignore what it thought it knew."
 date: 2025-09-21 00:00:00 +0000
 ---
 
@@ -11,14 +11,14 @@ Vision-Language Models (VLMs) suffer from a powerful contextual bias. They prefe
 
 ### The Problem
 
-I was using NVIDIA's Vila model to detect idle workers in a factory setting. My initial prompt was detailed: I provided context (a description of the scene), an explanation of what constituted 'work' in this environment, and specific visual criteria for idleness, such as 'a person standing still, with no hand movement.'
+I was using NVIDIA's Vila model to detect idle workers in a factory setting. My initial prompt was detailed: I provided context (a description of the scene), an explanation of what constituted "work" in this environment, and specific visual criteria for idleness, such as "a person standing still, with no hand movement."
 
 Despite this detailed instruction, the model consistently failed in obvious cases. The context I provided to help the model was actually making it perform worse.
 
 Here's a breakdown of its flawed reasoning versus the ground truth:
 
-- **✅ Model's Reasoning**: "This is a worker wearing a uniform inside a factory → therefore, the worker must be working."
-- **❌ Reality**: The person is standing still and yawning, clearly idle.
+- **Model's Reasoning**: "This is a worker wearing a uniform inside a factory → therefore, the worker must be working."
+- **Reality**: The person is standing still and yawning, clearly idle.
 
 The model was so confident in the context ("worker in a factory") that it completely disregarded the visual evidence that contradicted its assumption.
 
@@ -40,7 +40,7 @@ This prompt forces the model to discard its powerful contextual priors and base 
 
 ### Why It Works
 
-This instruction acts as a form of **causal intervention**. It effectively blocks the model's default reasoning path, which relies on indirect contextual clues. By telling it what _not_ to look at, we force it down a different path—one that relies only on the direct visual evidence of body posture and movement. You are isolating the direct visual effect from the confounding, indirect contextual effect.
+This instruction acts as a form of **causal intervention**. It effectively blocks the model's default reasoning path, which relies on indirect contextual clues. By telling it what **not** to look at, we force it down a different path—one that relies only on the direct visual evidence of body posture and movement. You are isolating the direct visual effect from the confounding, indirect contextual effect.
 
 ### Practical Takeaways
 

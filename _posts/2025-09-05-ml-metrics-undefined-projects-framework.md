@@ -29,7 +29,7 @@ A model that can't be deployed will not become a product.
 
 We all know it, most of us forget it. A simple baseline with proper business metrics beats a complex ML model that you can't validate properly.
 
-**Example**: Before building any model, try a simple rule-based baseline first. Measure business impact (not **F1-score** or **AUC**). Establish your initial ROI - this becomes your **minimum viable success threshold**. Then iterate from there.
+**Example**: Before building any model, try a simple rule-based baseline first. Measure business impact (not **F1-score** or **AUC**). Establish your initial ROI — this becomes your **minimum viable success threshold**. Then iterate from there.
 
 ### The Must-Have Stages
 

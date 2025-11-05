@@ -6,6 +6,9 @@ body {
   padding-bottom: 70px;
   color: var(--global-text-color);
   background-color: var(--global-bg-color);
+  font-size: 16px; // Ensure minimum 16px for readability
+  line-height: 1.6; // Improved line-height for better scanning (160%)
+  font-weight: 400; // Normal weight for body text
 
   h1,
   h2,
@@ -14,6 +17,18 @@ body {
   h5,
   h6 {
     scroll-margin-top: 66px;
+  }
+}
+
+// Main content container with proper padding
+.container {
+  max-width: $max-content-width;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+
+  @media (min-width: 576px) {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 }
 
@@ -27,9 +42,6 @@ body.sticky-bottom-footer {
   padding-bottom: 0;
 }
 
-.container {
-  max-width: $max-content-width;
-}
 
 // Profile
 .profile {
@@ -69,8 +81,10 @@ body.sticky-bottom-footer {
   > h5,
   > h6,
   > pre {
-    max-width: 70ch;
+    max-width: 75ch;
     margin-left: auto;
     margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
