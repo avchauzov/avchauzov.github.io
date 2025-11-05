@@ -147,6 +147,9 @@ collections:
 # Jekyll settings
 # -----------------------------------------------------------------------------
 
+# Publish posts with future dates immediately (default: false)
+future: true
+
 # Markdown and syntax highlight
 markdown: kramdown
 highlighter: rouge

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Why Vision-Language Models Ignore Visual Evidence (And How to Fix It)"
-description: "VLMs have a strong contextual bias, prioritizing \"logical\" conclusions over visual facts. We fixed this in a production case by explicitly telling the model to ignore what it thought it knew."
+description: 'VLMs have a strong contextual bias, prioritizing "logical" conclusions over visual facts. We fixed this in a production case by explicitly telling the model to ignore what it thought it knew.'
 date: 2025-09-21 00:00:00 +0000
 ---
 
