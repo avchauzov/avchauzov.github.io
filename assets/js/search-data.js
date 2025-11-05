@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-semantic-prompt-caching-when-llm-judge-beats-exact-match",
+        },{id: "post-domain-driven-design-for-ai-systems-architectural-patterns-and-production-experience",
+        
+          title: "Domain-Driven Design for AI Systems: Architectural Patterns and Production Experience",
+        
+        description: "Exploring how Domain-Driven Design principles (Bounded Contexts, ACL, Ubiquitous Language, Domain Events) enable modularity, safety, and traceability in production AI and LLM systems.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/domain-driven-design-ai-systems/";
+          
+        },
+      },{id: "post-semantic-prompt-caching-when-llm-judge-beats-exact-match",
         
           title: "Semantic Prompt Caching: When LLM-Judge Beats Exact Match",
         
@@ -115,7 +126,7 @@ ninja.data = [{
         
           title: "Why Vision-Language Models Ignore Visual Evidence (And How to Fix It)",
         
-        description: "VLMs have a strong contextual bias, prioritizing &#39;logical&#39; conclusions over visual facts. We fixed this in a production case by explicitly telling the model to ignore what it thought it knew.",
+        description: "VLMs have a strong contextual bias, prioritizing &quot;logical&quot; conclusions over visual facts. We fixed this in a production case by explicitly telling the model to ignore what it thought it knew.",
         section: "Posts",
         handler: () => {
           
