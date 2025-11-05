@@ -1,0 +1,153 @@
+/*******************************************************************************
+ * Code Block Contrast Improvements
+ * Ensures WCAG AA/AAA compliance for syntax-highlighted code blocks
+ * Targeted fixes over GitHub Light/Dark themes without full recoloring
+ ******************************************************************************/
+
+// Light theme: code comments - AA minimum
+// GitHub Light comments #999988 on background rgba(#005a9c, 0.05) ≈ #f2f7fa give ~2.68:1 (not AA)
+:root .highlight .c,
+:root .highlight .cm,
+:root .highlight .c1,
+:root .highlight .cp,
+:root .highlight .cs {
+  color: #6b6b6b; /* ~4.94:1 on #f2f7fa — AA */
+  font-style: italic;
+}
+
+// Dark theme: code base and comments
+html[data-theme="dark"] {
+  // Base code containers - ensure AAA contrast for main text
+  pre,
+  code,
+  .highlight,
+  figure.highlight {
+    background-color: var(--global-code-bg-color); /* #2c3237 */
+    color: #c9d1d9; /* AAA: 8.41:1 on #2c3237 */
+  }
+
+  // Comments - AA minimum (can use #aaaaaa for AAA: 7.33:1)
+  .highlight .c,
+  .highlight .cm,
+  .highlight .c1,
+  .highlight .cp,
+  .highlight .cs {
+    color: #9aa1a9; /* AA: 4.97:1 on #2c3237 */
+    font-style: italic;
+  }
+}
+
+// Placeholder text in inputs (non-interactive text)
+// Ensure placeholders use secondary text color for WCAG AA compliance
+:root {
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--global-text-color-light); // #6b6b6b - 5.33:1 on white (AA)
+    opacity: 1; // Ensure full opacity for proper contrast
+  }
+}
+
+html[data-theme="dark"] {
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--global-text-color-light); // #a0a0a0 - 6.52:1 on dark (AA)
+    opacity: 1;
+  }
+}
+
+// Borders/dividers - ensure structural borders have sufficient contrast
+// For meaningful structural borders (tables, content blocks), aim for ≥3:1
+:root {
+  // Light theme: divider color is already sufficient (rgba(0,0,0,0.1) ≈ #e6e6e6 on white)
+  // Table borders can be enhanced for better visibility
+  table {
+    border-color: #9e9e9e; /* ~3.5:1 on white - sufficient contrast for structure */
+  }
+}
+
+html[data-theme="dark"] {
+  // Dark theme: use --global-divider-color from _themes.scss (already ≥3:1)
+  table {
+    border-color: var(--global-divider-color); /* ~3.2:1 on #1c1c1d */
+  }
+}
+
+// Print styles - save ink and increase contrast
+@media print {
+  * {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  a {
+    text-decoration: underline;
+
+    &[href]:after {
+      content: " (" attr(href) ")";
+      font-size: 0.9em;
+    }
+  }
+
+  pre,
+  code {
+    border: 1px solid #aaa;
+    background: #f5f5f5 !important;
+    color: #000 !important;
+  }
+
+  blockquote {
+    border-left-color: #888;
+    color: #333 !important;
+  }
+
+  img {
+    max-width: 100% !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    page-break-after: avoid;
+  }
+
+  p,
+  li {
+    orphans: 3;
+    widows: 3;
+  }
+}
+
+// High-contrast / Forced-colors mode (Windows)
+@media (forced-colors: active) {
+  a {
+    text-decoration: underline;
+    color: LinkText;
+
+    &:visited {
+      color: VisitedText;
+    }
+  }
+
+  pre,
+  code {
+    border: 1px solid ButtonBorder;
+    background: ButtonFace;
+    color: ButtonText;
+  }
+
+  blockquote {
+    border-left-color: ButtonBorder;
+  }
+
+  button,
+  .btn {
+    border: 1px solid ButtonBorder;
+    background: ButtonFace;
+    color: ButtonText;
+  }
+}

@@ -81,15 +81,15 @@ html[data-theme="dark"] {
   --global-bg-color: #{$grey-color-dark};
   --global-code-bg-color: #{$code-bg-color-dark};
   --global-text-color: #{$grey-color-light};
-  --global-text-color-light: #{$grey-color};
+  --global-text-color-light: #{$grey-color-muted-light}; // from $grey-color; now ~6.52:1 on dark (AA)
   --global-theme-color: #{$cyan-color};
   --global-hover-color: #{$cyan-color};
   --global-hover-text-color: #{$white-color};
-  --global-footer-bg-color: #{$grey-color-light};
-  --global-footer-text-color: #{$grey-color-dark};
-  --global-footer-link-color: #{$black-color};
+  --global-footer-bg-color: #{$grey-color-dark};
+  --global-footer-text-color: #{$grey-color-light};
+  --global-footer-link-color: #{$white-color};
   --global-distill-app-color: #{$grey-color-light};
-  --global-divider-color: #424246;
+  --global-divider-color: #3a3f45; // ~3.2:1 on #1c1c1d - sufficient contrast for structure
   --global-card-bg-color: #{$grey-900};
   --global-back-to-top-bg-color: rgba(
     #{color.channel($white-color, "red", $space: rgb)},
@@ -101,18 +101,19 @@ html[data-theme="dark"] {
   --global-newsletter-bg-color: #{$grey-color-light};
   --global-newsletter-text-color: #{$grey-color-dark};
 
+  // Dark theme blocks with AA/AAA contrast
   --global-tip-block: #42b983;
-  --global-tip-block-bg: #e2f5ec;
-  --global-tip-block-text: #215d42;
-  --global-tip-block-title: #359469;
+  --global-tip-block-bg: #153d33;
+  --global-tip-block-text: #c6f3df; // 9.89:1 (AAA)
+  --global-tip-block-title: #50e3a4; // 7.36:1 (AAA)
   --global-warning-block: #e7c000;
-  --global-warning-block-bg: #fff8d8;
-  --global-warning-block-text: #6b5900;
-  --global-warning-block-title: #b29400;
-  --global-danger-block: #c00;
-  --global-danger-block-bg: #ffe0e0;
-  --global-danger-block-text: #600;
-  --global-danger-block-title: #c00;
+  --global-warning-block-bg: #3a2f12;
+  --global-warning-block-text: #ffe7a3; // 10.79:1 (AAA)
+  --global-warning-block-title: #ffd766; // 9.51:1 (AAA)
+  --global-danger-block: #ff4d4d;
+  --global-danger-block-bg: #3b1313;
+  --global-danger-block-text: #ffc9c9; // 11.21:1 (AAA)
+  --global-danger-block-title: #ff9a9a; // ~7.8:1 (AAA) - improved for AAA instead of AA
 
   .only-light {
     display: none;

@@ -24,8 +24,9 @@ $pink-color: #f92080 !default;
 $pink-color-light: #ffdddd !default;
 $yellow-color: #efcc00 !default;
 
-$grey-color: #828282 !default;
+$grey-color: #6b6b6b !default; // Was #828282 (~3.84:1 on white), now ~5.33:1 (WCAG AA)
 $grey-color-light: color.adjust($grey-color, $lightness: 40%);
+$grey-color-muted-light: #a0a0a0 !default; // ~6.52:1 on #1c1c1d (WCAG AA)
 $grey-color-dark: #1c1c1d;
 $grey-900: #212529;
 

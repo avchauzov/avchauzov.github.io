@@ -95,6 +95,25 @@ blockquote {
     h6 {
       color: var(--global-tip-block-title);
     }
+
+    // Links inherit block text color for guaranteed contrast
+    a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+
+      &:hover {
+        text-decoration-thickness: 2px;
+      }
+    }
+
+    // Inline code inside block - adaptive contrast
+    code {
+      background: rgba(0, 0, 0, 0.08); // For light theme
+      color: inherit;
+      padding: 0.08em 0.3em;
+      border-radius: 0.25rem;
+    }
   }
 
   &.block-warning {
@@ -115,6 +134,25 @@ blockquote {
     h5,
     h6 {
       color: var(--global-warning-block-title);
+    }
+
+    // Links inherit block text color for guaranteed contrast
+    a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+
+      &:hover {
+        text-decoration-thickness: 2px;
+      }
+    }
+
+    // Inline code inside block - adaptive contrast
+    code {
+      background: rgba(0, 0, 0, 0.08); // For light theme
+      color: inherit;
+      padding: 0.08em 0.3em;
+      border-radius: 0.25rem;
     }
   }
 
@@ -137,7 +175,31 @@ blockquote {
     h6 {
       color: var(--global-danger-block-title);
     }
+
+    // Links inherit block text color for guaranteed contrast
+    a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+
+      &:hover {
+        text-decoration-thickness: 2px;
+      }
+    }
+
+    // Inline code inside block - adaptive contrast
+    code {
+      background: rgba(0, 0, 0, 0.08); // For light theme
+      color: inherit;
+      padding: 0.08em 0.3em;
+      border-radius: 0.25rem;
+    }
   }
+}
+
+// Dark theme: inline code in blocks uses light background
+html[data-theme="dark"] blockquote[class^="block-"] code {
+  background: rgba(255, 255, 255, 0.08);
 }
 
 // Checklist
@@ -894,7 +956,7 @@ figure.highlight {
 }
 
 pre {
-  color: var(--global-theme-color);
+  color: inherit; /* trust GitHub theme and/or local tokens */
   background-color: var(--global-code-bg-color);
   border-radius: 6px;
   padding: 6px 12px;
@@ -909,7 +971,7 @@ pre {
 }
 
 code {
-  color: var(--global-theme-color);
+  color: inherit; /* trust GitHub theme and/or local tokens */
   background-color: var(--global-code-bg-color);
   border-radius: 3px;
   padding: 3px 3px;
