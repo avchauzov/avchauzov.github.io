@@ -23,7 +23,29 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-domain-driven-design-for-ai-systems-architectural-patterns-and-production-experience",
+        },{id: "post-temporal-for-llm-pipelines-durable-execution-starter-pack",
+        
+          title: "Temporal for LLM Pipelines: Durable Execution Starter Pack",
+        
+        description: "LLM agents often crash, losing state and expensive API work. Temporal provides durable execution for LLM pipelines: automatic state recovery, configurable retries, and long-running orchestration at the cost of determinism constraints and ops overhead.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/temporal-llm-pipelines-durable-execution/";
+          
+        },
+      },{id: "post-graphrag-beyond-vector-search-for-connecting-the-dots",
+        
+          title: "GraphRAG: Beyond Vector Search for Connecting the Dots",
+        
+        description: "Vector search finds similar text while GraphRAG finds connected facts. A look at the trade-offs, high indexing costs, and lighter-weight alternatives.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/graphrag-beyond-vector-search/";
+          
+        },
+      },{id: "post-domain-driven-design-for-ai-systems-architectural-patterns-and-production-experience",
         
           title: "Domain-Driven Design for AI Systems: Architectural Patterns and Production Experience",
         
