@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "ML Metrics for Undefined Projects: 3 Critical Mistakes"
-description: When building ML solutions without established playbooks, the wrong approach to metrics and validation can derail projects before you prove they work. A pragmatic framework for research, baselines, and deployment constraints.
+description: "When building ML solutions without established playbooks, the wrong approach to metrics and validation can derail projects before you prove they work. A pragmatic framework for research, baselines, and deployment constraints."
 date: 2025-09-05 00:00:00 +0000
 ---
 

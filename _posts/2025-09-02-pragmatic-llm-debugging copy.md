@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Pragmatic LLM Debugging: A Survival Guide to Chaos"
-description: My approach to breaking down complex RAG and agent systems when time is short, golden datasets are missing, and quality needs a fast boost.
+description: "My approach to breaking down complex RAG and agent systems when time is short, golden datasets are missing, and quality needs a fast boost."
 date: 2025-09-02 00:00:00 +0000
 ---
 
