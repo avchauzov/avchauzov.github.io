@@ -50,7 +50,7 @@ Do the math: if your target TTFT is 300ms and exact-match caching delivers 240ms
 
 ### Economics: When Judge Calls Pay Off
 
-**Long outputs make the economics work**. If your typical response is 2,000 tokens at $6/MTok ($0.012 per response) and judge costs 150 tokens at $1/MTok ($0.00015), the judge is **80x cheaper** than regeneration. Cache hit rates above 15% make this profitable.
+**Long outputs make the economics work**. If your typical response is 2,000 tokens at \$6/MTok (\$0.012 per response) and judge costs 150 tokens at \$1/MTok (\$0.00015), the judge is **80x cheaper** than regeneration. Cache hit rates above 15% make this profitable.
 
 **Paraphrase-heavy workloads see immediate wins**. I've seen this work best in customer support systems where users ask the same thing 20 different ways ("reset password" vs "can't log in" vs "forgot credentials"). Technical documentation queries with varied terminology but identical intent.
 
