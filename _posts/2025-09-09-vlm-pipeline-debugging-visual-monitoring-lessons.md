@@ -35,10 +35,10 @@ Cross-modal verification is my final validation step. I generate text descriptio
 
 ### The Guiding Principle: Visual Grounding
 
-<p align="center">
-<i>Every claim a VLM makes about what it sees must be traceable to specific visual evidence. If you can track the model's attention and see the relevant image regions, it provides a huge boost to the entire pipeline.</i>
-</p>
+This approach proves that VLMs are not a magical replacement for everything that came before. For tasks requiring high precision and reliability, you can't yet get rid of proven **classical CV** methods, and especially not **fine-tuning** for a specific task. VLMs are powerful for general context understanding, but to build truly robust systems, they must be combined with more traditional and controllable approaches.
 
 ---
 
-This approach proves that VLMs are not a magical replacement for everything that came before. For tasks requiring high precision and reliability, you can't yet get rid of proven **classical CV** methods, and especially not **fine-tuning** for a specific task. VLMs are powerful for general context understanding, but to build truly robust systems, they must be combined with more traditional and controllable approaches.
+<p align="center">
+<i>Every claim a VLM makes about what it sees must be traceable to specific visual evidence. If you can track the model's attention and see the relevant image regions, it provides a huge boost to the entire pipeline.</i>
+</p>

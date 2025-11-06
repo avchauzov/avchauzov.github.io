@@ -236,7 +236,7 @@ This architecture led to measurable production improvements by preventing contex
 
 | Metric                 | Before (Monolithic Agent) | After (DDD Multi-Agent) |
 | :--------------------- | :------------------------ | :---------------------- |
-| Avg. Resolution Time   | 240 seconds               | 90 seconds              |
+| Avg. Resolution Time   | 240s                      | 90s                     |
 | Escalation to Human    | **45%**                   | **22%**                 |
 | Avg. LLM Cost / Ticket | ~$0.08                    | ~$0.03                  |
 

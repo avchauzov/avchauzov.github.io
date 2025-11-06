@@ -39,7 +39,7 @@ GraphRAG introduces a fundamental trade-off: it shifts the compute load from que
 ### Cons: The High Cost of Precision
 
 - **Extreme Indexing Cost and Time**: Building the knowledge graph is token-intensive and slow. The process involves multiple LLM-heavy steps: entity extraction, relationship extraction, entity resolution (deduplication), community detection, and summary generation. This can be **orders of magnitude slower and more expensive** (in API calls or compute) than simply vectorizing the same data—we're talking hours or even days for large datasets, not minutes.
-- **High Query Latency**: While graph traversal itself can be fast, complex GraphRAG queries, especially "Global Search" modes, can be extremely slow. Latency can range from **4–8 seconds** for simpler graph queries to over **20–40 seconds** for corpus-wide analysis. This is often unacceptable for interactive apps needing sub-second (e.g., \<800ms) p95 latency.
+- **High Query Latency**: While graph traversal itself can be fast, complex GraphRAG queries, especially "Global Search" modes, can be extremely slow. Latency can range from **4–8s** for simpler graph queries to over **20–40s** for corpus-wide analysis. This is often unacceptable for interactive apps needing sub-second (e.g., \<800ms) p95 latency.
 - **Architectural and Maintenance Complexity**: The complexity skyrockets. The system now requires managing a graph database, an ETL pipeline for graph construction, and a complex query engine, not just a vector database. Updating the graph as new documents arrive is also a non-trivial process.
 
 ### The Trade-off: Measured in Metrics

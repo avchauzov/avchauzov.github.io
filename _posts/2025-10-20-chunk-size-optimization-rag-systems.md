@@ -144,7 +144,7 @@ chunks = hierarchical_chunk(document, levels=['section', 'paragraph'])
 
 ### Decision Framework
 
-1. **Start with empirical testing**: Evaluate 3-5 chunk sizes on a representative query set (minimum 100 queries).
+1. **Start with empirical testing**: Evaluate 3–5 chunk sizes on a representative query set (minimum 100 queries).
 
 2. **Document-type specific tuning**:
 

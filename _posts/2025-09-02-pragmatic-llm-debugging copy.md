@@ -25,12 +25,10 @@ The goal of debugging isn't just to find a bug, but to achieve stable, predictab
 
 ### The Guiding Principle: Interpretability
 
-Finally, the most important point, which underpins this entire approach:
-
-<p align="center">
-<i>Every decision the system makes must be explainable with human logic. If I can't explain why an agent chose a particular tool or why a RAG system gave a specific answer, then we don't understand the system.</i>
-</p>
+This pragmatic approach — from simplification to a detailed breakdown — helps me quickly manage complex systems that, at first glance, seem like uncontrollable black boxes. It proves that even without perfect conditions, a structured, iterative process can lead to high-quality results.
 
 ---
 
-This pragmatic approach — from simplification to a detailed breakdown — helps me quickly manage complex systems that, at first glance, seem like uncontrollable black boxes. It proves that even without perfect conditions, a structured, iterative process can lead to high-quality results.
+<p align="center">
+<i>Every decision the system makes must be explainable with human logic. If we can't explain why an agent chose a particular tool or why a RAG system gave a specific answer, then we don't understand the system.</i>
+</p>
