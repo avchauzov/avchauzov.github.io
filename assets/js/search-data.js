@@ -23,9 +23,9 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-til-jensen-shannon-divergence-for-meaningful-clustering",
+        },{id: "post-jensen-shannon-divergence-for-meaningful-clustering",
         
-          title: "TIL: Jensen-Shannon Divergence for Meaningful Clustering",
+          title: "Jensen-Shannon Divergence for Meaningful Clustering",
         
         description: "Silhouette Score validates geometry, not meaning. Using JSD to measure feature distribution divergence bridges the gap between mathematical separation and interpretability.",
         section: "Posts",
