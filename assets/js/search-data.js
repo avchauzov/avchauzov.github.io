@@ -27,7 +27,7 @@ ninja.data = [{
         
           title: "Jensen-Shannon Divergence for Meaningful Clustering",
         
-        description: "Silhouette Score validates geometry, not meaning. Using JSD to measure feature distribution divergence bridges the gap between mathematical separation and interpretability.",
+        description: "Silhouette Score validates geometry, not meaning. Using Jensen-Shannon Divergence to measure feature distribution divergence bridges the gap between mathematical separation and interpretability.",
         section: "Posts",
         handler: () => {
           
@@ -181,7 +181,7 @@ ninja.data = [{
         
           title: "Why Vision-Language Models Ignore Visual Evidence (And How to Fix It)",
         
-        description: "VLMs have a strong contextual bias, prioritizing &quot;logical&quot; conclusions over visual facts. We fixed this in a production case by explicitly telling the model to ignore what it thought it knew.",
+        description: "Vision-Language Models have a strong contextual bias, prioritizing &quot;logical&quot; conclusions over visual facts. We fixed this in a production case by explicitly telling the model to ignore what it thought it knew.",
         section: "Posts",
         handler: () => {
           
@@ -203,7 +203,7 @@ ninja.data = [{
         
           title: "Vision-Language Model Pipeline Debugging: Lessons from Visual Monitoring",
         
-        description: "Hard-won insights from building PoC VLM pipelines for visual monitoring, where hallucinations hide in plain sight, preprocessing decisions make or break everything, and the question is: can we forget classical CV?",
+        description: "Hard-won insights from building Proof of Concept Vision-Language Model pipelines for visual monitoring, where hallucinations hide in plain sight, preprocessing decisions make or break everything, and the question is: can we forget classical Computer Vision?",
         section: "Posts",
         handler: () => {
           
