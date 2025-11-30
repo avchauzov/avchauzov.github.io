@@ -54,9 +54,9 @@ Before building a full GraphRAG pipeline, check these simpler approaches.
 
 Instead of jumping to a complex graph architecture, first, exhaust baseline RAG. Often, query failures "attributed to 'missing connections'" are actually retrieval failures from a poorly tuned embedding model. Fine-tuning a bi-encoder on domain data or using robust **metadata filtering** in a vector DB (e.g., `WHERE category = 'finance' AND year = 2024`) may solve the problem at a fraction of the cost.
 
-### Alternative: Fixed Entity Architecture (FEA)
+### Alternative: Fixed Entity Architecture
 
-Instead of using expensive LLMs to **discover** entities, define a fixed ontology (e.g., "Drug", "Diagnosis", "Symptom" for a medical domain). Text chunks are then attached to these entities via fast cosine similarity.
+**Fixed Entity Architecture (FEA)** uses a fixed ontology instead of using expensive LLMs to **discover** entities. Define a fixed ontology (e.g., "Drug", "Diagnosis", "Symptom" for a medical domain). Text chunks are then attached to these entities via fast cosine similarity.
 
 - **Pros**: Eliminates LLM indexing costs, very fast.
 - **Cons**: Sacrifices dynamic relationship discovery; it can't find new, unknown connections not defined in your schema.

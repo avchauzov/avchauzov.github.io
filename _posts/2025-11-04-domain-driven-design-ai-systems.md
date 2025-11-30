@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Domain-Driven Design for AI Systems: Architectural Patterns and Production Experience"
-description: "Exploring how Domain-Driven Design principles (Bounded Contexts, ACL, Ubiquitous Language, Domain Events) enable modularity, safety, and traceability in production AI and LLM systems."
+description: "Exploring how Domain-Driven Design principles (Bounded Contexts, Anti-Corruption Layer, Ubiquitous Language, Domain Events) enable modularity, safety, and traceability in production AI and LLM systems."
 date: 2025-11-04 00:00:00 +0000
 ---
 
@@ -128,7 +128,7 @@ When UL is codified, hallucination rate typically falls by **20–35%**.
 
 Integrating UL into prompt templates also simplifies evaluation because outputs map to structured fields already used in tests.
 
-## 5. Anti-Corruption Layer (ACL) → Defensive Integration
+## 5. Anti-Corruption Layer → Defensive Integration
 
 The Ubiquitous Language defines the clean data; the **Anti-Corruption Layer (ACL)** is the "border control" that enforces it. It's a translator that protects the clean domain model from "dirty" external data, whether from legacy APIs or the LLM itself.
 
@@ -249,7 +249,7 @@ DDD introduces overhead — vocabulary definition, context mapping, event infras
 Avoid it when:
 
 - The system is a simple RAG chatbot or prototype.
-- You don’t yet know the final domain boundaries.
+- You don't yet know the final domain boundaries.
 - Latency is critical (`<200ms`) and each extra layer adds cost.
 
 In practice, teams find that DDD pays off only once the system exceeds ~5 agents or 3+ distinct data sources.
