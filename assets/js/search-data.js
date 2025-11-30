@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-hybrid-intent-classification-the-rationale-for-production-grade-shallow-model-first-architectures",
+        },{id: "post-til-jensen-shannon-divergence-for-meaningful-clustering",
+        
+          title: "TIL: Jensen-Shannon Divergence for Meaningful Clustering",
+        
+        description: "Silhouette Score validates geometry, not meaning. Using JSD to measure feature distribution divergence bridges the gap between mathematical separation and interpretability.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/jensen-shannon-clustering-metric/";
+          
+        },
+      },{id: "post-hybrid-intent-classification-the-rationale-for-production-grade-shallow-model-first-architectures",
         
           title: "Hybrid Intent Classification: The Rationale for Production-Grade Shallow-Model-First Architectures",
         
