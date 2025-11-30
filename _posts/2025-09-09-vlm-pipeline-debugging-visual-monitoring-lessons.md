@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Vision-Language Model Pipeline Debugging: Lessons from Visual Monitoring"
-description: "Hard-won insights from building PoC VLM pipelines for visual monitoring, where hallucinations hide in plain sight, preprocessing decisions make or break everything, and the question is: can we forget classical CV?"
+description: "Hard-won insights from building Proof of Concept Vision-Language Model pipelines for visual monitoring, where hallucinations hide in plain sight, preprocessing decisions make or break everything, and the question is: can we forget classical Computer Vision?"
 date: 2025-09-09 00:00:00 +0000
 ---
 
@@ -35,7 +35,7 @@ Cross-modal verification is my final validation step. I generate text descriptio
 
 ### The Guiding Principle: Visual Grounding
 
-This approach proves that VLMs are not a magical replacement for everything that came before. For tasks requiring high precision and reliability, you can't yet get rid of proven **classical CV** methods, and especially not **fine-tuning** for a specific task. VLMs are powerful for general context understanding, but to build truly robust systems, they must be combined with more traditional and controllable approaches.
+This approach proves that VLMs are not a magical replacement for everything that came before. For tasks requiring high precision and reliability, you can't yet get rid of proven **classical Computer Vision (CV)** methods, and especially not **fine-tuning** for a specific task. VLMs are powerful for general context understanding, but to build truly robust systems, they must be combined with more traditional and controllable approaches.
 
 ---
 

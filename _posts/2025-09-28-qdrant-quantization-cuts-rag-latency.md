@@ -9,11 +9,11 @@ I was building a RAG system for an internal technical documentation search: API 
 
 ### The Bottleneck
 
-Median retrieval latency was **~900ms**. Such high baseline latency made more advanced RAG techniques impractical, like query augmentation or **HyDE**, which require multiple database lookups and would further increase response times. Infrastructure costs were high as well, considering future plans to increase system complexity (and, therefore, costs).
+Median retrieval latency was **~900ms**. Such high baseline latency made more advanced RAG techniques impractical, like query augmentation or **Hypothetical Document Embeddings (HyDE)**, which require multiple database lookups and would further increase response times. Infrastructure costs were high as well, considering future plans to increase system complexity (and, therefore, costs).
 
 ### What I Tried First
 
-My first approach was predictable: lower the `hnsw_ef` parameter (i.e., make the **HNSW** algorithm perform search less thoroughly). Median latency dropped **2x**, but the **Recall@10** metric fell from **0.93 to 0.79**. For downstream generation, this was an unacceptable loss in quality, as critical chunks were missing from the context.
+My first approach was predictable: lower the `hnsw_ef` parameter (i.e., make the **Hierarchical Navigable Small World (HNSW)** algorithm perform search less thoroughly). Median latency dropped **2x**, but the **Recall@10** metric fell from **0.93 to 0.79**. For downstream generation, this was an unacceptable loss in quality, as critical chunks were missing from the context.
 
 The second idea was to reduce vector dimensionality. OpenAI's `text-embedding-3-large` model natively supports this via the `dimensions` parameter. However, we had plans to experiment with other models and implement multi-model approaches, so we needed an **infrastructure-level solution**.
 

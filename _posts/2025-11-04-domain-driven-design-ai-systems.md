@@ -9,7 +9,7 @@ Large-scale AI systems have evolved far beyond isolated models. They are now com
 
 While it originated in enterprise systems, DDD maps naturally to AI architectures — especially those involving LLMs, retrieval pipelines, and multi-agent coordination. This article explores how DDD principles enable modularity, safety, and traceability in production AI systems. It introduces architectural patterns, performance trade-offs, and code examples drawn from real deployments.
 
-# Core DDD Patterns for AI Systems
+# Core Domain-Driven Design Patterns for AI Systems
 
 This section consolidates the key concepts, architectural patterns, and production practices into a single flow, showing how each DDD idea is applied comprehensively from theory to production.
 
@@ -161,7 +161,7 @@ def parse_llm_output(text):
 
 **Trade-off**: This translation adds ≈35–120ms latency, but it prevents semantic drift and cascade failures. In production systems, ACLs can reduce data integration errors by over **90%**.
 
-## 6. Domain Events & EDA → Observability and Asynchronicity
+## 6. Domain Events & Event-Driven Architecture → Observability and Asynchronicity
 
 After the ACL validates a request, **Domain Events** allow the system to process it asynchronously and safely. An event (e.g., `TicketClassified`) is an immutable record of something that happened. This enables an Event-Driven Architecture (EDA).
 
@@ -242,7 +242,7 @@ This architecture led to measurable production improvements by preventing contex
 
 ---
 
-# When Not to Use DDD for AI
+# When Not to Use Domain-Driven Design for AI
 
 DDD introduces overhead — vocabulary definition, context mapping, event infrastructure.
 

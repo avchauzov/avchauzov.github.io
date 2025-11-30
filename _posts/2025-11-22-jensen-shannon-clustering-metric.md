@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Jensen-Shannon Divergence for Meaningful Clustering"
-description: "Silhouette Score validates geometry, not meaning. Using JSD to measure feature distribution divergence bridges the gap between mathematical separation and interpretability."
+description: "Silhouette Score validates geometry, not meaning. Using Jensen-Shannon Divergence to measure feature distribution divergence bridges the gap between mathematical separation and interpretability."
 date: 2025-11-22 00:00:00 +0000
 ---
 

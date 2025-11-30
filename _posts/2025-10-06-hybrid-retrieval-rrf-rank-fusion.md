@@ -37,7 +37,7 @@ The problem: normalization aligns score ranges but can't fix the **distribution 
 
 You could tune `alpha` to balance the components, but the **unboundedness** of BM25 distribution makes it extremely challenging. As a result, any chosen `alpha` will be suboptimal for many queries.
 
-## RRF: Ranks Instead of Scores
+## Reciprocal Rank Fusion: Ranks Instead of Scores
 
 RRF approaches the problem from a different angle: it switches from scores to ranks and calculates a fusion score based on them:
 
