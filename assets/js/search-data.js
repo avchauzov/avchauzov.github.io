@@ -23,7 +23,29 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-temporal-for-llm-pipelines-durable-execution-starter-pack",
+        },{id: "post-hybrid-intent-classification-the-rationale-for-production-grade-shallow-model-first-architectures",
+        
+          title: "Hybrid Intent Classification: The Rationale for Production-Grade Shallow-Model-First Architectures",
+        
+        description: "Production chatbots route most requests through fast shallow classifiers, escalating to Large Language Models (LLMs) only on low-confidence queries. This hybrid architecture mitigates the latency and cost overheads of monolithic LLM solutions, achieving significant speed gains while preserving high classification accuracy.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/hybrid-intent-classification/";
+          
+        },
+      },{id: "post-few-shot-prompt-ordering-the-impact-of-example-position",
+        
+          title: "Few-Shot Prompt Ordering: The Impact of Example Position",
+        
+        description: "Investigating positional bias in few-shot prompting. While &#39;Lost in the Middle&#39; suggests boundary importance, the specific ordering of examples remains an important factor for performance stability.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/few-shot-prompt-ordering-recency-bias/";
+          
+        },
+      },{id: "post-temporal-for-llm-pipelines-durable-execution-starter-pack",
         
           title: "Temporal for LLM Pipelines: Durable Execution Starter Pack",
         
@@ -49,7 +71,7 @@ ninja.data = [{
         
           title: "Domain-Driven Design for AI Systems: Architectural Patterns and Production Experience",
         
-        description: "Exploring how Domain-Driven Design principles (Bounded Contexts, ACL, Ubiquitous Language, Domain Events) enable modularity, safety, and traceability in production AI and LLM systems.",
+        description: "Exploring how Domain-Driven Design principles (Bounded Contexts, Anti-Corruption Layer, Ubiquitous Language, Domain Events) enable modularity, safety, and traceability in production AI and LLM systems.",
         section: "Posts",
         handler: () => {
           
@@ -111,9 +133,9 @@ ninja.data = [{
             window.location.href = "/blog/2025/llm-judge-position-bias-swapping/";
           
         },
-      },{id: "post-hybrid-retrieval-with-rrf-solving-the-score-normalization-problem",
+      },{id: "post-hybrid-retrieval-with-reciprocal-rank-fusion-solving-the-score-normalization-problem",
         
-          title: "Hybrid Retrieval with RRF: Solving the Score Normalization Problem",
+          title: "Hybrid Retrieval with Reciprocal Rank Fusion: Solving the Score Normalization Problem",
         
         description: "Pure vector search isn&#39;t always enough. Weighted averaging of BM25 and vector scores breaks due to incompatible scales. Reciprocal Rank Fusion solves this by using ranks instead of scores.",
         section: "Posts",
@@ -126,7 +148,7 @@ ninja.data = [{
         
           title: "LLM Orchestration: A Pragmatic Guide to Complexity",
         
-        description: "Most production apps are simple chains, yet everyone is building agents. Here’s a clear framework on when you really need loops, graphs, and agents in your LLM app.",
+        description: "Most production apps are simple chains, yet everyone is building agents. Here&#39;s a clear framework on when you really need loops, graphs, and agents in your LLM app.",
         section: "Posts",
         handler: () => {
           
@@ -166,9 +188,9 @@ ninja.data = [{
             window.location.href = "/blog/2025/hybrid-ai-pattern-for-high-stakes-ranking/";
           
         },
-      },{id: "post-vlm-pipeline-debugging-lessons-from-visual-monitoring",
+      },{id: "post-vision-language-model-pipeline-debugging-lessons-from-visual-monitoring",
         
-          title: "VLM Pipeline Debugging: Lessons from Visual Monitoring",
+          title: "Vision-Language Model Pipeline Debugging: Lessons from Visual Monitoring",
         
         description: "Hard-won insights from building PoC VLM pipelines for visual monitoring, where hallucinations hide in plain sight, preprocessing decisions make or break everything, and the question is: can we forget classical CV?",
         section: "Posts",
@@ -177,9 +199,9 @@ ninja.data = [{
             window.location.href = "/blog/2025/vlm-pipeline-debugging-visual-monitoring-lessons/";
           
         },
-      },{id: "post-ml-metrics-for-undefined-projects-3-critical-mistakes",
+      },{id: "post-machine-learning-metrics-for-undefined-projects-3-critical-mistakes",
         
-          title: "ML Metrics for Undefined Projects: 3 Critical Mistakes",
+          title: "Machine Learning Metrics for Undefined Projects: 3 Critical Mistakes",
         
         description: "When building ML solutions without established playbooks, the wrong approach to metrics and validation can derail projects before you prove they work. A pragmatic framework for research, baselines, and deployment constraints.",
         section: "Posts",
