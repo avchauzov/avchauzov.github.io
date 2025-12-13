@@ -101,10 +101,13 @@ from datetime import timedelta
 # from openai import AsyncOpenAI
 # client = AsyncOpenAI()
 
+# Model configuration
+llm_model_name = "your-llm-model"  # Replace with your provider-specific model
+
 @activity.defn
 async def generate_summary(text: str) -> str:
     response = await openai.chat.completions.create(
-        model="gpt-4",
+        model=llm_model_name,
         messages=[{"role": "user", "content": f"Summarize: {text}"}]
     )
     return response.choices[0].message.content

@@ -14,7 +14,7 @@ This architecture is often called **Hierarchical Inference (HI)** or **Uncertain
 **Stage 1 — The Specialized Classifier (Shallow Language Model, SLM)**. Despite the rise of LLMs, compact **encoder-based** models remain highly
 effective for high-throughput scenarios. These include optimized
 **BERT-variants**, **contrastive learning models**, and other distilled
-architectures. These compact SLMs (typically 5–20 MB) perform the initial classification. They can achieve inference speeds significantly below 100ms, even on CPU-only infrastructure.
+architectures. These compact SLMs (typically 5–20MB) perform the initial classification. They can achieve inference speeds significantly below 100ms, even on CPU-only infrastructure.
 
 **Stage 2 — Confidence and Escalation Gating**. The SLM output includes a **confidence score** for its top prediction. This score is checked against an **escalation threshold** (typically between 0.7 and 0.9). If the predicted confidence is too low—meaning it falls below the threshold—the query is sent to the next processing stage.
 

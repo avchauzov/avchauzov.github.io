@@ -5,7 +5,7 @@ description: "A deep dive into how we cut RAG retrieval latency by 3x and costs 
 date: 2025-09-28 00:00:00 +0000
 ---
 
-I was building a RAG system for an internal technical documentation search: API references, architecture guides, and troubleshooting docs. The database had around 400k chunks embedded with `text-embedding-3-large` (3072 dimensions). The system worked, but it was slow and expensive. We also had plans to add more data, so we needed to push some limits.
+I was building a RAG system for an internal technical documentation search: API references, architecture guides, and troubleshooting docs. The database had around 400k chunks embedded with a large embedding model (3072 dimensions). The system worked, but it was slow and expensive. We also had plans to add more data, so we needed to push some limits.
 
 ### The Bottleneck
 
@@ -15,7 +15,7 @@ Median retrieval latency was **~900ms**. Such high baseline latency made more ad
 
 My first approach was predictable: lower the `hnsw_ef` parameter (i.e., make the **Hierarchical Navigable Small World (HNSW)** algorithm perform search less thoroughly). Median latency dropped **2x**, but the **Recall@10** metric fell from **0.93 to 0.79**. For downstream generation, this was an unacceptable loss in quality, as critical chunks were missing from the context.
 
-The second idea was to reduce vector dimensionality. OpenAI's `text-embedding-3-large` model natively supports this via the `dimensions` parameter. However, we had plans to experiment with other models and implement multi-model approaches, so we needed an **infrastructure-level solution**.
+The second idea was to reduce vector dimensionality. Some large embedding models natively support this via the `dimensions` parameter. However, we had plans to experiment with other models and implement multi-model approaches, so we needed an **infrastructure-level solution**.
 
 ### The Solution
 

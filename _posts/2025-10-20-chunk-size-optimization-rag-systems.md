@@ -11,7 +11,7 @@ The problem manifests as a paradox: smaller chunks preserve semantic precision b
 
 ## The Mean Pooling Problem
 
-Most embedding models (**BERT**-based, **sentence-transformers**, `text-embedding-3-small`) use **mean pooling** to generate fixed-size vectors from variable-length text. This operation averages token embeddings across the sequence:
+Most embedding models (**BERT**-based, **sentence-transformers**, and similar architectures) use **mean pooling** to generate fixed-size vectors from variable-length text. This operation averages token embeddings across the sequence:
 
 ```python
 embedding_chunk = mean(embedding_token1, embedding_token2, ..., embedding_tokenN)

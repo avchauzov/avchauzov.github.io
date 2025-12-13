@@ -28,7 +28,7 @@ Our first implementation gave the Summarizer agent autonomy to reason about the 
 In initial tests, the reasoning-first agent often **exceeded 50+ iterations without converging**, cycling through similar top candidates. The financial cost was staggering:
 
 - **~50 iterations** × 4 agents × ~1,000 tokens/call = **~200,000 tokens**
-- Using **gpt-4.1-mini** (at ~\$0.001 per 1k mixed tokens), this cost **~$0.20** per query for a result that was fundamentally unusable.
+- Using a cost-effective LLM (at ~\$0.001 per 1k mixed tokens), this cost **~$0.20** per query for a result that was fundamentally unusable.
 
 To combat this, we had to add explicit loop detection mechanisms — a clear sign that our core approach was flawed.
 

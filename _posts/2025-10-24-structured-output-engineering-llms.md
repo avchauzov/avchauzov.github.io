@@ -30,7 +30,7 @@ Three approaches address this challenge, each with distinct trade-offs.
 
 ### Constrained Decoding: Format Purity at a Cost
 
-**Constrained Decoding (CD)** achieves a **100%** parse rate by applying **logit post-processing** — masking all invalid tokens at each generation step according to a formal grammar (like JSON Schema). Frameworks like `outlines` and models like **Mistral** and **Llama** utilize this approach for self-hosted deployments.
+**Constrained Decoding (CD)** achieves a **100%** parse rate by applying **logit post-processing** — masking all invalid tokens at each generation step according to a formal grammar (like JSON Schema). Frameworks like `outlines` and self-hosted models utilize this approach for deployments.
 
 While guaranteeing syntactic correctness, CD introduces significant trade-offs:
 

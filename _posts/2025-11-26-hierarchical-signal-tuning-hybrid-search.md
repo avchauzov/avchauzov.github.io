@@ -19,7 +19,7 @@ Two common errors:
 
 **2. The "Flat" Approach**: Querying fields with equal weight (default `multi_match` in Elasticsearch). Term frequency in long fields dominates short but high-signal fields.
 
-**Concrete Example:**
+**Concrete Example**:
 
 Query: `connection timeout`
 
@@ -42,7 +42,7 @@ Component rankings must be fixed before fusion is applied. BM25 is treated as a 
 
 $$S_{\text{BM25}}(q, d) = \sum_{f \in \text{fields}} w_f \cdot \text{BM25}(q, d_f)$$
 
-**Optimization Protocol:**
+**Optimization Protocol**:
 
 1. Disable fusion ($\alpha=0$ or disable Dense component entirely).
 2. Assign initial weights based on signal density hypothesis. Titles typically require $w_{\text{title}} \gg w_{\text{body}}$
@@ -73,7 +73,7 @@ This coordinate descent approach reduces search space while maintaining optimiza
 
 Field weight optimization requires validation set stratification. Query types (factual vs. conceptual) may require different weight configurations. If optimal weights vary significantly across strata, per-query routing should be considered.
 
-For legal/compliance corpora with structured sections (statute references, definitions, procedures), hierarchical tuning typically yields 3-5% NDCG@10 improvement over flat $\alpha=0.5$ baseline. Latency remains unchanged.
+For legal/compliance corpora with structured sections (statute references, definitions, procedures), hierarchical tuning typically yields 3–5% NDCG@10 improvement over flat $\alpha=0.5$ baseline. Latency remains unchanged.
 
 ### Conclusion
 

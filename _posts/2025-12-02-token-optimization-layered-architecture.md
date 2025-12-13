@@ -24,6 +24,9 @@ from openai import OpenAI
 
 client = OpenAI()
 
+# Model configuration
+llm_model_name = "your-llm-model"  # Replace with your provider-specific model
+
 # Static context positioned first
 SYSTEM_CONTEXT = """You are a financial analyst.
 Company guidelines: [1000 tokens of static policies]
@@ -31,7 +34,7 @@ Company guidelines: [1000 tokens of static policies]
 
 def query_with_cache(user_query: str) -> str:
     response = client.chat.completions.create(
-        model="model_name",
+        model=llm_model_name,
         messages=[
             {"role": "system", "content": SYSTEM_CONTEXT},  # Cached
             {"role": "user", "content": user_query}         # Variable
@@ -58,13 +61,14 @@ from sklearn.metrics.pairwise import cosine_similarity
 client = OpenAI()
 
 class SemanticCache:
-    def __init__(self, threshold: float = 0.95):
+    def __init__(self, threshold: float = 0.95, embedding_model_name: str = "your-embedding-model"):
         self.cache = {}  # {hash: (embedding, response)}
         self.threshold = threshold
+        self.embedding_model_name = embedding_model_name
 
     def _embed(self, text: str) -> np.ndarray:
         response = client.embeddings.create(
-            model="model_name",
+            model=self.embedding_model_name,
             input=text
         )
         return np.array(response.data[0].embedding)
@@ -89,13 +93,13 @@ class SemanticCache:
 # Usage
 cache = SemanticCache(threshold=0.95)
 
-def query_with_semantic_cache(query: str) -> str:
+def query_with_semantic_cache(query: str, llm_model_name: str = "your-llm-model") -> str:
     cached = cache.get(query)
     if cached:
         return cached
 
     response = client.chat.completions.create(
-        model="model_name",
+        model=llm_model_name,
         messages=[{"role": "user", "content": query}]
     ).choices[0].message.content
 
@@ -123,8 +127,11 @@ from openai import OpenAI
 
 client = OpenAI()
 
+# Model configuration
+compression_model_name = "your-compression-model"  # Replace with your compression model
+
 compressor = PromptCompressor(
-    model_name="microsoft/llmlingua-2-bert-base-multilingual-cased-meetingbank",
+    model_name=compression_model_name,
     device_map="cpu",
     use_llmlingua2=True  # Explicit LLMLingua-2 mode
 )
@@ -152,8 +159,11 @@ def compress_and_query(context: str, question: str, rate: float = 0.5) -> str:
     compressed_words = len(compressed_text.split())
     print(f"Compression: {original_words} → {compressed_words} words ({compressed_words/original_words:.1%})")
 
+    # Model configuration
+    llm_model_name = "your-llm-model"  # Replace with your provider-specific model
+
     response = client.chat.completions.create(
-        model="model_name",
+        model=llm_model_name,
         messages=[
             {"role": "system", "content": compressed_text},
             {"role": "user", "content": question}
@@ -166,7 +176,7 @@ def compress_and_query(context: str, question: str, rate: float = 0.5) -> str:
 
 This parameter prevents removal of structurally important tokens (newlines, punctuation). Without it, compression can merge sentences and break document boundaries, degrading retrieval context.
 
-**Performance Profile**: Compression adds 100-300ms latency for 8K tokens. But prefill cost $O(N^2)$ dominates for $N > 500$. At compression rate $r = 0.5$ (50% reduction), net speedup is approximately $1.7\times$.
+**Performance Profile**: Compression adds 100–300ms latency for 8K tokens. But prefill cost $O(N^2)$ dominates for $N > 500$. At compression rate $r = 0.5$ (50% reduction), net speedup is approximately $1.7\times$.
 
 **Accuracy Trade-off**: At $r \leq 0.2$ (keep 20% of tokens), accuracy loss is minimal (within 2%) for QA tasks. Beyond $r = 0.1$ (keep 10%), grammatical coherence degrades. For code or JSON, damage occurs earlier.
 
@@ -243,7 +253,7 @@ For $N < 500$, compression latency exceeds prefill savings. The crossover point 
 
 **Embedding Model Drift**
 
-Semantic cache depends on embedding model. If you update from `text-embedding-3-small` to newer model, cache becomes invalid. This requires migration or cache flush.
+Semantic cache depends on embedding model. If you update from one embedding model to another, cache becomes invalid. This requires migration or cache flush.
 
 ## Benchmarks
 
