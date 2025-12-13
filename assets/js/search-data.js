@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-hierarchical-signal-tuning-optimizing-components-before-fusion",
+        },{id: "post-token-optimization-three-production-patterns-that-reduce-llm-costs-by-70",
+        
+          title: "Token Optimization: Three Production Patterns That Reduce LLM Costs by 70%",
+        
+        description: "API-level caching, semantic similarity-based caching, and dynamic compression with LLMLingua form a layered approach to token reduction. Each pattern targets different inefficiencies in the prompt processing pipeline.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/token-optimization-layered-architecture/";
+          
+        },
+      },{id: "post-hierarchical-signal-tuning-optimizing-components-before-fusion",
         
           title: "Hierarchical Signal Tuning: Optimizing Components Before Fusion",
         
