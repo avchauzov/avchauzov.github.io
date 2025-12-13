@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-jensen-shannon-divergence-for-meaningful-clustering",
+        },{id: "post-hierarchical-signal-tuning-optimizing-components-before-fusion",
+        
+          title: "Hierarchical Signal Tuning: Optimizing Components Before Fusion",
+        
+        description: "Fusion algorithms like Linear Combination or RRF cannot fix poor input signals. Effective hybrid search requires a bottom-up optimization strategy: tuning field weights within BM25 and embedding strategies within Dense components before attempting to merge them.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/hierarchical-signal-tuning-hybrid-search/";
+          
+        },
+      },{id: "post-jensen-shannon-divergence-for-meaningful-clustering",
         
           title: "Jensen-Shannon Divergence for Meaningful Clustering",
         
