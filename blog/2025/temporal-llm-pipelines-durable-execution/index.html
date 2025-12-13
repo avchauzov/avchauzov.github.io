@@ -31,10 +31,13 @@
 # from openai import AsyncOpenAI
 # client = AsyncOpenAI()
 </span>
+<span class="c1"># Model configuration
+</span><span class="n">llm_model_name</span> <span class="o">=</span> <span class="sh">"</span><span class="s">your-llm-model</span><span class="sh">"</span>  <span class="c1"># Replace with your provider-specific model
+</span>
 <span class="nd">@activity.defn</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">generate_summary</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">openai</span><span class="p">.</span><span class="n">chat</span><span class="p">.</span><span class="n">completions</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span>
-        <span class="n">model</span><span class="o">=</span><span class="sh">"</span><span class="s">gpt-4</span><span class="sh">"</span><span class="p">,</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">llm_model_name</span><span class="p">,</span>
         <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="sh">"</span><span class="s">role</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">user</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">content</span><span class="sh">"</span><span class="p">:</span> <span class="sa">f</span><span class="sh">"</span><span class="s">Summarize: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="sh">"</span><span class="p">}]</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">message</span><span class="p">.</span><span class="n">content</span>
