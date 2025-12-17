@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Domain-Driven Design for AI Systems: Architectural Patterns and Production Experience"
+title: "Domain-driven design for AI systems: architectural patterns and production experience"
 description: "Exploring how Domain-Driven Design principles (Bounded Contexts, Anti-Corruption Layer, Ubiquitous Language, Domain Events) enable modularity, safety, and traceability in production AI and LLM systems."
 date: 2025-11-04 00:00:00 +0000
 ---
@@ -9,11 +9,11 @@ Large-scale AI systems have evolved far beyond isolated models. They are now com
 
 While it originated in enterprise systems, DDD maps naturally to AI architectures — especially those involving LLMs, retrieval pipelines, and multi-agent coordination. This article explores how DDD principles enable modularity, safety, and traceability in production AI systems. It introduces architectural patterns, performance trade-offs, and code examples drawn from real deployments.
 
-# Core Domain-Driven Design Patterns for AI Systems
+# Core domain-driven design patterns for AI systems
 
 This section consolidates the key concepts, architectural patterns, and production practices into a single flow, showing how each DDD idea is applied comprehensively from theory to production.
 
-## 1. Bounded Contexts → Agent Isolation
+## 1. Bounded contexts → agent isolation
 
 A **Bounded Context (BC)** defines a static, architectural boundary where all terms and models have consistent meaning. It isolates domains at a design level.
 
@@ -41,7 +41,7 @@ The problem of "agent sprawl" is solved by aligning each agent with a specific B
 
 ---
 
-## 2. Context Engineering → Tactical Context Selection
+## 2. Context engineering → tactical context selection
 
 Once the architectural boundary (BC) is defined, the next challenge is dynamically managing the information within it. This is the role of **Context Engineering (CE)**.
 
@@ -75,7 +75,7 @@ def get_context_for_user(query: str, user_id: str):
 
 Applying CE inside BCs reduced prompt size by **55%** and inference latency by **40%** on average in enterprise chat workloads.
 
-## 3. Trust Boundaries → Agent Security
+## 3. Trust boundaries → agent security
 
 While a BC isolates the domain and CE filters its content, a **Trust Boundary** secures the agent at runtime. It ensures that even if one agent is compromised, it cannot damage another.
 
@@ -96,7 +96,7 @@ Boundaries in DDD map directly to trust boundaries. Each agent should run in a s
 
 In internal benchmarks, sandboxed execution prevented **82.4%** of attack vectors seen in unsandboxed multi-agent tests.
 
-## 4. Ubiquitous Language → Human + Model Alignment
+## 4. Ubiquitous language → human + model alignment
 
 With the agent's container secured, the next step is to standardize the content passing through it. A **Ubiquitous Language (UL)** is the shared vocabulary connecting developers, domain experts, and models. In practice, this means a term like "TicketPriority" is used consistently by managers, in the code (`class TicketPriority`), and in the LLM's system prompt.
 
@@ -128,7 +128,7 @@ When UL is codified, hallucination rate typically falls by **20–35%**.
 
 Integrating UL into prompt templates also simplifies evaluation because outputs map to structured fields already used in tests.
 
-## 5. Anti-Corruption Layer → Defensive Integration
+## 5. Anti-corruption layer → defensive integration
 
 The Ubiquitous Language defines the clean data; the **Anti-Corruption Layer (ACL)** is the "border control" that enforces it. It's a translator that protects the clean domain model from "dirty" external data, whether from legacy APIs or the LLM itself.
 
@@ -161,7 +161,7 @@ def parse_llm_output(text):
 
 **Trade-off**: This translation adds ≈35–120ms latency, but it prevents semantic drift and cascade failures. In production systems, ACLs can reduce data integration errors by over **90%**.
 
-## 6. Domain Events & Event-Driven Architecture → Observability and Asynchronicity
+## 6. Domain events & event-driven architecture → observability and asynchronicity
 
 After the ACL validates a request, **Domain Events** allow the system to process it asynchronously and safely. An event (e.g., `TicketClassified`) is an immutable record of something that happened. This enables an Event-Driven Architecture (EDA).
 
@@ -193,9 +193,9 @@ This asynchronous approach is why the metrics improve so drastically. The percei
 
 Having established the core patterns, let's examine how they work together in a production system.
 
-# Case Study: Multi-Agent Customer Service System
+# Case study: multi-agent customer service system
 
-## Architecture Overview
+## Architecture overview
 
 This system uses three **Bounded Contexts** to form a resilient pipeline:
 
@@ -213,7 +213,7 @@ The data flow is decoupled using **Domain Events**:
                                         +--> [TechSupportAgent] (Subscribes)
 ```
 
-## Context Map and Integration
+## Context map and integration
 
 The `TriageAgent` (BC 1) doesn't solve the ticket. It uses the **Ubiquitous Language** (`Category`, `Priority`) to classify it and then publishes a `TicketClassified` **Domain Event**.
 
@@ -242,7 +242,7 @@ This architecture led to measurable production improvements by preventing contex
 
 ---
 
-# When Not to Use Domain-Driven Design for AI
+# When not to use domain-driven design for AI
 
 DDD introduces overhead — vocabulary definition, context mapping, event infrastructure.
 
@@ -254,7 +254,7 @@ Avoid it when:
 
 In practice, teams find that DDD pays off only once the system exceeds ~5 agents or 3+ distinct data sources.
 
-# Conclusion and Next Steps
+# Conclusion and next steps
 
 Domain-Driven Design gives AI engineers a framework to structure LLM systems that are otherwise chaotic and fragile. Its patterns — Bounded Contexts, Context Engineering, ACLs, and Domain Events — translate seamlessly into multi-agent and RAG architectures.
 

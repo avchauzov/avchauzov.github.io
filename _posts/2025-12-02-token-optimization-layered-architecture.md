@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Token Optimization: Three Production Patterns That Reduce LLM Costs by 70%"
+title: "Token optimization: three production patterns that reduce LLM costs by 70%"
 description: "API-level caching, semantic similarity-based caching, and dynamic compression with LLMLingua form a layered approach to token reduction. Each pattern targets different inefficiencies in the prompt processing pipeline."
 date: 2025-12-02 00:00:00 +0000
 ---
@@ -9,7 +9,7 @@ Production LLM costs scale quadratically $O(N^2)$ with input length during the p
 
 Three patterns reduce these costs: **API-level prompt caching** for static context, **semantic caching** for similar queries, and **dynamic compression** for long variable inputs. These are not alternatives—they stack. Each layer operates on tokens that survived previous filters.
 
-## Pattern 1: API-Level Caching
+## Pattern 1: API-level caching
 
 OpenAI and Anthropic implement token-level caching at infrastructure level. The mechanism is simple: if your prompt prefix matches a cached prefix byte-for-byte, the API reuses computed attention states. Cost reduction is approximately **90%** for cached tokens.
 
@@ -47,7 +47,7 @@ def query_with_cache(user_query: str) -> str:
 
 **Savings**: 50–90% on static context. First request pays full cost. Subsequent requests with identical prefix hit cache.
 
-## Pattern 2: Semantic Similarity Caching
+## Pattern 2: semantic similarity caching
 
 API caching requires exact token match. Semantic caching handles queries that are lexically different but semantically identical.
 
@@ -113,7 +113,7 @@ def query_with_semantic_cache(query: str, llm_model_name: str = "your-llm-model"
 
 **Savings**: 10–50% depending on query patterns.
 
-## Pattern 3: Dynamic Compression with LLMLingua-2
+## Pattern 3: dynamic compression with LLMLingua-2
 
 For long, unique context (RAG documents), caching does not help. Compression reduces token count by removing low-information content.
 
@@ -217,7 +217,7 @@ class TokenMetrics:
         return self.cache_hits / total if total > 0 else 0.0
 ```
 
-## Implementation Strategy
+## Implementation strategy
 
 These patterns form a hierarchy. Apply them in order:
 
@@ -233,7 +233,7 @@ In production RAG:
 2. User queries cached semantically
 3. Retrieved documents compressed dynamically
 
-## Edge Cases and Limitations
+## Edge cases and limitations
 
 **API Cache Breaks Silently**
 
@@ -272,7 +272,7 @@ Internal RAG system (10-document retrieval, 500 tokens/document, 10,000 requests
 
 Compression adds ~200ms overhead. Acceptable for batch processing or async workflows. For real-time systems with $P_{95} < 500ms$ latency requirements, compression is typically excluded.
 
-## When to Use
+## When to use
 
 **API Caching**: Always. No downside if you can structure prompts with static prefix.
 

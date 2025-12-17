@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Semantic Prompt Caching: When LLM-Judge Beats Exact Match"
+title: "Semantic prompt caching: when LLM-judge beats exact match"
 description: "Standard prompt caching requires exact prefix match. LLM-Judge validates semantic equivalence, rescuing cache hits on paraphrases while adding controllable latency overhead."
 date: 2025-10-30 00:00:00 +0000
 ---
@@ -9,7 +9,7 @@ Prompt caching cuts latency by **85%**—but breaks completely on paraphrases. C
 
 The reason is simple: KV-Cache works at token level. The system reuses precomputed Key-Value tensors only when input sequences match exactly. No semantic understanding at this layer.
 
-### The LLM-Judge Approach
+### The LLM-judge approach
 
 Instead of exact matching, use a small LLM to validate semantic equivalence. The judge determines if a cached query-response pair works for the new query—checking intent, not tokens.
 
@@ -40,7 +40,7 @@ def semantic_cache_lookup(query, vector_store, judge_llm):
 
 Fast embedding filter + deeper judge validation. Two stages, different purposes.
 
-### The Latency Problem
+### The latency problem
 
 **Critical constraint: TTFT budget**. TTFT (Time To First Token) is what users actually feel—how long until they see the first word. The judge adds a full inference cycle. For a 7B model processing ~150 tokens, expect **150–250ms overhead**.
 
@@ -48,7 +48,7 @@ Do the math: if your target TTFT is 300ms and exact-match caching delivers 240ms
 
 **Graceful failure is mandatory**. Judge is an optimization, not a dependency. Set aggressive timeout (200–350ms). Any failure (timeout, API error, parse error) must default to cache miss and proceed to generation. Never block user requests waiting for judge.
 
-### Economics: When Judge Calls Pay Off
+### Economics: when judge calls pay off
 
 **Long outputs make the economics work**. If your typical response is 2,000 tokens at \$6/MTok (\$0.012 per response) and judge costs 150 tokens at \$1/MTok (\$0.00015), the judge is **80x cheaper** than regeneration. Cache hit rates above 15% make this profitable.
 
@@ -56,7 +56,7 @@ Do the math: if your target TTFT is 300ms and exact-match caching delivers 240ms
 
 High semantic match rate (40–60% from embeddings) means the judge converts many near-misses into hits.
 
-### Skip It When
+### Skip it when
 
 **Short outputs (<500 tokens)**: judge overhead approaches regeneration cost.
 
@@ -64,7 +64,7 @@ High semantic match rate (40–60% from embeddings) means the judge converts man
 
 **Context-dependent queries create false equivalence**. The judge must validate more than query text. "What's the weather?" needs location + timestamp metadata. "Recommend products for me" from different users needs user ID validation. Context mismatch = cache miss.
 
-### Implementation Notes
+### Implementation notes
 
 **Use White-Box confidence scores when available**. This avoids separate judge calls but requires API support for token probabilities (`logprobs` from OpenAI). Best used as **write-time filter** to prevent caching low-confidence responses.
 

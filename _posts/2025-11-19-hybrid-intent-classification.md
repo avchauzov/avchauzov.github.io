@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Hybrid Intent Classification: The Rationale for Production-Grade Shallow-Model-First Architectures"
+title: "Hybrid intent classification: the rationale for production-grade shallow-model-first architectures"
 description: "Production chatbots route most requests through fast shallow classifiers, escalating to Large Language Models (LLMs) only on low-confidence queries. This hybrid architecture mitigates the latency and cost overheads of monolithic LLM solutions, achieving significant speed gains while preserving high classification accuracy."
 date: 2025-11-19 00:00:00 +0000
 ---
@@ -20,7 +20,7 @@ architectures. These compact SLMs (typically 5–20MB) perform the initial class
 
 **Stage 3 — LLM Fallback and Refinement**. Low-confidence queries are routed to a robust LLM. These models are used to resolve ambiguity present in low-confidence queries. This process, which engages the LLM for only 10–30% of total requests, is crucial for maintaining system accuracy while keeping high LLM costs under control.
 
-### Production Performance
+### Production performance
 
 The deployment of this hybrid architecture shows significant performance improvements:
 
@@ -30,7 +30,7 @@ The deployment of this hybrid architecture shows significant performance improve
 
 For instance, in a Natural Language Understanding (NLU) system for a complex domain, using a **specialized, contrastive encoder model** in Stage 1 yielded an accuracy of 90–94% for routine intents. The costly LLM fallback was invoked for only approximately 15% of the total query volume.
 
-### When to Use This Pattern
+### When to use this pattern
 
 The decision to adopt this pattern depends on specific constraints and application requirements.
 
@@ -46,7 +46,7 @@ The decision to adopt this pattern depends on specific constraints and applicati
 - Domains of extreme complexity where even simple queries need deep reasoning from a large model.
 - Situations where there is not enough training data for the specialized SLM.
 
-### Implementation Best Practices
+### Implementation best practices
 
 Several implementation details matter for optimal performance.
 

@@ -7,7 +7,7 @@ first_name: Andrey
 middle_name:
 last_name: Chauzov
 email: avchauzov@gmail.com
-contact_note: Based in Serbia. Available globally for remote work or relocation.
+contact_note:
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   Senior AI Architect with 7+ years building enterprise-scale AI solutions,
   specializing in NLP, MLOps, and intelligent infrastructure.

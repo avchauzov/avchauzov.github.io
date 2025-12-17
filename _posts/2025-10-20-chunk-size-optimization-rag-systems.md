@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "The Chunk Size Dilemma: Identifying the Optimal Value in RAG Systems"
+title: "The chunk size dilemma: identifying the optimal value in RAG systems"
 description: "Finding the optimal chunk size is non-trivial: too small loses context, too large dilutes semantics through mean pooling. A systematic methodology for identifying the sweet spot."
 date: 2025-10-20 00:00:00 +0000
 ---
@@ -9,7 +9,7 @@ RAG systems face a fundamental architectural challenge that directly impacts bot
 
 The problem manifests as a paradox: smaller chunks preserve semantic precision but lose critical context, while larger chunks maintain context but dilute semantic meaning through embedding aggregation. This creates a narrow optimization window where retrieval quality peaks.
 
-## The Mean Pooling Problem
+## The mean pooling problem
 
 Most embedding models (**BERT**-based, **sentence-transformers**, and similar architectures) use **mean pooling** to generate fixed-size vectors from variable-length text. This operation averages token embeddings across the sequence:
 
@@ -27,7 +27,7 @@ The resulting embedding represents a "blurred average" of all three components, 
 
 This is analogous to creating a movie poster by overlaying every frame; the result contains all information but loses specificity.
 
-## Empirical Chunk Size Analysis
+## Empirical chunk size analysis
 
 Systematic evaluation across document types reveals distinct optimal ranges:
 
@@ -45,7 +45,7 @@ These findings highlight a clear pattern: **semantic density** (tokens per conce
 
 Critical finding: **Chunks exceeding 1024 tokens showed 20–30% degradation** in retrieval precision across all document types, while chunks below 128 tokens suffered from context fragmentation, reducing answer quality by 25%.
 
-## The Context Window Constraint
+## The context window constraint
 
 Chunk size is fundamentally constrained by the embedding model's **maximum input token limit**. Models with limited context windows (e.g., 512 tokens for older BERT variants) force aggressive chunking, potentially losing critical cross-reference context.
 
@@ -53,7 +53,7 @@ While modern models support larger windows (8K+), using the full capacity for ch
 
 Documents with complex inter-dependencies — such as legal contracts with cross-referenced clauses or multi-step technical procedures — require models with sufficient input capacity. Otherwise, forced truncation causes critical information loss, particularly when concepts span multiple sections or require understanding of non-local context.
 
-## Systematic Optimization Methodology
+## Systematic optimization methodology
 
 ```python
 def optimize_chunk_size(documents, query_set, candidate_sizes=[128, 256, 512, 768, 1024]):
@@ -101,9 +101,9 @@ def optimize_chunk_size(documents, query_set, candidate_sizes=[128, 256, 512, 76
 
 The methodology balances retrieval precision (60% weight) with downstream generation quality (40% weight), reflecting the dual objectives of RAG systems. Latency constraints can be incorporated by filtering candidates that exceed performance requirements before optimization.
 
-## Alternative Approaches
+## Alternative approaches
 
-### Sliding Window Chunking
+### Sliding window chunking
 
 Overlapping chunks mitigate context loss at boundaries:
 
@@ -116,7 +116,7 @@ chunks = chunk_with_overlap(document, size=512, overlap=64)  # ~12% overlap
 
 Empirical testing shows sliding window with ~10% overlap provides the best cost-benefit ratio, improving precision by 12–18% with minimal overhead.
 
-### Sentence-Aware Chunking
+### Sentence-aware chunking
 
 Respect sentence boundaries instead of rigid token counts:
 
@@ -129,7 +129,7 @@ The `max_variance` parameter (e.g., 64 tokens) defines the maximum allowable dev
 - **Benefit**: Preserves semantic units, improves coherence
 - **Cost**: Variable chunk sizes complicate indexing
 
-### Hierarchical Chunking
+### Hierarchical chunking
 
 Maintain document structure (sections, subsections):
 
@@ -140,9 +140,9 @@ chunks = hierarchical_chunk(document, levels=['section', 'paragraph'])
 - **Benefit**: Preserves logical document structure, enables parent-child retrieval strategies
 - **Cost**: Complex implementation, requires document parsing
 
-## Production Recommendations
+## Production recommendations
 
-### Decision Framework
+### Decision framework
 
 1. **Start with empirical testing**: Evaluate 3–5 chunk sizes on a representative query set (minimum 100 queries).
 

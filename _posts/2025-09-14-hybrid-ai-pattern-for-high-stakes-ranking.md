@@ -1,17 +1,17 @@
 ---
 layout: default
-title: "Our Agents Argued Endlessly. Here's How a Hybrid AI Pattern Tamed LLM Chaos"
+title: "Our agents argued endlessly. Here's how a hybrid AI pattern tamed LLM chaos"
 description: "A deep dive into building a medical ranking PoC where pure LLM reasoning failed, and how a hybrid pattern combining LLM feature extraction with a deterministic rule engine achieved stable, auditable results."
 date: 2025-09-14 00:00:00 +0000
 ---
 
 Building multi-agent systems for high-stakes domains has taught me a crucial lesson: autonomy is a double-edged sword. While LLM-powered agents excel at understanding complex data, their non-deterministic nature can lead to chaos when predictable outcomes are non-negotiable. This is the story of a Proof-of-Concept where our agents got stuck in endless debate, and how we solved it not by making the agents "smarter," but by implementing a robust, hybrid AI pattern.
 
-## Why Medical Ranking is a High-Stakes Game
+## Why medical ranking is a high-stakes game
 
 The goal of our PoC was to rank medical drugs based on a variety of data sources. In a domain like medicine, the stakes are incredibly high. An unstable ranking that changes with each run is not just an inconvenience; it's a critical failure. A system that produces a "plausible-sounding but wrong" order of recommendations could have serious consequences. Therefore, our primary success criteria were not just accuracy, but also **stability, auditability, and predictability**. The final output had to be deterministic and its logic easily traceable.
 
-## The Architecture: A Structured Multi-Agent Workflow
+## The architecture: a structured multi-agent workflow
 
 Our initial architecture was a modular graph built with **LangGraph**. It was not a simple hierarchy, but a structured workflow designed for clarity and control:
 
@@ -21,7 +21,7 @@ Our initial architecture was a modular graph built with **LangGraph**. It was no
 
 The orchestration was handled by **LangGraph**; the problem emerged within the logical "brain" of the Summarizer.
 
-## The Anatomy of a Loop: When Pure Reasoning Fails
+## The anatomy of a loop: when pure reasoning fails
 
 Our first implementation gave the Summarizer agent autonomy to reason about the collected data and determine the best ranking. The result was a catastrophic failure. The agents were effectively **arguing in circles**, trapped in an endless debate with no resolution.
 
@@ -48,7 +48,7 @@ if ranking_history:
         break
 ```
 
-## A Hybrid Solution: Combining LLM Perception with Formulaic Judgment
+## A hybrid solution: combining LLM perception with formulaic judgment
 
 The breakthrough came when we redefined the agents' roles. Instead of having one agent handle both understanding and judgment, we split the responsibilities — a classic hybrid AI pattern.
 
@@ -87,7 +87,7 @@ This new approach was remarkably effective. The system achieved a stable ranking
 - **~4 iterations** × 4 agents × ~1,000 tokens/call = **~16,000 tokens**
 - This cost **~$0.016 per query**, representing a **92% cost savings** while delivering a superior, reliable result.
 
-## Enterprise Implications: A Pattern for Trustworthy AI
+## Enterprise implications: a pattern for trustworthy AI
 
 This isn't just a story about one PoC; it's about a scalable pattern for building trustworthy AI systems in the enterprise. This hybrid approach is directly applicable to other high-stakes domains:
 
@@ -97,7 +97,7 @@ This isn't just a story about one PoC; it's about a scalable pattern for buildin
 
 The pattern allows businesses to leverage the power of LLMs for what they do best — understanding unstructured data — while cordoning off the critical decision-making logic in a component that is stable, auditable, and transparent.
 
-## The Guiding Principle for High-Stakes AI
+## The guiding principle for high-stakes AI
 
 The "reasoning vs rules" debate is a false dichotomy. The reality is that robust AI systems require a thoughtful synthesis of both. For exploratory or creative tasks, a reasoning-first approach is often ideal. But for high-stakes, enterprise-grade applications demanding stability and auditability, the path to success is clear: start with a deterministic, formulaic framework. Grant autonomy and reasoning capabilities incrementally, always within the guardrails of a system you can trust and explain.
 

@@ -21,15 +21,8 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-Senior AI Architect with 7+ years building enterprise-scale AI solutions, specializing in production LLMs, scalable ML infrastructure, and end-to-end
-AI system architecture that drives measurable business impact.
+Senior AI Engineer (architecture-focused) with 7+ years of experience building and operating production AI systems at scale. I specialize in production LLMs, scalable ML infrastructure, and end-to-end system design under real-world latency and cost constraints.
 
-I've built 25+ AI systems processing 10K+ requests, driving $1M+ revenue and 40% cost reduction. My expertise spans the full AI lifecycle from research to production, with particular focus on:
+My work spans the full AI lifecycle from research to production, with a strong focus on reliability, retrieval quality, and system-level trade-offs.
 
-- **LLM & GenAI Engineering**: RAG systems, fine-tuning, prompt engineering, agent frameworks
-- **MLOps & Infrastructure**: AWS/GCP, Docker/K8s, scalable deployment strategies
-- **Technical Leadership**: Architecture design, business alignment, cross-functional teams
-
-Currently working as Senior AI Engineer at Grid Dynamics, previously delivered enterprise solutions as Independent ML Consultant with clients achieving measurable business impact through AI transformation.
-
-**Recent focus areas**: Production RAG systems, retrieval optimization, LLM fine-tuning, and intelligent infrastructure for smart cities.
+**Current interests**: Production RAG systems, hybrid retrieval, multi-agent architectures, and AI interpretability in real-world systems.

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "The Reranking Trap: When Cross-Encoders Make Things Worse"
+title: "The reranking trap: when cross-encoders make things worse"
 description: "Cross-encoders and LLM rerankers promise better retrieval precision, but the 200% latency penalty, diversity collapse, and production failures reveal when this expensive step becomes counterproductive."
 date: 2025-10-27 00:00:00 +0000
 ---
@@ -9,7 +9,7 @@ Reranking has become a standard recommendation for improving RAG system quality.
 
 Production systems show different results. Adding neural rerankers introduces latency penalties reaching **200%**, systematically suppresses result diversity, and often fails to improve quality for common query patterns. For high-throughput applications with strict latency requirements, this architectural choice becomes a bottleneck rather than an optimization.
 
-### How Rerankers Work
+### How rerankers work
 
 **Cross-encoders** process query-document pairs as a single concatenated sequence, applying full self-attention across both inputs. This provides high precision but requires `N` forward passes for `N` candidates. Each pass encodes the complete pair.
 
@@ -20,7 +20,7 @@ Production systems show different results. Adding neural rerankers introduces la
 
 **Late interaction models** (**ColBERT**) represent a middle ground. They compute token-level embeddings for queries and documents separately, then perform **MaxSim** matching at retrieval time. This preserves some cross-encoder precision while maintaining better scalability.
 
-### The Three Problems
+### The three problems
 
 **Latency kills throughput**. Bi-encoders work fast because they precompute document embeddings offline, enabling approximate nearest neighbor (ANN) search in milliseconds. **Reranking cannot leverage precomputation** — it must evaluate the interaction between a specific query and document.
 
@@ -42,7 +42,7 @@ With strong bi-encoders, correct documents for basic fact-retrieval queries are 
 
 High-precision requirements reveal additional limitations. Academic search systems implementing citation-graph traversal expand candidate sets through reference networks, introducing substantial noise. LLM rerankers struggle to restore precision after this expansion — the noise-to-signal ratio becomes too high for effective filtering.
 
-### When Reranking Actually Works
+### When reranking actually works
 
 Reranking proves valuable in specific scenarios where the computational cost justifies precision gains.
 
@@ -52,7 +52,7 @@ Reranking proves valuable in specific scenarios where the computational cost jus
 
 **High-stakes domains** — legal search, medical diagnosis — where small precision gains justify significant latency increases. For these high-risk research tasks, reranking remains defensible. For high-throughput applications requiring sub-100ms responses, the tradeoff becomes unacceptable.
 
-### Better Approaches
+### Better approaches
 
 Before adding an expensive reranking step, consider more effective alternatives.
 

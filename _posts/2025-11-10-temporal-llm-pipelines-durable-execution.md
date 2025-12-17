@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Temporal for LLM Pipelines: Durable Execution Starter Pack"
+title: "Temporal for LLM pipelines: durable execution starter pack"
 description: "LLM agents often crash, losing state and expensive API work. Temporal provides durable execution for LLM pipelines: automatic state recovery, configurable retries, and long-running orchestration at the cost of determinism constraints and ops overhead."
 date: 2025-11-10 00:00:00 +0000
 ---
@@ -12,7 +12,7 @@ Temporal solves this with **Durable Execution**. This is a programming model tha
 - Lets processes resume exactly where they failed.
 - Avoids re-executing expensive steps that already completed.
 
-## What Temporal Provides
+## What Temporal provides
 
 Temporal is an orchestration platform built on three core primitives:
 
@@ -24,7 +24,7 @@ Temporal is an orchestration platform built on three core primitives:
 
 Workers poll task queues, take work, execute code, return results. Scale by adding more workers. State lives in Temporal Server's event log, not worker memory.
 
-## When to Use Temporal
+## When to use Temporal
 
 The decision depends on pipeline characteristics and operational constraints.
 
@@ -43,11 +43,11 @@ The decision depends on pipeline characteristics and operational constraints.
 
 **Key tradeoff**: Temporal's core workflow code must be **strictly deterministic**. All non-deterministic operations (LLM calls, `time.now()`, random number generation) must be isolated in Activities. Violating this causes non-deterministic errors during event replay. This is a steep learning curve for AI developers used to standard imperative Python.
 
-## Practical Example: Refactoring an LLM Pipeline
+## Practical example: refactoring an LLM pipeline
 
 Start with a fragile document parser that needs reliability. We'll refactor it step-by-step (incremental migration) instead of rewriting everything.
 
-### Original Pipeline
+### Original pipeline
 
 ```python
 def parse_document(doc_id: str):
@@ -59,7 +59,7 @@ def parse_document(doc_id: str):
 
 **Problems**: no state preservation, no retry logic, crashes lose progress.
 
-### Step 1: Basic Workflow with Durable State
+### Step 1: basic workflow with durable state
 
 - **Problem**: The original `parse_document` function is completely stateless. If the worker crashes, everything is lost, including the `doc_id` being processed.
 - **Change**: We move from a simple Python function to a `DocumentWorkflow` class. State is now held in `self.state`, which Temporal automatically persists.
@@ -89,7 +89,7 @@ class DocumentWorkflow:
 
 **Pattern**: Durable state in class variables. Temporal persists `self.state` automatically via event sourcing. Worker crashes no longer lose context.
 
-### Step 2: LLM Activity with Retry Policy
+### Step 2: LLM activity with retry policy
 
 - **Problem**: Our `openai_call` has no retry logic. If it fails due to a rate limit (HTTP 429), the entire workflow fails instead of just waiting and trying again.
 - **Change**: We wrap `openai_call` in an `Activity` (`generate_summary`). This isolates the non-deterministic code and allows the Workflow to add a `RetryPolicy`.
@@ -134,7 +134,7 @@ self.state["summary"] = summary
 
 `start_to_close_timeout` (30s) caps single attempt duration. `schedule_to_close_timeout` would cap total time including all retries—set higher (e.g., 5 minutes) to accommodate backoff periods.
 
-### Step 3: Human-in-the-Loop via Signals
+### Step 3: human-in-the-loop via signals
 
 - **Problem**: The process is fully automated. It cannot pause and wait for a human to approve the generated summary before saving it to the database.
 - **Change**: We add `workflow.wait_condition` to allow the workflow to "sleep" (without consuming worker resources). We also add a `Signal` (`approve_summary`) to let an external user "wake" the workflow with an input.
@@ -169,7 +169,7 @@ class DocumentWorkflow:
 
 **Pattern**: Workflows can pause via `wait_condition`. This pause consumes no worker resources and can last indefinitely. Use `timeout` to prevent infinite waits—best practice shown in the code.
 
-### Step 4: Query for Status Monitoring
+### Step 4: query for status monitoring
 
 - **Problem**: We have no idea what's happening inside a running workflow. Is it stuck or waiting for approval? The only way to know is to check logs or the database.
 - **Change**: We add a `@workflow.query` method (`get_status`). This lets our UI (or any other service) synchronously read the workflow's internal `self.state` at any time without interrupting it.
@@ -186,7 +186,7 @@ def get_status(self) -> dict:
 
 **Pattern**: Queries provide synchronous state access for UIs/dashboards without interrupting workflow execution. They are read-only by design (meaning they cannot change workflow state, only view it).
 
-### Step 5: GPU Resource Isolation via Task Queues
+### Step 5: GPU resource isolation via task queues
 
 - **Problem**: We have an expensive `run_local_model` Activity that requires a GPU. If a normal CPU worker picks it up, it will either crash (OOM) or block other tasks.
 - **Change**: When executing the activity, we specify `task_queue="gpu-workers"`. This ensures only workers specifically configured to listen to that queue (and deployed on GPU machines) will execute this task.
@@ -218,7 +218,7 @@ worker = Worker(
 
 **Pattern**: Task queues isolate resource-intensive activities. Deploy workers with limited activity slots on GPU machines, preventing cascading failures and controlling costs. Implements Bulkhead pattern.
 
-### Step 6: Continue-As-New for Long Processes
+### Step 6: continue-as-new for long processes
 
 - **Problem**: If the workflow processes 10,000 documents in a loop or runs for months (like a chatbot), its Event History becomes huge. This slows down replay/recovery.
 - **Change**: We periodically check the history size (`workflow.info().get_current_history_length()`). If it exceeds a threshold, we use `workflow.continue_as_new()` to start a fresh workflow execution, carrying over the state but with a clean history.
@@ -239,7 +239,7 @@ async def run(self, doc_id: str, iteration: int = 0) -> dict:
 
 **Pattern**: Continue-as-new prevents event history bloat by starting a new workflow execution with a clean history. **Warning**: This is not a "continue"; it's a "restart". The new run loses all `self.state` unless you explicitly pass the necessary data as arguments to the `continue_as_new` call.
 
-### Complete Integration
+### Complete integration
 
 Full example with error handling:
 
@@ -307,7 +307,7 @@ class DocumentWorkflow:
         return self.state
 ```
 
-## Best Practices
+## Best practices
 
 **Use exponential backoff for rate limits**. Set `backoff_coefficient` \> 1.5 (typically 2.0) and `maximum_interval` to prevent retry storms. Add jitter if calling shared services to avoid thundering herd effects.
 

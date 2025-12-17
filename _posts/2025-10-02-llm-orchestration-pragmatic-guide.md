@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "LLM Orchestration: A Pragmatic Guide to Complexity"
+title: "LLM orchestration: a pragmatic guide to complexity"
 description: "Most production apps are simple chains, yet everyone is building agents. Here's a clear framework on when you really need loops, graphs, and agents in your LLM app."
 date: 2025-10-02 00:00:00 +0000
 ---
@@ -9,14 +9,14 @@ In my experience, **the vast majority of production LLM apps are simple Chains o
 
 This is a pragmatic guide to choosing the right orchestration pattern.
 
-### The Spectrum of Complexity
+### The spectrum of complexity
 
 - **Chain**: A fixed `A → B → C` flow. The simplest way to link LLM calls or functions.
 - **Router**: An `if/else` gateway. A conditional step that directs input to the appropriate Chain or tool.
 - **Graph**: A stateful workflow with loops. Nodes are steps (LLM calls, tools) and edges are the paths between them, allowing for cycles and retries.
 - **Agent**: The "brain" or reasoning strategy (e.g., ReAct) that decides what to do next. It is often **implemented using a graph structure** to manage its execution.
 
-### A Pragmatic Decision Framework
+### A pragmatic decision framework
 
 #### Use a **Chain** when:
 
@@ -40,7 +40,7 @@ This is a pragmatic guide to choosing the right orchestration pattern.
 - The LLM needs to **decide which tools to call and in what order** based on intermediate results.
 - **Example**: A research agent that iteratively searches the Web, parses pages, synthesizes findings, and decides on its next search query.
 
-### The Real Cost of Complexity
+### The real cost of complexity
 
 More complexity means higher operational costs. Based on research, the trade-offs are clear:
 
@@ -55,7 +55,7 @@ More complexity means higher operational costs. Based on research, the trade-off
 
 ---
 
-### The Pragmatic Migration Path
+### The pragmatic migration path
 
 Don't start with complexity. Evolve based on need.
 

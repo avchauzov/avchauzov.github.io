@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Hybrid Retrieval with Reciprocal Rank Fusion: Solving the Score Normalization Problem"
+title: "Hybrid retrieval with reciprocal rank fusion: solving the score normalization problem"
 description: "Pure vector search isn't always enough. Weighted averaging of BM25 and vector scores breaks due to incompatible scales. Reciprocal Rank Fusion solves this by using ranks instead of scores."
 date: 2025-10-06 00:00:00 +0000
 ---
@@ -9,7 +9,7 @@ Vector search excels at semantic understanding but fails on exact matches: produ
 
 **Reciprocal Rank Fusion (RRF)** solves this by ignoring scores entirely and using **document ranks** instead. It's simple, requires minimal tuning, and works effectively in production.
 
-## Why Weighted Averaging Fails
+## Why weighted averaging fails
 
 The naive approach to hybrid search uses weighted combination of scores:
 
@@ -37,7 +37,7 @@ The problem: normalization aligns score ranges but can't fix the **distribution 
 
 You could tune `alpha` to balance the components, but the **unboundedness** of BM25 distribution makes it extremely challenging. As a result, any chosen `alpha` will be suboptimal for many queries.
 
-## Reciprocal Rank Fusion: Ranks Instead of Scores
+## Reciprocal rank fusion: ranks instead of scores
 
 RRF approaches the problem from a different angle: it switches from scores to ranks and calculates a fusion score based on them:
 
@@ -72,7 +72,7 @@ Why does this matter? This mechanism makes your search results more **robust**. 
 - **Consensus-driven**: Documents ranking high across multiple systems are a strong signal of true relevance.
 - **Smoothing**: The constant `k` (e.g., 60) prevents extreme bias toward top-ranked results. While it's tunable, the default often works well.
 
-## When to Use Hybrid Retrieval
+## When to use hybrid retrieval
 
 Hybrid search isn't always necessary. Use it when **exact matches matter**, such as for product IDs, error codes, legal citations, or domain-specific terms. Vector embeddings alone are not well-suited for these tasks.
 
@@ -138,7 +138,7 @@ if __name__ == "__main__":
 - **Retrieval Window**: It's good practice to fetch more results from each retriever than you ultimately need (e.g., 2x your target). This gives RRF a larger pool of candidates to fuse and re-rank.
 - **The k parameter**: While `k=60` is a balanced default, you can experiment. A lower `k` (e.g., 10–20) gives more weight to top ranks, while a higher `k` (e.g., 80–100) flattens the curve, giving deeper results more influence.
 
-## Production Results
+## Production results
 
 Based on published benchmarks and case studies, hybrid retrieval with RRF typically shows:
 
@@ -156,7 +156,7 @@ Based on published benchmarks and case studies, hybrid retrieval with RRF typica
 
 The latency increase comes primarily from running two retrieval paths. Parallel execution keeps this overhead manageable.
 
-## The Full Architecture
+## The full architecture
 
 RRF often serves as a key component in a multi-stage retrieval cascade. For example:
 
@@ -164,6 +164,6 @@ RRF often serves as a key component in a multi-stage retrieval cascade. For exam
 2. **Stage 2: Fusion**. Apply RRF to the candidate pool → 32 finalists.
 3. **Stage 3: Reranking**. Use a powerful cross-encoder to rerank the finalists → 8 final results.
 
-## The Core Principle
+## The core principle
 
 RRF solves the score normalization problem that breaks simple weighted averaging. When both retrieval methods produce reasonable results independently, RRF's rank-based fusion effectively surfaces the most relevant documents through consensus.
