@@ -78,5 +78,5 @@ I use this metric in two distinct ways:
 ---
 
 <p align="center">
-<i>Interpretability is not exclusive to supervised ML/AI; it is equally vital in unsupervised learning. JSD bridges this gap by quantifying not just how far apart clusters are, but what characterizes them—turning abstract geometric blobs into meaningful, explainable segments.</i>
+<i>Interpretability is not exclusive to supervised ML/AI; it is equally vital in unsupervised learning. JSD bridges this gap by quantifying not just how far apart clusters are, but what characterizes them — turning abstract geometric blobs into meaningful, explainable segments.</i>
 </p>

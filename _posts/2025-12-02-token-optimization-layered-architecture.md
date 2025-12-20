@@ -20,9 +20,9 @@ The constraint is positional. Cached content must be at the start of the message
 Static instructions, few-shot examples, policy documents—anything that does not change between requests.
 
 ```python
-from openai import OpenAI
+from llm_client import LLMClient  # Abstract client interface
 
-client = OpenAI()
+client = LLMClient()
 
 # Model configuration
 llm_model_name = "your-llm-model"  # Replace with your provider-specific model
@@ -33,14 +33,14 @@ Company guidelines: [1000 tokens of static policies]
 """
 
 def query_with_cache(user_query: str) -> str:
-    response = client.chat.completions.create(
+    response = client.generate(
         model=llm_model_name,
         messages=[
             {"role": "system", "content": SYSTEM_CONTEXT},  # Cached
             {"role": "user", "content": user_query}         # Variable
         ]
     )
-    return response.choices[0].message.content
+    return response.content
 ```
 
 **Common Implementation Error**: Placing timestamps or request IDs at the top of messages. This invalidates the cache immediately. Variable metadata goes to headers or end of user message.
@@ -55,10 +55,11 @@ The implementation is straightforward: convert queries to embeddings, compare us
 
 ```python
 import numpy as np
-from openai import OpenAI
+from llm_client import LLMClient, EmbeddingClient  # Abstract client interfaces
 from sklearn.metrics.pairwise import cosine_similarity
 
-client = OpenAI()
+llm_client = LLMClient()
+embedding_client = EmbeddingClient()
 
 class SemanticCache:
     def __init__(self, threshold: float = 0.95, embedding_model_name: str = "your-embedding-model"):
@@ -67,11 +68,11 @@ class SemanticCache:
         self.embedding_model_name = embedding_model_name
 
     def _embed(self, text: str) -> np.ndarray:
-        response = client.embeddings.create(
+        response = embedding_client.create_embedding(
             model=self.embedding_model_name,
             input=text
         )
-        return np.array(response.data[0].embedding)
+        return np.array(response.embedding)
 
     def get(self, query: str) -> str | None:
         query_emb = self._embed(query)
@@ -98,13 +99,14 @@ def query_with_semantic_cache(query: str, llm_model_name: str = "your-llm-model"
     if cached:
         return cached
 
-    response = client.chat.completions.create(
+    response = llm_client.generate(
         model=llm_model_name,
         messages=[{"role": "user", "content": query}]
-    ).choices[0].message.content
+    )
+    response_text = response.content
 
-    cache.set(query, response)
-    return response
+    cache.set(query, response_text)
+    return response_text
 ```
 
 **Economics**: Embedding costs ~$0.0001 per query. LLM inference costs ~$0.01 per query. Break-even after 2–3 cache hits.
@@ -119,13 +121,13 @@ For long, unique context (RAG documents), caching does not help. Compression red
 
 LLMLingua-2 reformulates prompt compression as token-level binary classification (Keep/Discard). Unlike the original LLMLingua that uses perplexity from causal models, LLMLingua-2 trains a compact BERT-based classifier on data distilled from larger models. This approach eliminates unidirectional context limitations and provides task-agnostic compression.
 
-The key advantage: LLMLingua-2 is 3-6× faster than perplexity-based methods while maintaining higher accuracy on out-of-domain data.
+The key advantage: LLMLingua-2 is 3–6× faster than perplexity-based methods while maintaining higher accuracy on out-of-domain data.
 
 ```python
 from llmlingua import PromptCompressor
-from openai import OpenAI
+from llm_client import LLMClient  # Abstract client interface
 
-client = OpenAI()
+llm_client = LLMClient()
 
 # Model configuration
 compression_model_name = "your-compression-model"  # Replace with your compression model
@@ -162,14 +164,14 @@ def compress_and_query(context: str, question: str, rate: float = 0.5) -> str:
     # Model configuration
     llm_model_name = "your-llm-model"  # Replace with your provider-specific model
 
-    response = client.chat.completions.create(
+    response = llm_client.generate(
         model=llm_model_name,
         messages=[
             {"role": "system", "content": compressed_text},
             {"role": "user", "content": question}
         ]
     )
-    return response.choices[0].message.content
+    return response.content
 ```
 
 **Critical Parameter**: `force_tokens`

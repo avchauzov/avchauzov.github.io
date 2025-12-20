@@ -40,7 +40,7 @@ This prompt forces the model to discard its powerful contextual priors and base 
 
 ### Why it works
 
-This instruction acts as a form of **causal intervention**. It effectively blocks the model's default reasoning path, which relies on indirect contextual clues. By telling it what **not** to look at, we force it down a different path—one that relies only on the direct visual evidence of body posture and movement. You are isolating the direct visual effect from the confounding, indirect contextual effect.
+This instruction acts as a form of **causal intervention**. It effectively blocks the model's default reasoning path, which relies on indirect contextual clues. By telling it what **not** to look at, we force it down a different path — one that relies only on the direct visual evidence of body posture and movement. You are isolating the direct visual effect from the confounding, indirect contextual effect.
 
 ### Practical takeaways
 

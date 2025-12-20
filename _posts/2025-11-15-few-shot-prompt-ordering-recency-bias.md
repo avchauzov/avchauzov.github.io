@@ -67,4 +67,4 @@ This principle extends beyond classification. Instruction-tuned models can flip 
 
 Positional bias is an architectural reality. It is not necessarily a bug to be fixed, but a behavior to be characterized.
 
-If you observe inconsistent performance in your few-shot tasks, don't assume the model attends equally to all examples. Verify the distribution of your examples. If you feel that the model ignores your instructions, check the order—your best examples might be lost in the middle.
+If you observe inconsistent performance in your few-shot tasks, don't assume the model attends equally to all examples. Verify the distribution of your examples. If you feel that the model ignores your instructions, check the order — your best examples might be lost in the middle.

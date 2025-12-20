@@ -16,7 +16,7 @@ effective for high-throughput scenarios. These include optimized
 **BERT-variants**, **contrastive learning models**, and other distilled
 architectures. These compact SLMs (typically 5–20MB) perform the initial classification. They can achieve inference speeds significantly below 100ms, even on CPU-only infrastructure.
 
-**Stage 2 — Confidence and Escalation Gating**. The SLM output includes a **confidence score** for its top prediction. This score is checked against an **escalation threshold** (typically between 0.7 and 0.9). If the predicted confidence is too low—meaning it falls below the threshold—the query is sent to the next processing stage.
+**Stage 2 — Confidence and Escalation Gating**. The SLM output includes a **confidence score** for its top prediction. This score is checked against an **escalation threshold** (typically between 0.7 and 0.9). If the predicted confidence is too low — meaning it falls below the threshold — the query is sent to the next processing stage.
 
 **Stage 3 — LLM Fallback and Refinement**. Low-confidence queries are routed to a robust LLM. These models are used to resolve ambiguity present in low-confidence queries. This process, which engages the LLM for only 10–30% of total requests, is crucial for maintaining system accuracy while keeping high LLM costs under control.
 
@@ -59,5 +59,5 @@ Several implementation details matter for optimal performance.
 ---
 
 <p align="center">
-<i>The Hybrid Intent Classification pattern represents a standard production approach. It combines the speed and efficiency of specialized encoder-based models—often overlooked in the LLM era—with the reasoning capacity of Large Language Models, using each component only when necessary.</i>
+<i>The Hybrid Intent Classification pattern represents a standard production approach. It combines the speed and efficiency of specialized encoder-based models — often overlooked in the LLM era — with the reasoning capacity of Large Language Models, using each component only when necessary.</i>
 </p>

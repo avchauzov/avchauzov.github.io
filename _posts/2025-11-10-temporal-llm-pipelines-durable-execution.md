@@ -18,9 +18,9 @@ Temporal is an orchestration platform built on three core primitives:
 
 **Workflows** define business logic as code. A workflow can run for days or months, maintaining state in local variables that survive process crashes. The platform automatically persists execution history through event sourcing, allowing deterministic replay from any failure point. This eliminates external checkpointing systems.
 
-**Activities** encapsulate non-deterministic operations—LLM API calls, database queries, external service interactions. Temporal applies configurable retry policies with exponential backoff automatically. Workflows don't track individual retry attempts—that happens automatically in the activity layer.
+**Activities** encapsulate non-deterministic operations — LLM API calls, database queries, external service interactions. Temporal applies configurable retry policies with exponential backoff automatically. Workflows don't track individual retry attempts — that happens automatically in the activity layer.
 
-**Event History** records every workflow execution step (activity scheduling, completion, input/output data) as an immutable audit log. You get Time-Travel Debugging—replaying production failures locally with identical state reconstruction. For debugging non-deterministic AI behavior, this history lets you replay exact execution paths.
+**Event History** records every workflow execution step (activity scheduling, completion, input/output data) as an immutable audit log. You get Time-Travel Debugging — replaying production failures locally with identical state reconstruction. For debugging non-deterministic AI behavior, this history lets you replay exact execution paths.
 
 Workers poll task queues, take work, execute code, return results. Scale by adding more workers. State lives in Temporal Server's event log, not worker memory.
 
@@ -38,7 +38,7 @@ The decision depends on pipeline characteristics and operational constraints.
 **Don't use Temporal for**:
 
 - **Simple batch jobs** (\<10 minutes) with low failure risk, **like** standard ETL/ELT tasks where Prefect or Airflow provide faster time-to-value with less operational overhead.
-- **Stateless API services** requiring sub-100ms latency. Single synchronous LLM calls don't benefit from durable execution—they add unnecessary complexity.
+- **Stateless API services** requiring sub-100ms latency. Single synchronous LLM calls don't benefit from durable execution — they add unnecessary complexity.
 - **Rapid prototyping** where determinism constraints slow iteration. Temporal requires learning distributed systems patterns (Event Sourcing, deterministic workflows) that increase initial development friction.
 
 **Key tradeoff**: Temporal's core workflow code must be **strictly deterministic**. All non-deterministic operations (LLM calls, `time.now()`, random number generation) must be isolated in Activities. Violating this causes non-deterministic errors during event replay. This is a steep learning curve for AI developers used to standard imperative Python.
@@ -53,7 +53,7 @@ Start with a fragile document parser that needs reliability. We'll refactor it s
 def parse_document(doc_id: str):
     doc = db.fetch(doc_id)
     parsed = extract_text(doc.path)
-    summary = openai_call(parsed)  # Fails on rate limit
+    summary = llm_client.generate(parsed)  # Fails on rate limit
     db.save_summary(doc_id, summary)
 ```
 
@@ -91,26 +91,26 @@ class DocumentWorkflow:
 
 ### Step 2: LLM activity with retry policy
 
-- **Problem**: Our `openai_call` has no retry logic. If it fails due to a rate limit (HTTP 429), the entire workflow fails instead of just waiting and trying again.
-- **Change**: We wrap `openai_call` in an `Activity` (`generate_summary`). This isolates the non-deterministic code and allows the Workflow to add a `RetryPolicy`.
+- **Problem**: Our LLM call has no retry logic. If it fails due to a rate limit (HTTP 429), the entire workflow fails instead of just waiting and trying again.
+- **Change**: We wrap the LLM call in an `Activity` (`generate_summary`). This isolates the non-deterministic code and allows the Workflow to add a `RetryPolicy`.
 
 ```python
 from temporalio import activity
 from datetime import timedelta
-# Assuming 'openai' is initialized as AsyncOpenAI client
-# from openai import AsyncOpenAI
-# client = AsyncOpenAI()
+from llm_client import LLMClient  # Abstract client interface
 
 # Model configuration
 llm_model_name = "your-llm-model"  # Replace with your provider-specific model
 
+llm_client = LLMClient()
+
 @activity.defn
 async def generate_summary(text: str) -> str:
-    response = await openai.chat.completions.create(
+    response = await llm_client.generate(
         model=llm_model_name,
         messages=[{"role": "user", "content": f"Summarize: {text}"}]
     )
-    return response.choices[0].message.content
+    return response.content
 
 # In workflow:
 from temporalio.common import RetryPolicy
@@ -132,7 +132,7 @@ self.state["summary"] = summary
 
 **Pattern**: Activities encapsulate non-deterministic LLM calls. Retry policy handles rate limits (HTTP 429) automatically with exponential backoff. `non_retryable_error_types` prevents wasted retries on permanent failures like auth errors.
 
-`start_to_close_timeout` (30s) caps single attempt duration. `schedule_to_close_timeout` would cap total time including all retries—set higher (e.g., 5 minutes) to accommodate backoff periods.
+`start_to_close_timeout` (30s) caps single attempt duration. `schedule_to_close_timeout` would cap total time including all retries — set higher (e.g., 5 minutes) to accommodate backoff periods.
 
 ### Step 3: human-in-the-loop via signals
 
@@ -167,7 +167,7 @@ class DocumentWorkflow:
         # Continue processing...
 ```
 
-**Pattern**: Workflows can pause via `wait_condition`. This pause consumes no worker resources and can last indefinitely. Use `timeout` to prevent infinite waits—best practice shown in the code.
+**Pattern**: Workflows can pause via `wait_condition`. This pause consumes no worker resources and can last indefinitely. Use `timeout` to prevent infinite waits — best practice shown in the code.
 
 ### Step 4: query for status monitoring
 

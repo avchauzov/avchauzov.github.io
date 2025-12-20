@@ -20,7 +20,7 @@ A **Bounded Context (BC)** defines a static, architectural boundary where all te
 - **Without Bounded Contexts**: A single, monolithic "Support Agent" tries to handle everything: billing questions, technical support, and account upgrades. Its prompt is massive, its vector store is polluted with all document types, and it constantly confuses billing rules with technical troubleshooting steps, leading to high error rates.
 - **With Bounded Contexts**: The system is split into multiple agents, each in its own BC. A `BillingAgent` (BC_Billing) only has access to billing documents and only knows how to handle payments. A `TechSupportAgent` (BC_Support) only sees technical manuals. This isolation prevents context pollution and makes each agent smaller, faster, and more accurate.
 
-In multi-agent LLM systems, each agent—or agent group—should be a BC.
+In multi-agent LLM systems, each agent — or agent group — should be a BC.
 
 ```text
 +----------------------+     +----------------------+
@@ -102,7 +102,7 @@ With the agent's container secured, the next step is to standardize the content 
 
 This removes ambiguity, which is a primary cause of model hallucinations.
 
-- **Without UL (Ambiguous)**: A prompt says, "Find problems in this support ticket." The LLM must guess what a "problem" is—a typo? An angry customer? A technical bug? This leads to hallucinations.
+- **Without UL (Ambiguous)**: A prompt says, "Find problems in this support ticket." The LLM must guess what a "problem" is — a typo? An angry customer? A technical bug? This leads to hallucinations.
 - **With UL (Precise)**: The prompt says, "Classify this `SupportTicket` with `Priority: (P0-P4)` and `Category: (Billing|Technical|Account)`." The LLM is given no room to guess; it must execute a specific task using defined terms.
 
 **Example**: Fragment of system prompt

@@ -5,13 +5,13 @@ description: "Standard prompt caching requires exact prefix match. LLM-Judge val
 date: 2025-10-30 00:00:00 +0000
 ---
 
-Prompt caching cuts latency by **85%**—but breaks completely on paraphrases. Change "Show sales data" to "Display sales data" and you get a cache miss, forcing full regeneration at 10x the cost.
+Prompt caching cuts latency by **85%** — but breaks completely on paraphrases. Change "Show sales data" to "Display sales data" and you get a cache miss, forcing full regeneration at 10x the cost.
 
 The reason is simple: KV-Cache works at token level. The system reuses precomputed Key-Value tensors only when input sequences match exactly. No semantic understanding at this layer.
 
 ### The LLM-judge approach
 
-Instead of exact matching, use a small LLM to validate semantic equivalence. The judge determines if a cached query-response pair works for the new query—checking intent, not tokens.
+Instead of exact matching, use a small LLM to validate semantic equivalence. The judge determines if a cached query-response pair works for the new query — checking intent, not tokens.
 
 ```python
 def semantic_cache_lookup(query, vector_store, judge_llm):
@@ -42,7 +42,7 @@ Fast embedding filter + deeper judge validation. Two stages, different purposes.
 
 ### The latency problem
 
-**Critical constraint: TTFT budget**. TTFT (Time To First Token) is what users actually feel—how long until they see the first word. The judge adds a full inference cycle. For a 7B model processing ~150 tokens, expect **150–250ms overhead**.
+**Critical constraint: TTFT budget**. TTFT (Time To First Token) is what users actually feel — how long until they see the first word. The judge adds a full inference cycle. For a 7B model processing ~150 tokens, expect **150–250ms overhead**.
 
 Do the math: if your target TTFT is 300ms and exact-match caching delivers 240ms, adding a 200ms judge makes things worse.
 
@@ -66,7 +66,7 @@ High semantic match rate (40–60% from embeddings) means the judge converts man
 
 ### Implementation notes
 
-**Use White-Box confidence scores when available**. This avoids separate judge calls but requires API support for token probabilities (`logprobs` from OpenAI). Best used as **write-time filter** to prevent caching low-confidence responses.
+**Use White-Box confidence scores when available**. This avoids separate judge calls but requires API support for token probabilities (e.g., `logprobs` parameter). Best used as **write-time filter** to prevent caching low-confidence responses.
 
 Logic:
 
