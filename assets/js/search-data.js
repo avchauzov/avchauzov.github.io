@@ -34,6 +34,17 @@ ninja.data = [{
             window.location.href = "/blog/2025/architecture-design-constraint-satisfaction/";
           
         },
+      },{id: "post-classification-with-llms-getting-accurate-probabilities-from-structured-output",
+        
+          title: "Classification with LLMs: getting accurate probabilities from structured output",
+        
+        description: "Verbalized confidence in JSON schema provides fast probability estimates for classification tasks. Optimization patterns improve calibration.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/llm-classification-accurate-probabilities/";
+          
+        },
       },{id: "post-token-optimization-three-production-patterns-that-reduce-llm-costs-by-70",
         
           title: "Token optimization: three production patterns that reduce LLM costs by 70%",
