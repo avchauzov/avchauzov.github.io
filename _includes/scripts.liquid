@@ -283,8 +283,20 @@
     <script>
       // Wait for both DOM and Lightbox2 to be ready
       function wrapImages() {
-        const scope = document.querySelector('.post-content #markdown-content');
-        if (!scope) return;
+        // Try multiple selectors to find post content (fallback for different layouts)
+        const scope =
+          document.querySelector('.post-content #markdown-content') ||
+          document.querySelector('#markdown-content') ||
+          document.querySelector('.post-content') ||
+          document.querySelector('article.post-content') ||
+          document.querySelector('.post article') ||
+          document.querySelector('article');
+
+        if (!scope) {
+          // Optional debug log (uncomment to debug)
+          // console.log('[Lightbox] No post content container found');
+          return;
+        }
 
         scope.querySelectorAll('img').forEach((img) => {
           // skip if already wrapped in a link
@@ -296,8 +308,9 @@
           // Skip inline images (data:, blob:)
           if (src.startsWith('data:') || src.startsWith('blob:')) return;
 
-          // Only process local assets (optional safety filter)
-          if (!src.startsWith('/assets/')) return;
+          // Only process local assets (accept /assets/ or baseurl/assets/)
+          // Check if src contains /assets/ (works with baseurl too)
+          if (!src.includes('/assets/')) return;
 
           // Skip images inside special containers (figure, mermaid, math, etc.)
           if (img.closest('figure') || img.closest('.mermaid') || img.closest('.math') || img.closest('mjx-container')) {
@@ -359,6 +372,9 @@
             }, 1000);
           }
         });
+
+        // Optional debug log (uncomment to debug)
+        // console.log('[Lightbox] Processed images in scope:', scope);
       }
 
       // Run after DOM is ready

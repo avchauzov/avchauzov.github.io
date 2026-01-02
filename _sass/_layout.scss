@@ -89,7 +89,12 @@ body.sticky-bottom-footer {
 }
 
 /* --- Images: keep same width as text column --- */
-.post-content #markdown-content {
+/* Support multiple container variants for different layouts */
+.post-content #markdown-content,
+#markdown-content,
+.post-content,
+article.post-content,
+.post article {
   /* Markdown renders images as: <p><img ...></p> or <p><a><img></a></p> (with lightbox) */
   > p:has(img) {
     max-width: 75ch; /* same as text */
