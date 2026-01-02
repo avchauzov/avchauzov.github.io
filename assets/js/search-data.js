@@ -23,7 +23,29 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-architecture-design-a-constraint-satisfaction-approach",
+        },{id: "post-the-metric-gap-bridging-business-outcomes-and-ai-component-optimization",
+        
+          title: "The Metric Gap: Bridging Business Outcomes and AI Component Optimization",
+        
+        description: "Why high component scores often mask system failures. A methodology for using E2E evaluation to prioritize engineering work.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/metric-gap-e2e-evaluation/";
+          
+        },
+      },{id: "post-reflection-vs-evaluation-why-the-agent-critic-pattern-fails-without-separation-of-concerns",
+        
+          title: "Reflection vs Evaluation: Why the Agent-Critic pattern fails without separation of concerns",
+        
+        description: "Architectural separation of reflection (context generation) and evaluation (quality gating) prevents confirmation bias, premature stopping, and infinite loops in multi-agent research systems.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/reflection-evaluation-agent-critic/";
+          
+        },
+      },{id: "post-architecture-design-a-constraint-satisfaction-approach",
         
           title: "Architecture design: a constraint-satisfaction approach",
         
