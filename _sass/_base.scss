@@ -1500,3 +1500,13 @@ figure.cover {
     color: #23212d !important;
   }
 }
+
+// Images in posts
+.post-content img,
+.post img,
+article img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5rem auto;
+}
