@@ -279,6 +279,95 @@
       integrity="{{ site.third_party_libraries.lightbox2.integrity.js }}"
       crossorigin="anonymous"
     ></script>
+    <!-- Auto-wrap images in lightbox links -->
+    <script>
+      // Wait for both DOM and Lightbox2 to be ready
+      function wrapImages() {
+        const scope = document.querySelector('.post-content #markdown-content');
+        if (!scope) return;
+
+        scope.querySelectorAll('img').forEach((img) => {
+          // skip if already wrapped in a link
+          if (img.closest('a')) return;
+
+          const src = img.getAttribute('src');
+          if (!src) return;
+
+          // Skip inline images (data:, blob:)
+          if (src.startsWith('data:') || src.startsWith('blob:')) return;
+
+          // Only process local assets (optional safety filter)
+          if (!src.startsWith('/assets/')) return;
+
+          // Skip images inside special containers (figure, mermaid, math, etc.)
+          if (img.closest('figure') || img.closest('.mermaid') || img.closest('.math') || img.closest('mjx-container')) {
+            return;
+          }
+
+          // Skip if explicitly marked as no-lightbox (via alt or class)
+          const altRaw = img.getAttribute('alt') || '';
+          const alt = altRaw.toLowerCase();
+          if (alt.includes('nolightbox') || img.classList.contains('no-lightbox')) {
+            return;
+          }
+
+          // Skip images with common icon/emoji classes
+          if (
+            img.classList.contains('emoji') ||
+            img.classList.contains('icon') ||
+            img.classList.contains('badge') ||
+            img.classList.contains('avatar')
+          ) {
+            return;
+          }
+
+          // Wrap function that checks size and wraps
+          const maybeWrap = () => {
+            // Skip if already processed (idempotency)
+            if (img.dataset.lightboxed === '1') return;
+
+            // Skip if image was already wrapped (double-check)
+            if (img.closest('a')) return;
+
+            // Skip tiny images (icons, badges, emojis)
+            // Check both naturalWidth (actual size) and width (rendered size)
+            const imgWidth = img.naturalWidth || img.width || 0;
+            if (imgWidth === 0) return; // Don't wrap if size unknown
+            if (imgWidth < 80) return;
+
+            const a = document.createElement('a');
+            a.href = src;
+            a.setAttribute('data-lightbox', 'post');
+            if (altRaw && !alt.includes('nolightbox')) {
+              a.setAttribute('data-title', altRaw);
+            }
+
+            img.parentNode.insertBefore(a, img);
+            a.appendChild(img);
+            img.dataset.lightboxed = '1'; // Mark as processed
+          };
+
+          // If image is already loaded, wrap immediately
+          // Otherwise wait for load event
+          if (img.complete && img.naturalWidth !== 0) {
+            maybeWrap();
+          } else {
+            img.addEventListener('load', maybeWrap, { once: true });
+            // Fallback: if load never fires (broken image), wrap anyway after a delay
+            setTimeout(() => {
+              if (!img.closest('a')) maybeWrap();
+            }, 1000);
+          }
+        });
+      }
+
+      // Run after DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', wrapImages);
+      } else {
+        wrapImages();
+      }
+    </script>
   {% endif %}
   {% if page.images.photoswipe %}
     <script defer src="{{ '/assets/js/photoswipe-setup.js' | relative_url }}" type="module"></script>
