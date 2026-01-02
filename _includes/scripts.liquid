@@ -281,36 +281,35 @@
     ></script>
     <!-- Auto-wrap images in lightbox links -->
     <script>
-      // Wait for both DOM and Lightbox2 to be ready
+      // Wait for DOM to be ready
       function wrapImages() {
-        // Try multiple selectors to find post content (fallback for different layouts)
-        const scope =
-          document.querySelector('.post-content #markdown-content') ||
-          document.querySelector('#markdown-content') ||
-          document.querySelector('.post-content') ||
-          document.querySelector('article.post-content') ||
-          document.querySelector('.post article') ||
-          document.querySelector('article');
+        // Select images directly by content signature (NO layout containers)
+        const images = document.querySelectorAll('img[src*="/assets/img/"]');
 
-        if (!scope) {
-          // Optional debug log (uncomment to debug)
-          // console.log('[Lightbox] No post content container found');
-          return;
-        }
+        images.forEach((img) => {
+          // Skip if already processed (idempotency)
+          if (img.dataset.lightboxed === '1') return;
 
-        scope.querySelectorAll('img').forEach((img) => {
-          // skip if already wrapped in a link
+          // Skip if already wrapped in a link
           if (img.closest('a')) return;
 
-          const src = img.getAttribute('src');
-          if (!src) return;
+          // Get image source (use currentSrc if available, else src)
+          const imgSrc = img.currentSrc || img.src;
+          if (!imgSrc) return;
 
           // Skip inline images (data:, blob:)
-          if (src.startsWith('data:') || src.startsWith('blob:')) return;
+          if (imgSrc.startsWith('data:') || imgSrc.startsWith('blob:')) return;
 
-          // Only process local assets (accept /assets/ or baseurl/assets/)
-          // Check if src contains /assets/ (works with baseurl too)
-          if (!src.includes('/assets/')) return;
+          // Extract pathname to verify it contains /assets/img/
+          let pathname;
+          try {
+            pathname = new URL(imgSrc, window.location.origin).pathname;
+          } catch (e) {
+            // If URL parsing fails, use src as-is
+            pathname = imgSrc;
+          }
+
+          if (!pathname.includes('/assets/img/')) return;
 
           // Skip images inside special containers (figure, mermaid, math, etc.)
           if (img.closest('figure') || img.closest('.mermaid') || img.closest('.math') || img.closest('mjx-container')) {
@@ -334,50 +333,24 @@
             return;
           }
 
-          // Wrap function that checks size and wraps
-          const maybeWrap = () => {
-            // Skip if already processed (idempotency)
-            if (img.dataset.lightboxed === '1') return;
+          // Wrap image in lightbox link
+          // Protect against img.parentNode == null
+          if (!img.parentNode) return;
 
-            // Skip if image was already wrapped (double-check)
-            if (img.closest('a')) return;
-
-            // Skip tiny images (icons, badges, emojis)
-            // Check both naturalWidth (actual size) and width (rendered size)
-            const imgWidth = img.naturalWidth || img.width || 0;
-            if (imgWidth === 0) return; // Don't wrap if size unknown
-            if (imgWidth < 80) return;
-
-            const a = document.createElement('a');
-            a.href = src;
-            a.setAttribute('data-lightbox', 'post');
-            if (altRaw && !alt.includes('nolightbox')) {
-              a.setAttribute('data-title', altRaw);
-            }
-
-            img.parentNode.insertBefore(a, img);
-            a.appendChild(img);
-            img.dataset.lightboxed = '1'; // Mark as processed
-          };
-
-          // If image is already loaded, wrap immediately
-          // Otherwise wait for load event
-          if (img.complete && img.naturalWidth !== 0) {
-            maybeWrap();
-          } else {
-            img.addEventListener('load', maybeWrap, { once: true });
-            // Fallback: if load never fires (broken image), wrap anyway after a delay
-            setTimeout(() => {
-              if (!img.closest('a')) maybeWrap();
-            }, 1000);
+          const a = document.createElement('a');
+          a.href = imgSrc;
+          a.setAttribute('data-lightbox', 'post');
+          if (altRaw && !alt.includes('nolightbox')) {
+            a.setAttribute('data-title', altRaw);
           }
-        });
 
-        // Optional debug log (uncomment to debug)
-        // console.log('[Lightbox] Processed images in scope:', scope);
+          img.parentNode.insertBefore(a, img);
+          a.appendChild(img);
+          img.dataset.lightboxed = '1'; // Mark as processed
+        });
       }
 
-      // Run after DOM is ready
+      // Run once on DOMContentLoaded
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', wrapImages);
       } else {
