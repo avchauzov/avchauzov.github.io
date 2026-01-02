@@ -185,36 +185,35 @@
     <span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">state</span>
 </code></pre></div></div> <h2 id="best-practices">Best practices</h2> <p><strong>Use exponential backoff for rate limits</strong>. Set <code class="language-plaintext highlighter-rouge">backoff_coefficient</code> &gt; 1.5 (typically 2.0) and <code class="language-plaintext highlighter-rouge">maximum_interval</code> to prevent retry storms. Add jitter if calling shared services to avoid thundering herd effects.</p> <p><strong>Store references, not large payloads</strong>. Event History isn’t designed for petabyte storage. For large LLM outputs or document content, store only S3 URLs or database IDs in workflow state. Fetch actual data in Activities.</p> <p><strong>Monitor Event History size</strong>. Workflows exceeding 1000–2000 events should implement Continue-as-new. High event counts degrade replay performance and risk hitting platform limits.</p> <p><strong>Set appropriate timeouts</strong>. <code class="language-plaintext highlighter-rouge">start_to_close_timeout</code> should exceed typical activity duration but fail stuck calls quickly. <code class="language-plaintext highlighter-rouge">schedule_to_close_timeout</code> should account for total retry time including backoff periods. Missing timeouts risk infinite hangs.</p> <p><strong>Make Activities idempotent</strong>. Temporal guarantees at-least-once execution. Activities may execute multiple times. Use idempotency keys for payments or other non-repeatable operations.</p> <p><strong>Use Task Queues for resource isolation</strong>. Deploy GPU workers on dedicated queues with <code class="language-plaintext highlighter-rouge">max_concurrent_activities</code> limits. This implements Bulkhead pattern, preventing resource exhaustion and controlling costs.</p> <h2 id="conclusion">Conclusion</h2> <p>Temporal trades upfront complexity for long-term reliability. The determinism constraint and operational overhead (self-hosted requires Cassandra/Postgres, Elasticsearch for Visibility) make it overkill for simple batch jobs or stateless services.</p> <p>For LLM pipelines with expensive API calls, multi-hour execution times, or critical fault tolerance requirements, the architecture works. Automatic state recovery, configurable retry policies, and Time-Travel Debugging fix entire classes of production failures.</p> <p>Add Temporal when failure recovery and durable orchestration become blocking issues, not as a default architecture choice.</p> </div> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.5/dist/js/lightbox.min.js" integrity="sha256-A6jI5V9s1JznkWwsBaRK8kSeXLgIqQfxfnvdDOZEURY=" crossorigin="anonymous"></script> <script>
-      // Wait for both DOM and Lightbox2 to be ready
+      // Wait for DOM to be ready
       function wrapImages() {
-        // Try multiple selectors to find post content (fallback for different layouts)
-        const scope =
-          document.querySelector('.post-content #markdown-content') ||
-          document.querySelector('#markdown-content') ||
-          document.querySelector('.post-content') ||
-          document.querySelector('article.post-content') ||
-          document.querySelector('.post article') ||
-          document.querySelector('article');
+        // Select images directly by content signature (NO layout containers)
+        const images = document.querySelectorAll('img[src*="/assets/img/"]');
 
-        if (!scope) {
-          // Optional debug log (uncomment to debug)
-          // console.log('[Lightbox] No post content container found');
-          return;
-        }
+        images.forEach((img) => {
+          // Skip if already processed (idempotency)
+          if (img.dataset.lightboxed === '1') return;
 
-        scope.querySelectorAll('img').forEach((img) => {
-          // skip if already wrapped in a link
+          // Skip if already wrapped in a link
           if (img.closest('a')) return;
 
-          const src = img.getAttribute('src');
-          if (!src) return;
+          // Get image source (use currentSrc if available, else src)
+          const imgSrc = img.currentSrc || img.src;
+          if (!imgSrc) return;
 
           // Skip inline images (data:, blob:)
-          if (src.startsWith('data:') || src.startsWith('blob:')) return;
+          if (imgSrc.startsWith('data:') || imgSrc.startsWith('blob:')) return;
 
-          // Only process local assets (accept /assets/ or baseurl/assets/)
-          // Check if src contains /assets/ (works with baseurl too)
-          if (!src.includes('/assets/')) return;
+          // Extract pathname to verify it contains /assets/img/
+          let pathname;
+          try {
+            pathname = new URL(imgSrc, window.location.origin).pathname;
+          } catch (e) {
+            // If URL parsing fails, use src as-is
+            pathname = imgSrc;
+          }
+
+          if (!pathname.includes('/assets/img/')) return;
 
           // Skip images inside special containers (figure, mermaid, math, etc.)
           if (img.closest('figure') || img.closest('.mermaid') || img.closest('.math') || img.closest('mjx-container')) {
@@ -238,50 +237,24 @@
             return;
           }
 
-          // Wrap function that checks size and wraps
-          const maybeWrap = () => {
-            // Skip if already processed (idempotency)
-            if (img.dataset.lightboxed === '1') return;
+          // Wrap image in lightbox link
+          // Protect against img.parentNode == null
+          if (!img.parentNode) return;
 
-            // Skip if image was already wrapped (double-check)
-            if (img.closest('a')) return;
-
-            // Skip tiny images (icons, badges, emojis)
-            // Check both naturalWidth (actual size) and width (rendered size)
-            const imgWidth = img.naturalWidth || img.width || 0;
-            if (imgWidth === 0) return; // Don't wrap if size unknown
-            if (imgWidth < 80) return;
-
-            const a = document.createElement('a');
-            a.href = src;
-            a.setAttribute('data-lightbox', 'post');
-            if (altRaw && !alt.includes('nolightbox')) {
-              a.setAttribute('data-title', altRaw);
-            }
-
-            img.parentNode.insertBefore(a, img);
-            a.appendChild(img);
-            img.dataset.lightboxed = '1'; // Mark as processed
-          };
-
-          // If image is already loaded, wrap immediately
-          // Otherwise wait for load event
-          if (img.complete && img.naturalWidth !== 0) {
-            maybeWrap();
-          } else {
-            img.addEventListener('load', maybeWrap, { once: true });
-            // Fallback: if load never fires (broken image), wrap anyway after a delay
-            setTimeout(() => {
-              if (!img.closest('a')) maybeWrap();
-            }, 1000);
+          const a = document.createElement('a');
+          a.href = imgSrc;
+          a.setAttribute('data-lightbox', 'post');
+          if (altRaw && !alt.includes('nolightbox')) {
+            a.setAttribute('data-title', altRaw);
           }
-        });
 
-        // Optional debug log (uncomment to debug)
-        // console.log('[Lightbox] Processed images in scope:', scope);
+          img.parentNode.insertBefore(a, img);
+          a.appendChild(img);
+          img.dataset.lightboxed = '1'; // Mark as processed
+        });
       }
 
-      // Run after DOM is ready
+      // Run once on DOMContentLoaded
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', wrapImages);
       } else {

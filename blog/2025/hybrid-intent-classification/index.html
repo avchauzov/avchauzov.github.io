@@ -1,36 +1,35 @@
 <!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Hybrid intent classification: the rationale for production-grade shallow-model-first architectures | Andrey Chauzov </title> <meta name="author" content="Andrey Chauzov"> <meta name="description" content="Production chatbots route most requests through fast shallow classifiers, escalating to Large Language Models (LLMs) only on low-confidence queries. This hybrid architecture mitigates the latency and cost overheads of monolithic LLM solutions, achieving significant speed gains while preserving high classification accuracy."> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="/assets/img/favicon.jpg?ed2dca268ebdc422a98faa43e62555b2"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://avchauzov.github.io/blog/2025/hybrid-intent-classification/"> <script src="/assets/js/theme.js?edfc1e90e31d8c6ce7c66227207e381b"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?2a705f11095eac82317f1b662021ca56" media="none" id="highlight_theme_dark"> <script>
     initTheme();
   </script> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightbox2@2.11.5/dist/css/lightbox.min.css" integrity="sha256-uypRbsAiJcFInM/ndyI/JHpzNe6DtUNXaWEUWEPfMGo=" crossorigin="anonymous"> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Andrey Chauzov </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/about/">about </a> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <p>Intent classification is a key component in conversational AI systems. For smooth user experience, production systems require very low latency, specifically under 100ms. Relying only on resource-intensive <strong>Large Language Models (LLMs)</strong> for every user query leads to high latency and high operational costs. Conversely, using only a small, monolithic distilled model risks lower accuracy, particularly for edge cases. A practical strategy is the <strong>Hybrid Multi-Stage Routing</strong> paradigm: compact, specialized models manage the high volume of routine requests, while the computational resources of LLMs are used only when necessary.</p> <h3 id="how-it-works">How it works</h3> <p>This architecture is often called <strong>Hierarchical Inference (HI)</strong> or <strong>Uncertainty-Based Routing</strong>. It specifies a pipeline for processing user input.</p> <p><strong>Stage 1 — The Specialized Classifier (Shallow Language Model, SLM)</strong>. Despite the rise of LLMs, compact <strong>encoder-based</strong> models remain highly effective for high-throughput scenarios. These include optimized <strong>BERT-variants</strong>, <strong>contrastive learning models</strong>, and other distilled architectures. These compact SLMs (typically 5–20MB) perform the initial classification. They can achieve inference speeds significantly below 100ms, even on CPU-only infrastructure.</p> <p><strong>Stage 2 — Confidence and Escalation Gating</strong>. The SLM output includes a <strong>confidence score</strong> for its top prediction. This score is checked against an <strong>escalation threshold</strong> (typically between 0.7 and 0.9). If the predicted confidence is too low — meaning it falls below the threshold — the query is sent to the next processing stage.</p> <p><strong>Stage 3 — LLM Fallback and Refinement</strong>. Low-confidence queries are routed to a robust LLM. These models are used to resolve ambiguity present in low-confidence queries. This process, which engages the LLM for only 10–30% of total requests, is crucial for maintaining system accuracy while keeping high LLM costs under control.</p> <h3 id="production-performance">Production performance</h3> <p>The deployment of this hybrid architecture shows significant performance improvements:</p> <ul> <li> <strong>Latency Reduction</strong>: Average processing latency is reduced by 50% compared to monolithic LLM-only systems.</li> <li> <strong>Accuracy Preservation</strong>: The classification accuracy of the hybrid system is usually within $\pm 2\%$ from the accuracy of the standalone LLM.</li> <li> <strong>Cost Efficiency</strong>: A reduction in external API usage translates to an estimated 70–85% decrease in overall operational API costs.</li> </ul> <p>For instance, in a Natural Language Understanding (NLU) system for a complex domain, using a <strong>specialized, contrastive encoder model</strong> in Stage 1 yielded an accuracy of 90–94% for routine intents. The costly LLM fallback was invoked for only approximately 15% of the total query volume.</p> <h3 id="when-to-use-this-pattern">When to use this pattern</h3> <p>The decision to adopt this pattern depends on specific constraints and application requirements.</p> <p><strong>This hybrid routing pattern is recommended when</strong>:</p> <ul> <li>The latency requirement is very strict (e.g., $P_{95}$ latency must be less than 500ms).</li> <li>The system must process a high volume of requests (e.g., thousands of transactions per day).</li> <li>The majority of user intents are simple, repetitive, and easy to define.</li> </ul> <p><strong>Adoption is not recommended for</strong>:</p> <ul> <li>Initial prototypes or applications with low traffic, where the added complexity is not justified.</li> <li>Domains of extreme complexity where even simple queries need deep reasoning from a large model.</li> <li>Situations where there is not enough training data for the specialized SLM.</li> </ul> <h3 id="implementation-best-practices">Implementation best practices</h3> <p>Several implementation details matter for optimal performance.</p> <p><strong>Optimization of the Specialized Classifier (SLM)</strong>. It is effective to use <strong>knowledge distillation</strong> techniques, where the compact SLM is trained to replicate the predictions of the larger LLM. This helps transfer the LLM’s generalization capability to the compact model. Further efficiency is gained through <strong>quantization</strong> (e.g., INT8 or INT4), which reduces memory usage and increases inference speed.</p> <p><strong>Threshold Calibration</strong>. The selection of the confidence threshold is a critical hyperparameter. A threshold that is too low (e.g., 0.5) leads to unnecessary use of the costly LLM. A threshold that is too high (e.g., 0.95) results in lower accuracy because necessary escalations are blocked. An initial starting point of 0.75 is often used, followed by tuning based on the trade-off between accuracy and cost.</p> <p><strong>Drift Monitoring</strong>. User language and intent distribution change over time (concept and data drift). Monitoring the SLM average confidence scores is essential. A downward trend in average confidence indicates that the model requires <strong>retraining</strong> on recent data or that the threshold needs adjustment.</p> <hr> <p align="center"> <i>The Hybrid Intent Classification pattern represents a standard production approach. It combines the speed and efficiency of specialized encoder-based models — often overlooked in the LLM era — with the reasoning capacity of Large Language Models, using each component only when necessary.</i> </p> </div> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.5/dist/js/lightbox.min.js" integrity="sha256-A6jI5V9s1JznkWwsBaRK8kSeXLgIqQfxfnvdDOZEURY=" crossorigin="anonymous"></script> <script>
-      // Wait for both DOM and Lightbox2 to be ready
+      // Wait for DOM to be ready
       function wrapImages() {
-        // Try multiple selectors to find post content (fallback for different layouts)
-        const scope =
-          document.querySelector('.post-content #markdown-content') ||
-          document.querySelector('#markdown-content') ||
-          document.querySelector('.post-content') ||
-          document.querySelector('article.post-content') ||
-          document.querySelector('.post article') ||
-          document.querySelector('article');
+        // Select images directly by content signature (NO layout containers)
+        const images = document.querySelectorAll('img[src*="/assets/img/"]');
 
-        if (!scope) {
-          // Optional debug log (uncomment to debug)
-          // console.log('[Lightbox] No post content container found');
-          return;
-        }
+        images.forEach((img) => {
+          // Skip if already processed (idempotency)
+          if (img.dataset.lightboxed === '1') return;
 
-        scope.querySelectorAll('img').forEach((img) => {
-          // skip if already wrapped in a link
+          // Skip if already wrapped in a link
           if (img.closest('a')) return;
 
-          const src = img.getAttribute('src');
-          if (!src) return;
+          // Get image source (use currentSrc if available, else src)
+          const imgSrc = img.currentSrc || img.src;
+          if (!imgSrc) return;
 
           // Skip inline images (data:, blob:)
-          if (src.startsWith('data:') || src.startsWith('blob:')) return;
+          if (imgSrc.startsWith('data:') || imgSrc.startsWith('blob:')) return;
 
-          // Only process local assets (accept /assets/ or baseurl/assets/)
-          // Check if src contains /assets/ (works with baseurl too)
-          if (!src.includes('/assets/')) return;
+          // Extract pathname to verify it contains /assets/img/
+          let pathname;
+          try {
+            pathname = new URL(imgSrc, window.location.origin).pathname;
+          } catch (e) {
+            // If URL parsing fails, use src as-is
+            pathname = imgSrc;
+          }
+
+          if (!pathname.includes('/assets/img/')) return;
 
           // Skip images inside special containers (figure, mermaid, math, etc.)
           if (img.closest('figure') || img.closest('.mermaid') || img.closest('.math') || img.closest('mjx-container')) {
@@ -54,50 +53,24 @@
             return;
           }
 
-          // Wrap function that checks size and wraps
-          const maybeWrap = () => {
-            // Skip if already processed (idempotency)
-            if (img.dataset.lightboxed === '1') return;
+          // Wrap image in lightbox link
+          // Protect against img.parentNode == null
+          if (!img.parentNode) return;
 
-            // Skip if image was already wrapped (double-check)
-            if (img.closest('a')) return;
-
-            // Skip tiny images (icons, badges, emojis)
-            // Check both naturalWidth (actual size) and width (rendered size)
-            const imgWidth = img.naturalWidth || img.width || 0;
-            if (imgWidth === 0) return; // Don't wrap if size unknown
-            if (imgWidth < 80) return;
-
-            const a = document.createElement('a');
-            a.href = src;
-            a.setAttribute('data-lightbox', 'post');
-            if (altRaw && !alt.includes('nolightbox')) {
-              a.setAttribute('data-title', altRaw);
-            }
-
-            img.parentNode.insertBefore(a, img);
-            a.appendChild(img);
-            img.dataset.lightboxed = '1'; // Mark as processed
-          };
-
-          // If image is already loaded, wrap immediately
-          // Otherwise wait for load event
-          if (img.complete && img.naturalWidth !== 0) {
-            maybeWrap();
-          } else {
-            img.addEventListener('load', maybeWrap, { once: true });
-            // Fallback: if load never fires (broken image), wrap anyway after a delay
-            setTimeout(() => {
-              if (!img.closest('a')) maybeWrap();
-            }, 1000);
+          const a = document.createElement('a');
+          a.href = imgSrc;
+          a.setAttribute('data-lightbox', 'post');
+          if (altRaw && !alt.includes('nolightbox')) {
+            a.setAttribute('data-title', altRaw);
           }
-        });
 
-        // Optional debug log (uncomment to debug)
-        // console.log('[Lightbox] Processed images in scope:', scope);
+          img.parentNode.insertBefore(a, img);
+          a.appendChild(img);
+          img.dataset.lightboxed = '1'; // Mark as processed
+        });
       }
 
-      // Run after DOM is ready
+      // Run once on DOMContentLoaded
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', wrapImages);
       } else {

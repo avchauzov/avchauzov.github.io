@@ -49,36 +49,35 @@ Vocabulary:
                                         |
                                         +--&gt; [TechSupportAgent] (Subscribes)
 </code></pre></div></div> <h2 id="context-map-and-integration">Context map and integration</h2> <p>The <code class="language-plaintext highlighter-rouge">TriageAgent</code> (BC 1) doesn’t solve the ticket. It uses the <strong>Ubiquitous Language</strong> (<code class="language-plaintext highlighter-rouge">Category</code>, <code class="language-plaintext highlighter-rouge">Priority</code>) to classify it and then publishes a <code class="language-plaintext highlighter-rouge">TicketClassified</code> <strong>Domain Event</strong>.</p> <p>The <code class="language-plaintext highlighter-rouge">BillingAgent</code> (BC 2) and <code class="language-plaintext highlighter-rouge">TechSupportAgent</code> (BC 3) subscribe to this event, protected by <strong>Trust Boundaries</strong>. If <code class="language-plaintext highlighter-rouge">Category == "Billing"</code>, the <code class="language-plaintext highlighter-rouge">BillingAgent</code> activates. It uses an <strong>ACL</strong> to fetch the user’s payment history from an external CRM, then uses <strong>Context Engineering</strong> (RAG filtered by <code class="language-plaintext highlighter-rouge">user_id</code>) to find relevant past invoices and resolve the issue.</p> <hr> <table> <thead> <tr> <th style="text-align: left">Component</th> <th style="text-align: left">Technology</th> <th style="text-align: left">Latency (ms)</th> <th style="text-align: left">Notes</th> </tr> </thead> <tbody> <tr> <td style="text-align: left">Triage Agent</td> <td style="text-align: left">Fast/Cheap Model</td> <td style="text-align: left">350</td> <td style="text-align: left">Fast classification (BC 1)</td> </tr> <tr> <td style="text-align: left">Billing Agent</td> <td style="text-align: left">Powerful Model</td> <td style="text-align: left">1200</td> <td style="text-align: left">Handles refunds/invoices (BC 2)</td> </tr> <tr> <td style="text-align: left">Tech Support Agent</td> <td style="text-align: left">Powerful Model + RAG</td> <td style="text-align: left">1800</td> <td style="text-align: left">Troubleshooting KBase (BC 3)</td> </tr> <tr> <td style="text-align: left">CRM ACL</td> <td style="text-align: left">FastAPI + Pydantic</td> <td style="text-align: left">80</td> <td style="text-align: left">Fetches/sanitizes user data</td> </tr> </tbody> </table> <hr> <p>This architecture led to measurable production improvements by preventing context pollution.</p> <hr> <table> <thead> <tr> <th style="text-align: left">Metric</th> <th style="text-align: left">Before (Monolithic Agent)</th> <th style="text-align: left">After (DDD Multi-Agent)</th> </tr> </thead> <tbody> <tr> <td style="text-align: left">Avg. Resolution Time</td> <td style="text-align: left">240s</td> <td style="text-align: left">90s</td> </tr> <tr> <td style="text-align: left">Escalation to Human</td> <td style="text-align: left"><strong>45%</strong></td> <td style="text-align: left"><strong>22%</strong></td> </tr> <tr> <td style="text-align: left">Avg. LLM Cost / Ticket</td> <td style="text-align: left">~$0.08</td> <td style="text-align: left">~$0.03</td> </tr> </tbody> </table> <hr> <h1 id="when-not-to-use-domain-driven-design-for-ai">When not to use domain-driven design for AI</h1> <p>DDD introduces overhead — vocabulary definition, context mapping, event infrastructure.</p> <p>Avoid it when:</p> <ul> <li>The system is a simple RAG chatbot or prototype.</li> <li>You don’t yet know the final domain boundaries.</li> <li>Latency is critical (<code class="language-plaintext highlighter-rouge">&lt;200ms</code>) and each extra layer adds cost.</li> </ul> <p>In practice, teams find that DDD pays off only once the system exceeds ~5 agents or 3+ distinct data sources.</p> <h1 id="conclusion-and-next-steps">Conclusion and next steps</h1> <p>Domain-Driven Design gives AI engineers a framework to structure LLM systems that are otherwise chaotic and fragile. Its patterns — Bounded Contexts, Context Engineering, ACLs, and Domain Events — translate seamlessly into multi-agent and RAG architectures.</p> <p>Instead of a simple summary, here is a practical framework for implementation:</p> <ol> <li> <strong>Start small</strong>. Define a single Bounded Context for one agent. Focus entirely on its <strong>Ubiquitous Language</strong> — codify every entity (<code class="language-plaintext highlighter-rouge">User</code>, <code class="language-plaintext highlighter-rouge">Ticket</code>, <code class="language-plaintext highlighter-rouge">Policy</code>) in its prompt and Pydantic models.</li> <li> <strong>Build defenses</strong>. Wrap all external API calls (to databases, CRMs, or other services) in an <strong>Anti-Corruption Layer (ACL)</strong>. Do the same for the LLM’s final output to guarantee clean, structured data.</li> <li> <strong>Decouple to scale</strong>. Once a second agent is needed, do not make them call each other directly. Use <strong>Domain Events</strong> to communicate, ensuring the system remains asynchronous, fault-tolerant, and respects its <strong>Trust Boundaries</strong>.</li> </ol> <hr> <p align="center"> <i>When done right, DDD turns AI systems from experimental pipelines into resilient, auditable, and scalable software architectures fit for production.</i> </p> </div> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.5/dist/js/lightbox.min.js" integrity="sha256-A6jI5V9s1JznkWwsBaRK8kSeXLgIqQfxfnvdDOZEURY=" crossorigin="anonymous"></script> <script>
-      // Wait for both DOM and Lightbox2 to be ready
+      // Wait for DOM to be ready
       function wrapImages() {
-        // Try multiple selectors to find post content (fallback for different layouts)
-        const scope =
-          document.querySelector('.post-content #markdown-content') ||
-          document.querySelector('#markdown-content') ||
-          document.querySelector('.post-content') ||
-          document.querySelector('article.post-content') ||
-          document.querySelector('.post article') ||
-          document.querySelector('article');
+        // Select images directly by content signature (NO layout containers)
+        const images = document.querySelectorAll('img[src*="/assets/img/"]');
 
-        if (!scope) {
-          // Optional debug log (uncomment to debug)
-          // console.log('[Lightbox] No post content container found');
-          return;
-        }
+        images.forEach((img) => {
+          // Skip if already processed (idempotency)
+          if (img.dataset.lightboxed === '1') return;
 
-        scope.querySelectorAll('img').forEach((img) => {
-          // skip if already wrapped in a link
+          // Skip if already wrapped in a link
           if (img.closest('a')) return;
 
-          const src = img.getAttribute('src');
-          if (!src) return;
+          // Get image source (use currentSrc if available, else src)
+          const imgSrc = img.currentSrc || img.src;
+          if (!imgSrc) return;
 
           // Skip inline images (data:, blob:)
-          if (src.startsWith('data:') || src.startsWith('blob:')) return;
+          if (imgSrc.startsWith('data:') || imgSrc.startsWith('blob:')) return;
 
-          // Only process local assets (accept /assets/ or baseurl/assets/)
-          // Check if src contains /assets/ (works with baseurl too)
-          if (!src.includes('/assets/')) return;
+          // Extract pathname to verify it contains /assets/img/
+          let pathname;
+          try {
+            pathname = new URL(imgSrc, window.location.origin).pathname;
+          } catch (e) {
+            // If URL parsing fails, use src as-is
+            pathname = imgSrc;
+          }
+
+          if (!pathname.includes('/assets/img/')) return;
 
           // Skip images inside special containers (figure, mermaid, math, etc.)
           if (img.closest('figure') || img.closest('.mermaid') || img.closest('.math') || img.closest('mjx-container')) {
@@ -102,50 +101,24 @@ Vocabulary:
             return;
           }
 
-          // Wrap function that checks size and wraps
-          const maybeWrap = () => {
-            // Skip if already processed (idempotency)
-            if (img.dataset.lightboxed === '1') return;
+          // Wrap image in lightbox link
+          // Protect against img.parentNode == null
+          if (!img.parentNode) return;
 
-            // Skip if image was already wrapped (double-check)
-            if (img.closest('a')) return;
-
-            // Skip tiny images (icons, badges, emojis)
-            // Check both naturalWidth (actual size) and width (rendered size)
-            const imgWidth = img.naturalWidth || img.width || 0;
-            if (imgWidth === 0) return; // Don't wrap if size unknown
-            if (imgWidth < 80) return;
-
-            const a = document.createElement('a');
-            a.href = src;
-            a.setAttribute('data-lightbox', 'post');
-            if (altRaw && !alt.includes('nolightbox')) {
-              a.setAttribute('data-title', altRaw);
-            }
-
-            img.parentNode.insertBefore(a, img);
-            a.appendChild(img);
-            img.dataset.lightboxed = '1'; // Mark as processed
-          };
-
-          // If image is already loaded, wrap immediately
-          // Otherwise wait for load event
-          if (img.complete && img.naturalWidth !== 0) {
-            maybeWrap();
-          } else {
-            img.addEventListener('load', maybeWrap, { once: true });
-            // Fallback: if load never fires (broken image), wrap anyway after a delay
-            setTimeout(() => {
-              if (!img.closest('a')) maybeWrap();
-            }, 1000);
+          const a = document.createElement('a');
+          a.href = imgSrc;
+          a.setAttribute('data-lightbox', 'post');
+          if (altRaw && !alt.includes('nolightbox')) {
+            a.setAttribute('data-title', altRaw);
           }
-        });
 
-        // Optional debug log (uncomment to debug)
-        // console.log('[Lightbox] Processed images in scope:', scope);
+          img.parentNode.insertBefore(a, img);
+          a.appendChild(img);
+          img.dataset.lightboxed = '1'; // Mark as processed
+        });
       }
 
-      // Run after DOM is ready
+      // Run once on DOMContentLoaded
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', wrapImages);
       } else {
