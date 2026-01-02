@@ -1,6 +1,6 @@
 <!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Semantic prompt caching: when LLM-judge beats exact match | Andrey Chauzov </title> <meta name="author" content="Andrey Chauzov"> <meta name="description" content="Standard prompt caching requires exact prefix match. LLM-Judge validates semantic equivalence, rescuing cache hits on paraphrases while adding controllable latency overhead."> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="/assets/img/favicon.jpg?ed2dca268ebdc422a98faa43e62555b2"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://avchauzov.github.io/blog/2025/llm-judge-semantic-caching/"> <script src="/assets/js/theme.js?edfc1e90e31d8c6ce7c66227207e381b"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?2a705f11095eac82317f1b662021ca56" media="none" id="highlight_theme_dark"> <script>
     initTheme();
-  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Andrey Chauzov </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/about/">about </a> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <p>Prompt caching cuts latency by <strong>85%</strong> — but breaks completely on paraphrases. Change “Show sales data” to “Display sales data” and you get a cache miss, forcing full regeneration at 10x the cost.</p> <p>The reason is simple: KV-Cache works at token level. The system reuses precomputed Key-Value tensors only when input sequences match exactly. No semantic understanding at this layer.</p> <h3 id="the-llm-judge-approach">The LLM-judge approach</h3> <p>Instead of exact matching, use a small LLM to validate semantic equivalence. The judge determines if a cached query-response pair works for the new query — checking intent, not tokens.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">semantic_cache_lookup</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">vector_store</span><span class="p">,</span> <span class="n">judge_llm</span><span class="p">):</span>
+  </script> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightbox2@2.11.5/dist/css/lightbox.min.css" integrity="sha256-uypRbsAiJcFInM/ndyI/JHpzNe6DtUNXaWEUWEPfMGo=" crossorigin="anonymous"> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Andrey Chauzov </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/about/">about </a> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <p>Prompt caching cuts latency by <strong>85%</strong> — but breaks completely on paraphrases. Change “Show sales data” to “Display sales data” and you get a cache miss, forcing full regeneration at 10x the cost.</p> <p>The reason is simple: KV-Cache works at token level. The system reuses precomputed Key-Value tensors only when input sequences match exactly. No semantic understanding at this layer.</p> <h3 id="the-llm-judge-approach">The LLM-judge approach</h3> <p>Instead of exact matching, use a small LLM to validate semantic equivalence. The judge determines if a cached query-response pair works for the new query — checking intent, not tokens.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">semantic_cache_lookup</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">vector_store</span><span class="p">,</span> <span class="n">judge_llm</span><span class="p">):</span>
     <span class="c1"># Fast embedding filter (FAISS, &lt;50ms)
 </span>    <span class="n">candidates</span> <span class="o">=</span> <span class="n">vector_store</span><span class="p">.</span><span class="nf">similarity_search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
 
@@ -29,6 +29,93 @@
     <span class="n">vector_store</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>  <span class="c1"># Cache only high-confidence
 </span>
 <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span>
-</code></pre></div></div> <p>This adds <strong>zero latency to retrieval</strong>—validation happens at write time, not read time.</p> <p><strong>Multi-turn conversations</strong>: include conversation state in equivalence check. Same query in different dialogue contexts needs different responses.</p> <p><strong>Monitor false positive rates</strong>. Wrong cached responses hurt users. Track through downstream metrics (feedback, task success) and adjust thresholds.</p> </div> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+</code></pre></div></div> <p>This adds <strong>zero latency to retrieval</strong>—validation happens at write time, not read time.</p> <p><strong>Multi-turn conversations</strong>: include conversation state in equivalence check. Same query in different dialogue contexts needs different responses.</p> <p><strong>Monitor false positive rates</strong>. Wrong cached responses hurt users. Track through downstream metrics (feedback, task success) and adjust thresholds.</p> </div> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.5/dist/js/lightbox.min.js" integrity="sha256-A6jI5V9s1JznkWwsBaRK8kSeXLgIqQfxfnvdDOZEURY=" crossorigin="anonymous"></script> <script>
+      // Wait for both DOM and Lightbox2 to be ready
+      function wrapImages() {
+        const scope = document.querySelector('.post-content #markdown-content');
+        if (!scope) return;
+
+        scope.querySelectorAll('img').forEach((img) => {
+          // skip if already wrapped in a link
+          if (img.closest('a')) return;
+
+          const src = img.getAttribute('src');
+          if (!src) return;
+
+          // Skip inline images (data:, blob:)
+          if (src.startsWith('data:') || src.startsWith('blob:')) return;
+
+          // Only process local assets (optional safety filter)
+          if (!src.startsWith('/assets/')) return;
+
+          // Skip images inside special containers (figure, mermaid, math, etc.)
+          if (img.closest('figure') || img.closest('.mermaid') || img.closest('.math') || img.closest('mjx-container')) {
+            return;
+          }
+
+          // Skip if explicitly marked as no-lightbox (via alt or class)
+          const altRaw = img.getAttribute('alt') || '';
+          const alt = altRaw.toLowerCase();
+          if (alt.includes('nolightbox') || img.classList.contains('no-lightbox')) {
+            return;
+          }
+
+          // Skip images with common icon/emoji classes
+          if (
+            img.classList.contains('emoji') ||
+            img.classList.contains('icon') ||
+            img.classList.contains('badge') ||
+            img.classList.contains('avatar')
+          ) {
+            return;
+          }
+
+          // Wrap function that checks size and wraps
+          const maybeWrap = () => {
+            // Skip if already processed (idempotency)
+            if (img.dataset.lightboxed === '1') return;
+
+            // Skip if image was already wrapped (double-check)
+            if (img.closest('a')) return;
+
+            // Skip tiny images (icons, badges, emojis)
+            // Check both naturalWidth (actual size) and width (rendered size)
+            const imgWidth = img.naturalWidth || img.width || 0;
+            if (imgWidth === 0) return; // Don't wrap if size unknown
+            if (imgWidth < 80) return;
+
+            const a = document.createElement('a');
+            a.href = src;
+            a.setAttribute('data-lightbox', 'post');
+            if (altRaw && !alt.includes('nolightbox')) {
+              a.setAttribute('data-title', altRaw);
+            }
+
+            img.parentNode.insertBefore(a, img);
+            a.appendChild(img);
+            img.dataset.lightboxed = '1'; // Mark as processed
+          };
+
+          // If image is already loaded, wrap immediately
+          // Otherwise wait for load event
+          if (img.complete && img.naturalWidth !== 0) {
+            maybeWrap();
+          } else {
+            img.addEventListener('load', maybeWrap, { once: true });
+            // Fallback: if load never fires (broken image), wrap anyway after a delay
+            setTimeout(() => {
+              if (!img.closest('a')) maybeWrap();
+            }, 1000);
+          }
+        });
+      }
+
+      // Run after DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', wrapImages);
+      } else {
+        wrapImages();
+      }
+    </script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
     addBackToTop();
   </script> </body> </html>
