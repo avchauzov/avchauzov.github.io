@@ -60,8 +60,20 @@ Ambiguous or mixed sentiment should still be classified as neutral."
 </code></pre></div></div> <p><strong>Note</strong>: Proxy score quality depends on prompt format matching. For production, use the same classification prompt structure for both models.</p> <h3 id="pattern-architecture-and-fallback">Pattern: Architecture and Fallback</h3> <p>System-level decisions often outweigh the previous methods.</p> <p><strong>Classical ML Fallback</strong>: For routine classification with labeled data, BERT-like classifiers provide superior calibration (<strong>ECE</strong> &lt; 10%) at 10× lower cost.</p> <p>LLM classification is justified primarily when training data is unavailable or categories change frequently.</p> <h3 id="implementation-priority">Implementation priority</h3> <ol> <li> <strong>Baseline</strong>: Start with verbalized confidence + reasoning field + Null Category</li> <li> <p><strong>Calibration</strong>:</p> <ul> <li>Start with <strong>Temperature Scaling</strong> and measure <strong>ECE</strong> on validation set.</li> <li>If <strong>ECE</strong> &gt; 0.1 after Temperature Scaling and you have &gt;1000 samples, try <strong>Isotonic Regression</strong>.</li> <li>For binary classification specifically, <strong>Platt Scaling</strong> is an alternative to Isotonic.</li> </ul> </li> <li> <strong>High-Stakes</strong>: For accuracy-critical paths, combine multiple patterns: <ul> <li>Use <strong>Sampling Consistency</strong> for hallucination detection</li> <li>Use <strong>Two-stage Generation</strong> if <strong>Out-of-Distribution</strong> inputs are expected</li> <li>Accept higher latency/cost as risk mitigation</li> </ul> </li> </ol> <p>Effective production classifiers use a hybrid approach: verbalized confidence for fast filtering, and sampling for borderline cases where the initial calibrated score falls in the uncertainty range (0.4–0.6).</p> </div> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.5/dist/js/lightbox.min.js" integrity="sha256-A6jI5V9s1JznkWwsBaRK8kSeXLgIqQfxfnvdDOZEURY=" crossorigin="anonymous"></script> <script>
       // Wait for both DOM and Lightbox2 to be ready
       function wrapImages() {
-        const scope = document.querySelector('.post-content #markdown-content');
-        if (!scope) return;
+        // Try multiple selectors to find post content (fallback for different layouts)
+        const scope =
+          document.querySelector('.post-content #markdown-content') ||
+          document.querySelector('#markdown-content') ||
+          document.querySelector('.post-content') ||
+          document.querySelector('article.post-content') ||
+          document.querySelector('.post article') ||
+          document.querySelector('article');
+
+        if (!scope) {
+          // Optional debug log (uncomment to debug)
+          // console.log('[Lightbox] No post content container found');
+          return;
+        }
 
         scope.querySelectorAll('img').forEach((img) => {
           // skip if already wrapped in a link
@@ -73,8 +85,9 @@ Ambiguous or mixed sentiment should still be classified as neutral."
           // Skip inline images (data:, blob:)
           if (src.startsWith('data:') || src.startsWith('blob:')) return;
 
-          // Only process local assets (optional safety filter)
-          if (!src.startsWith('/assets/')) return;
+          // Only process local assets (accept /assets/ or baseurl/assets/)
+          // Check if src contains /assets/ (works with baseurl too)
+          if (!src.includes('/assets/')) return;
 
           // Skip images inside special containers (figure, mermaid, math, etc.)
           if (img.closest('figure') || img.closest('.mermaid') || img.closest('.math') || img.closest('mjx-container')) {
@@ -136,6 +149,9 @@ Ambiguous or mixed sentiment should still be classified as neutral."
             }, 1000);
           }
         });
+
+        // Optional debug log (uncomment to debug)
+        // console.log('[Lightbox] Processed images in scope:', scope);
       }
 
       // Run after DOM is ready
