@@ -71,7 +71,7 @@ This coordinate descent approach reduces search space while maintaining optimiza
 
 ### Practical implementation notes
 
-Field weight optimization requires validation set stratification. Query types (factual vs. conceptual) may require different weight configurations. If optimal weights vary significantly across strata, per-query routing should be considered.
+Field weight optimization requires validation set stratification. Query types (factual vs conceptual) may require different weight configurations. If optimal weights vary significantly across strata, per-query routing should be considered.
 
 For legal/compliance corpora with structured sections (statute references, definitions, procedures), hierarchical tuning typically yields 3–5% NDCG@10 improvement over flat $\alpha=0.5$ baseline. Latency remains unchanged.
 
