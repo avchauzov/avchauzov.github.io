@@ -24,49 +24,35 @@
     Position should have NO influence.
 </span><span class="sh">"""</span>
 </code></pre></div></div> <p>This reduced the position bias from 68% to 58%. While a positive shift, it is empirically less <strong>robust</strong> and reliable than the structural solution provided by position swapping.</p> <h3 id="conclusion-and-takeaway">Conclusion and takeaway</h3> <p>Position bias is a major source of error in LLM-as-a-Judge evaluations. Position swapping is the most reliable fix, transforming a biased pipeline into a trustworthy evaluation tool.</p> </div> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.5/dist/js/lightbox.min.js" integrity="sha256-A6jI5V9s1JznkWwsBaRK8kSeXLgIqQfxfnvdDOZEURY=" crossorigin="anonymous"></script> <script>
-      // Wait for DOM to be ready
       function wrapImages() {
-        // Select images directly by content signature (NO layout containers)
         const images = document.querySelectorAll('img[src*="/assets/img/"]');
 
         images.forEach((img) => {
-          // Skip if already processed (idempotency)
           if (img.dataset.lightboxed === '1') return;
-
-          // Skip if already wrapped in a link
           if (img.closest('a')) return;
 
-          // Get image source (use currentSrc if available, else src)
           const imgSrc = img.currentSrc || img.src;
           if (!imgSrc) return;
-
-          // Skip inline images (data:, blob:)
           if (imgSrc.startsWith('data:') || imgSrc.startsWith('blob:')) return;
 
-          // Extract pathname to verify it contains /assets/img/
           let pathname;
           try {
             pathname = new URL(imgSrc, window.location.origin).pathname;
           } catch (e) {
-            // If URL parsing fails, use src as-is
             pathname = imgSrc;
           }
 
           if (!pathname.includes('/assets/img/')) return;
-
-          // Skip images inside special containers (figure, mermaid, math, etc.)
           if (img.closest('figure') || img.closest('.mermaid') || img.closest('.math') || img.closest('mjx-container')) {
             return;
           }
 
-          // Skip if explicitly marked as no-lightbox (via alt or class)
           const altRaw = img.getAttribute('alt') || '';
           const alt = altRaw.toLowerCase();
           if (alt.includes('nolightbox') || img.classList.contains('no-lightbox')) {
             return;
           }
 
-          // Skip images with common icon/emoji classes
           if (
             img.classList.contains('emoji') ||
             img.classList.contains('icon') ||
@@ -76,29 +62,39 @@
             return;
           }
 
-          // Wrap image in lightbox link
-          // Protect against img.parentNode == null
           if (!img.parentNode) return;
 
           const a = document.createElement('a');
           a.href = imgSrc;
           a.setAttribute('data-lightbox', 'post');
-          if (altRaw && !alt.includes('nolightbox')) {
+          if (altRaw) {
             a.setAttribute('data-title', altRaw);
           }
 
           img.parentNode.insertBefore(a, img);
           a.appendChild(img);
-          img.dataset.lightboxed = '1'; // Mark as processed
+          img.dataset.lightboxed = '1';
         });
       }
 
-      // Run once on DOMContentLoaded
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', wrapImages);
       } else {
         wrapImages();
       }
+
+      document.addEventListener(
+        'click',
+        (e) => {
+          const a = e.target.closest('a[data-lightbox="post"]');
+          if (!a) return;
+          if (window.lightbox && !window.__lbConfigured) {
+            lightbox.option({ positionFromTop: 80 });
+            window.__lbConfigured = true;
+          }
+        },
+        { capture: true }
+      );
     </script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
     addBackToTop();
   </script> </body> </html>
