@@ -6,9 +6,9 @@ body {
   padding-bottom: 70px;
   color: var(--global-text-color);
   background-color: var(--global-bg-color);
-  font-size: 16px; // Ensure minimum 16px for readability
-  line-height: 1.6; // Improved line-height for better scanning (160%)
-  font-weight: 400; // Normal weight for body text
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 400;
 
   h1,
   h2,
@@ -20,7 +20,6 @@ body {
   }
 }
 
-// Main content container with proper padding
 .container {
   max-width: $max-content-width;
   padding-left: 1.5rem;
@@ -33,12 +32,10 @@ body {
 }
 
 body.fixed-top-nav {
-  // Add some padding for the nav-bar.
   padding-top: 56px;
 }
 
 body.sticky-bottom-footer {
-  // Remove padding below footer.
   padding-bottom: 0;
 }
 
@@ -67,7 +64,6 @@ body.sticky-bottom-footer {
 * Post content readability
 *****************************************************************************/
 
-// Narrow text blocks for better readability; tables/images remain full width
 .post-content #markdown-content {
   > p,
   > ul,
@@ -88,8 +84,6 @@ body.sticky-bottom-footer {
   }
 }
 
-/* --- Images: keep same width as text column --- */
-/* Target post images directly by content signature (NO layout containers) */
 img[src*="/assets/img/"] {
   width: min(100%, 75ch);
   height: auto;
@@ -97,9 +91,6 @@ img[src*="/assets/img/"] {
   margin: 1.5rem auto;
 }
 
-/* --- Lightbox2 improvements --- */
-
-/* Ensure captions are visible (if theme hides them) */
 .lb-data .lb-caption {
   display: block !important;
   font-size: 0.95em;
@@ -115,7 +106,6 @@ img[src*="/assets/img/"] {
   font-size: 0.85em;
 }
 
-/* Improve centering by constraining max-height */
 .lb-image {
   max-height: calc(100vh - 160px) !important;
   width: auto !important;

@@ -32,12 +32,12 @@ The difference is best understood visually.
 **The Trap (Mixed Concerns)**:
 Here, the Reflector and Evaluator are effectively the same entity or share the same goal. The agent stops as soon as it finds "good enough" information, prone to confirmation bias.
 
-![The "Lazy Loop": High quality scores trigger premature stopping before the topic is fully explored.](/assets/img/2025-12-15-reflection-evaluation-agent-critic/1.png)
+![](/assets/img/2025-12-15-reflection-evaluation-agent-critic/1.png)
 
 **The Solution (Separated Concerns)**:
 Here, the **Reflector** acts as an architect ensuring the structure is built, while the **Evaluator** acts as a separate quality gate. The agent stops only when the _structure_ is complete. Quality is checked only afterwards.
 
-![Separated Architecture: The Reflector drives saturation; the Evaluator judges the final output.](/assets/img/2025-12-15-reflection-evaluation-agent-critic/2.png)
+![](/assets/img/2025-12-15-reflection-evaluation-agent-critic/2.png)
 
 ## The reflector: Engine of curiosity
 

@@ -21,7 +21,7 @@ The problem isn't a lack of validation; it is validating in a vacuum. Component 
 
 AI pipelines are probabilistic chains.
 
-![The Probability Leak. How compounded errors degrade system performance despite high individual component scores.](/assets/img/2025-12-19-metric-gap-e2e-evaluation/1.png)
+![](/assets/img/2025-12-19-metric-gap-e2e-evaluation/1.png)
 
 The diagram illustrates error compounding in a typical RAG pipeline. Each component's failure probability multiplies, creating a "probability leak" where system-level performance degrades faster than component metrics suggest.
 
@@ -35,7 +35,7 @@ This failure mode requires systematic diagnosis. The Drill-Down methodology prov
 
 To avoid wasted engineering effort, evaluation should work **backwards** from the business metric. Do not start by asking "How do we improve retrieval?" Start by asking "Why is the Task Success Rate low?" and drill down until the technical bottleneck is isolated.
 
-![The Drill-Down Strategy. A decision tree for tracing business metric failures back to specific technical bottlenecks.](/assets/img/2025-12-19-metric-gap-e2e-evaluation/2.png)
+![](/assets/img/2025-12-19-metric-gap-e2e-evaluation/2.png)
 
 ### Step 1: defining success criteria
 

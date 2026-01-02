@@ -281,49 +281,35 @@
     ></script>
     <!-- Auto-wrap images in lightbox links -->
     <script>
-      // Wait for DOM to be ready
       function wrapImages() {
-        // Select images directly by content signature (NO layout containers)
         const images = document.querySelectorAll('img[src*="/assets/img/"]');
 
         images.forEach((img) => {
-          // Skip if already processed (idempotency)
           if (img.dataset.lightboxed === '1') return;
-
-          // Skip if already wrapped in a link
           if (img.closest('a')) return;
 
-          // Get image source (use currentSrc if available, else src)
           const imgSrc = img.currentSrc || img.src;
           if (!imgSrc) return;
-
-          // Skip inline images (data:, blob:)
           if (imgSrc.startsWith('data:') || imgSrc.startsWith('blob:')) return;
 
-          // Extract pathname to verify it contains /assets/img/
           let pathname;
           try {
             pathname = new URL(imgSrc, window.location.origin).pathname;
           } catch (e) {
-            // If URL parsing fails, use src as-is
             pathname = imgSrc;
           }
 
           if (!pathname.includes('/assets/img/')) return;
-
-          // Skip images inside special containers (figure, mermaid, math, etc.)
           if (img.closest('figure') || img.closest('.mermaid') || img.closest('.math') || img.closest('mjx-container')) {
             return;
           }
 
-          // Skip if explicitly marked as no-lightbox (via alt or class)
           const altRaw = img.getAttribute('alt') || '';
           const alt = altRaw.toLowerCase();
           if (alt.includes('nolightbox') || img.classList.contains('no-lightbox')) {
             return;
           }
 
-          // Skip images with common icon/emoji classes
           if (
             img.classList.contains('emoji') ||
             img.classList.contains('icon') ||
@@ -333,29 +319,39 @@
             return;
           }
 
-          // Wrap image in lightbox link
-          // Protect against img.parentNode == null
           if (!img.parentNode) return;
 
           const a = document.createElement('a');
           a.href = imgSrc;
           a.setAttribute('data-lightbox', 'post');
-          if (altRaw && !alt.includes('nolightbox')) {
+          if (altRaw) {
             a.setAttribute('data-title', altRaw);
           }
 
           img.parentNode.insertBefore(a, img);
           a.appendChild(img);
-          img.dataset.lightboxed = '1'; // Mark as processed
+          img.dataset.lightboxed = '1';
         });
       }
 
-      // Run once on DOMContentLoaded
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', wrapImages);
       } else {
         wrapImages();
       }
+
+      document.addEventListener(
+        'click',
+        (e) => {
+          const a = e.target.closest('a[data-lightbox="post"]');
+          if (!a) return;
+          if (window.lightbox && !window.__lbConfigured) {
+            lightbox.option({ positionFromTop: 80 });
+            window.__lbConfigured = true;
+          }
+        },
+        { capture: true }
+      );
     </script>
   {% endif %}
   {% if page.images.photoswipe %}
