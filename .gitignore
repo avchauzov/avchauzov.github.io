@@ -16,3 +16,8 @@ temp
 _posts/STYLE_GUIDE.md
 .vscode/
 *.bkp
+.cursor/
+.cursorrules
+.gitignore
+AGENTS.md
+CLAUDE.md

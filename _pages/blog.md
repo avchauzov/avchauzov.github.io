@@ -2,6 +2,7 @@
 layout: default
 permalink: /
 title: blog
+seo_title: AI Engineering Insights
 nav: true
 nav_order: 1
 pagination:
