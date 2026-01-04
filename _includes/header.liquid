@@ -43,34 +43,23 @@
 
       <div class="collapse navbar-collapse text-right" id="navbarNav">
         <ul class="navbar-nav ml-auto flex-nowrap">
+          {%- comment -%} Canonical current URL for menu logic {%- endcomment -%}
           {% assign current = page.url | replace: '//', '/' %}
-
-          {%- comment -%} GitHub Pages/Jekyll иногда отдаёт главную как /index.html {%- endcomment -%}
-          {% if current == '/index.html' %}
-            {% assign current = '/' %}
-          {% endif %}
-
-          {%- comment -%} Нормализуем trailing slash для не-root {%- endcomment -%}
+          {% assign current = current | replace: '/index.html', '/' %}
           {% if current != '/' and (current | slice: -1) != '/' %}
             {% assign current = current | append: '/' %}
           {% endif %}
-
-          {%- comment -%} На всякий — убрать двойные слэши после append {%- endcomment -%}
           {% assign current = current | replace: '//', '/' %}
 
-          {% assign is_home  = current == '/' %}
-          {% assign is_about = current == '/about/' %}
+          <!-- DEBUG page.url={{ page.url }} current={{ current }} -->
 
-          <!-- DEBUG page.url={{ page.url }} current={{ current }} is_home={{ is_home }} is_about={{ is_about }} -->
-          <!-- DEBUG navbar rendered -->
-
-          {%- unless is_home -%}
+          {%- unless current == '/' -%}
             <li class="nav-item">
               <a class="nav-link" href="{{ '/' | relative_url }}">blog</a>
             </li>
           {%- endunless -%}
 
-          {%- unless is_about -%}
+          {%- unless current == '/about/' -%}
             <li class="nav-item">
               <a class="nav-link" href="{{ '/about/' | relative_url }}">about</a>
             </li>
