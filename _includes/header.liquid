@@ -8,9 +8,7 @@
           <span class="navbar-name">
             {% if site.title == 'blank' %}
               {% if site.first_name %}
-                <span class="font-weight-bold">
-                  {{- site.first_name -}}
-                </span>
+                {{- site.first_name -}}
               {% endif %}
               {% if site.middle_name %}
                 {{- site.middle_name -}}
@@ -45,18 +43,33 @@
 
       <div class="collapse navbar-collapse text-right" id="navbarNav">
         <ul class="navbar-nav ml-auto flex-nowrap">
-          {% assign current = page.url %}
-          {% if current != '/' and current != '' and (current | slice: -1) != '/' %}
+          {% assign current = page.url | replace: '//', '/' %}
+
+          {%- comment -%} GitHub Pages/Jekyll иногда отдаёт главную как /index.html {%- endcomment -%}
+          {% if current == '/index.html' %}
+            {% assign current = '/' %}
+          {% endif %}
+
+          {%- comment -%} Нормализуем trailing slash для не-root {%- endcomment -%}
+          {% if current != '/' and (current | slice: -1) != '/' %}
             {% assign current = current | append: '/' %}
           {% endif %}
-          <!-- DEBUG page.url={{ page.url }} current={{ current }} -->
-          {% assign is_home = current == '/' or current == '/page/1/' %}
-          {% assign is_about = current == '/about/' or current == '/about' %}
+
+          {%- comment -%} На всякий — убрать двойные слэши после append {%- endcomment -%}
+          {% assign current = current | replace: '//', '/' %}
+
+          {% assign is_home  = current == '/' %}
+          {% assign is_about = current == '/about/' %}
+
+          <!-- DEBUG page.url={{ page.url }} current={{ current }} is_home={{ is_home }} is_about={{ is_about }} -->
+          <!-- DEBUG navbar rendered -->
+
           {%- unless is_home -%}
             <li class="nav-item">
               <a class="nav-link" href="{{ '/' | relative_url }}">blog</a>
             </li>
           {%- endunless -%}
+
           {%- unless is_about -%}
             <li class="nav-item">
               <a class="nav-link" href="{{ '/about/' | relative_url }}">about</a>
