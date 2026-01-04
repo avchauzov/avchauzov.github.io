@@ -49,14 +49,16 @@
           {% if current != '/' and current != '' and (current | slice: -1) != '/' %}
             {% assign current = current | append: '/' %}
           {% endif %}
+
           {%- unless current == '/' -%}
             <li class="nav-item">
-              <a class="nav-link" href="{{ '/' | relative_url }}">Blog</a>
+              <a class="nav-link" href="{{ '/' | relative_url }}">blog</a>
             </li>
           {%- endunless -%}
+
           {%- unless current == '/about/' -%}
             <li class="nav-item">
-              <a class="nav-link" href="{{ '/about/' | relative_url }}">About</a>
+              <a class="nav-link" href="{{ '/about/' | relative_url }}">about</a>
             </li>
           {%- endunless -%}
           {% if site.search_enabled %}

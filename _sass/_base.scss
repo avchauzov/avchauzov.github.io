@@ -357,20 +357,23 @@ ul.task-list input[type="checkbox"] {
   }
 
   .navbar-brand {
-    color: var(--global-text-color);
+    font-family: inherit;
     white-space: nowrap;
+    color: var(--global-text-color);
 
     .navbar-name,
     .navbar-sep,
     .navbar-tagline {
+      font-family: inherit;
+      font-weight: 400;
+      letter-spacing: normal;
+      text-transform: none;
       display: inline;
     }
 
     .navbar-tagline {
-      font-size: 0.875rem;
-      color: var(--global-text-color);
-      opacity: 0.7;
-      font-weight: normal;
+      opacity: 0.8;
+      font-size: 0.95em;
     }
   }
 
