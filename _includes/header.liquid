@@ -91,9 +91,11 @@
                 {% elsif p.permalink == '/' and page.layout == 'post' %}
                   {% assign is_active = true %}
                 {% endif %}
-                {% unless is_active and page.layout != 'post' %}
+                {% assign page_url = p.url | remove: 'index.html' %}
+                {% assign normalized_page_url = page.url | remove: 'index.html' %}
+                {% assign is_current_url = normalized_page_url == page_url or normalized_page_url == page_url | append: '/' or page_url == normalized_page_url | append: '/' %}
+                {% unless is_current_url and page.layout != 'post' %}
                   <li class="nav-item {% if is_active %}active{% endif %}">
-                    {% assign page_url = p.url | remove: 'index.html' %}
                     <a class="nav-link" href="{{ page_url | relative_url }}">
                       {{- p.title }}
                       {% if is_active %}
