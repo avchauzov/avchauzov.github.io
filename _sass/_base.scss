@@ -358,34 +358,19 @@ ul.task-list input[type="checkbox"] {
 
   .navbar-brand {
     color: var(--global-text-color);
-    line-height: 1.2;
+    white-space: nowrap;
 
-    .navbar-name {
-      line-height: 1.2;
+    .navbar-name,
+    .navbar-sep,
+    .navbar-tagline {
+      display: inline;
     }
 
     .navbar-tagline {
-      display: none;
-      font-size: 0.75rem;
+      font-size: 0.875rem;
       color: var(--global-text-color);
       opacity: 0.7;
-      line-height: 1.1;
-      margin-top: 0.1rem;
       font-weight: normal;
-    }
-  }
-
-  body.homepage .navbar-brand {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  body.homepage .navbar-brand .navbar-tagline {
-    display: block;
-
-    @media (max-width: 576px) {
-      display: none;
     }
   }
 
