@@ -1,29 +1,11 @@
 <header>
   <nav id="navbar" class="navbar navbar-light navbar-expand-sm {% if site.navbar_fixed %}fixed-top{% else %}sticky-top{% endif %}" role="navigation">
     <div class="container">
-      {% if page.permalink != '/' %}
-        <a class="navbar-brand title font-weight-lighter" href="{{ site.baseurl }}/">
-          {% if site.title == 'blank' %}
-            {% if site.first_name %}
-              <span class="font-weight-bold">
-                {{- site.first_name -}}
-              </span>
-            {% endif %}
-            {% if site.middle_name %}
-              {{- site.middle_name -}}
-            {% endif %}
-            {% if site.last_name %}
-              {{- site.last_name -}}
-            {% endif %}
-          {% else %}
-            {{- site.title -}}
-          {% endif %}
-        </a>
-      {% elsif site.enable_navbar_social %}
+      {% if site.enable_navbar_social and page.permalink == '/' %}
         <div class="navbar-brand social">{% include social.liquid %}</div>
       {% else %}
-        <div class="navbar-brand">
-          <div class="navbar-brand-title">
+        <a class="navbar-brand title font-weight-lighter" href="{{ site.baseurl }}/">
+          <span class="navbar-name">
             {% if site.title == 'blank' %}
               {% if site.first_name %}
                 <span class="font-weight-bold">
@@ -39,11 +21,11 @@
             {% else %}
               {{- site.title -}}
             {% endif %}
-          </div>
+          </span>
           {% if site.blog_description %}
-            <div class="navbar-tagline">{{ site.blog_description }}</div>
+            <span class="navbar-tagline">{{ site.blog_description }}</span>
           {% endif %}
-        </div>
+        </a>
       {% endif %}
       <button
         class="navbar-toggler collapsed ml-auto"
@@ -109,15 +91,17 @@
                 {% elsif p.permalink == '/' and page.layout == 'post' %}
                   {% assign is_active = true %}
                 {% endif %}
-                <li class="nav-item {% if is_active %}active{% endif %}">
-                  {% assign page_url = p.url | remove: 'index.html' %}
-                  <a class="nav-link" href="{{ page_url | relative_url }}">
-                    {{- p.title }}
-                    {% if is_active %}
-                      <span class="sr-only">(current)</span>
-                    {% endif %}
-                  </a>
-                </li>
+                {% unless page.permalink == '/' and p.permalink == '/' %}
+                  <li class="nav-item {% if is_active %}active{% endif %}">
+                    {% assign page_url = p.url | remove: 'index.html' %}
+                    <a class="nav-link" href="{{ page_url | relative_url }}">
+                      {{- p.title }}
+                      {% if is_active %}
+                        <span class="sr-only">(current)</span>
+                      {% endif %}
+                    </a>
+                  </li>
+                {% endunless %}
               {% endif %}
             {% endif %}
           {% endfor %}
