@@ -1,0 +1,116 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Vector Search + Hard Filters in Elasticsearch: The Hidden RAG Bottleneck | Andrey Chauzov </title> <meta name="author" content="Andrey Chauzov"> <meta name="description" content="HNSW graph topology breaks under metadata filtering. A hybrid retrieval strategy for production RAG systems."> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="/assets/img/favicon.jpg?ed2dca268ebdc422a98faa43e62555b2"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://avchauzov.github.io/blog/2025/elasticsearch-hard-filters-rag-bottleneck/"> <script src="/assets/js/theme.js?edfc1e90e31d8c6ce7c66227207e381b"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?2a705f11095eac82317f1b662021ca56" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightbox2@2.11.5/dist/css/lightbox.min.css" integrity="sha256-uypRbsAiJcFInM/ndyI/JHpzNe6DtUNXaWEUWEPfMGo=" crossorigin="anonymous"> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Andrey Chauzov </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/about/">about </a> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <p>Standard RAG pattern: semantic search scoped by metadata (<code class="language-plaintext highlighter-rouge">tenant_id</code>, <code class="language-plaintext highlighter-rouge">permissions</code>). In production, it causes <strong>latency spikes (p99 &gt; 2s)</strong> and sometimes <strong>no results</strong> — even when matching documents exist.</p> <p>Root cause: <strong>HNSW graph is built on vector similarity only</strong>. It knows nothing about metadata. Filters don’t create a subgraph — they punch holes in the global graph.</p> <h2 id="why-filters-break-hnsw">Why filters break HNSW</h2> <p>HNSW connects semantically similar nodes (“contract” ↔ “agreement”) regardless of tenant or permissions. When you apply a hard filter like <code class="language-plaintext highlighter-rouge">tenant_id=123</code>, the graph structure stays the same. Search algorithm traverses globally, discarding invalid nodes at runtime.</p> <p><strong>Problem</strong>: if valid nodes are sparse, the greedy search hits dead ends — clusters of semantically close documents that all fail the filter. No valid “bridge” nodes means early termination and poor recall.</p> <p>Zero results typically occur with <strong>post-filtering</strong> (global kNN then filter) or when <code class="language-plaintext highlighter-rouge">num_candidates</code> is too small for selective filters.</p> <h2 id="the-selectivity-trap">The selectivity trap</h2> <p>Performance degradation is non-linear. Worst case: filter matches <strong>1–10%</strong> of data.</p> <p><img src="/assets/img/2025-12-12-elasticsearch-hard-filters-rag-bottleneck/1.png" alt=""></p> <ul> <li> <strong>&lt; 1% match (low selectivity)</strong>: At very low selectivity, filtered HNSW may become inefficient; consider explicitly falling back to exact kNN (<code class="language-plaintext highlighter-rouge">script_score</code>) for small filtered sets.</li> <li> <strong>&gt; 10% match (high selectivity)</strong>: Enough valid nodes to maintain graph connectivity. Normal speed.</li> <li> <strong>1–10% match (the trap)</strong>: Too sparse for efficient graph traversal, yet too large for default exact kNN thresholds. Latency explodes here.</li> </ul> <h2 id="strategy-comparison">Strategy comparison</h2> <hr> <table> <thead> <tr> <th>Strategy</th> <th>Mechanism</th> <th>Latency</th> <th>Recall</th> <th>Trade-off</th> </tr> </thead> <tbody> <tr> <td><strong>Post-filtering</strong></td> <td>Global kNN, then filter</td> <td>Low</td> <td><strong>Broken</strong></td> <td>Returns 0 if top-k miss the filter</td> </tr> <tr> <td><strong>Filtered kNN</strong></td> <td>Filter during traversal</td> <td>Variable</td> <td>Variable</td> <td>Unpredictable in 1–10% zone</td> </tr> <tr> <td><strong>Custom routing</strong></td> <td>Physical shard isolation</td> <td>Optimal</td> <td>100%</td> <td>Hot shards if traffic/volume uneven per tenant</td> </tr> <tr> <td><strong>Exact kNN</strong></td> <td>Linear scan (<code class="language-plaintext highlighter-rouge">script_score</code>)</td> <td>O(n)</td> <td>100%</td> <td>CPU cost scales with filtered set</td> </tr> </tbody> </table> <hr> <h2 id="the-fix-adaptive-strategy">The fix: adaptive strategy</h2> <p>No single approach works for all cases. Switch strategy based on <strong>filtered document count</strong>.</p> <p><strong>The ~10k rule</strong>: If filter leaves &lt; 10,000 documents, skip HNSW entirely and use exact kNN (<code class="language-plaintext highlighter-rouge">script_score</code>).</p> <p>Why? Order-of-magnitude: exact kNN over ~10k vectors is often tens of ms on modern CPUs and guarantees 100% recall with no graph overhead or random memory access patterns.</p> <h3 id="implementation">Implementation</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">adaptive_vector_search</span><span class="p">(</span><span class="n">es_client</span><span class="p">,</span> <span class="n">query_vector</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Switches between exact kNN and graph search based on selectivity.
+    </span><span class="sh">"""</span>
+    <span class="c1"># Check how many docs match the filter
+</span>    <span class="n">doc_count</span> <span class="o">=</span> <span class="n">es_client</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="sh">"</span><span class="s">rag_docs</span><span class="sh">"</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="p">{</span>
+        <span class="sh">"</span><span class="s">query</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">term</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">tenant_id</span><span class="sh">"</span><span class="p">:</span> <span class="n">tenant_id</span><span class="p">}}</span>
+    <span class="p">})[</span><span class="sh">"</span><span class="s">count</span><span class="sh">"</span><span class="p">]</span>
+
+    <span class="c1"># STRATEGY A: Exact kNN (not ANN) for small sets
+</span>    <span class="c1"># Scales linearly with doc_count, but fast for &lt; 10k docs
+</span>    <span class="k">if</span> <span class="n">doc_count</span> <span class="o">&lt;</span> <span class="mi">10_000</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">es_client</span><span class="p">.</span><span class="nf">search</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="sh">"</span><span class="s">rag_docs</span><span class="sh">"</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="p">{</span>
+            <span class="sh">"</span><span class="s">query</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="sh">"</span><span class="s">script_score</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="sh">"</span><span class="s">query</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">bool</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">filter</span><span class="sh">"</span><span class="p">:</span> <span class="p">[{</span><span class="sh">"</span><span class="s">term</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">tenant_id</span><span class="sh">"</span><span class="p">:</span> <span class="n">tenant_id</span><span class="p">}}]}},</span>
+                    <span class="sh">"</span><span class="s">script</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="sh">"</span><span class="s">source</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">cosineSimilarity(params.qv, </span><span class="sh">'</span><span class="s">embedding</span><span class="sh">'</span><span class="s">) + 1.0</span><span class="sh">"</span><span class="p">,</span>
+                        <span class="sh">"</span><span class="s">params</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">qv</span><span class="sh">"</span><span class="p">:</span> <span class="n">query_vector</span><span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">})</span>
+
+    <span class="c1"># STRATEGY B: Routing + HNSW for large sets
+</span>    <span class="c1"># works well if traffic/volume is roughly uniform per tenant
+</span>    <span class="k">return</span> <span class="n">es_client</span><span class="p">.</span><span class="nf">search</span><span class="p">(</span>
+        <span class="n">index</span><span class="o">=</span><span class="sh">"</span><span class="s">rag_docs</span><span class="sh">"</span><span class="p">,</span>
+        <span class="n">routing</span><span class="o">=</span><span class="n">tenant_id</span><span class="p">,</span>  <span class="c1"># Physical shard isolation
+</span>        <span class="n">body</span><span class="o">=</span><span class="p">{</span>
+            <span class="sh">"</span><span class="s">knn</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="sh">"</span><span class="s">field</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">embedding</span><span class="sh">"</span><span class="p">,</span>
+                <span class="sh">"</span><span class="s">query_vector</span><span class="sh">"</span><span class="p">:</span> <span class="n">query_vector</span><span class="p">,</span>
+                <span class="sh">"</span><span class="s">k</span><span class="sh">"</span><span class="p">:</span> <span class="n">limit</span><span class="p">,</span>
+                <span class="sh">"</span><span class="s">num_candidates</span><span class="sh">"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>  <span class="c1"># Tuned empirically per corpus; increase as filter becomes more selective
+</span>                <span class="sh">"</span><span class="s">filter</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">term</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">tenant_id</span><span class="sh">"</span><span class="p">:</span> <span class="n">tenant_id</span><span class="p">}}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+</code></pre></div></div> <p><em>Note: For routing to work, documents must be indexed with <code class="language-plaintext highlighter-rouge">?routing=tenant_id</code>.</em></p> <h2 id="summary">Summary</h2> <ol> <li> <strong>HNSW doesn’t see metadata</strong>. Filters create holes in the graph, not a clean subgraph.</li> <li> <strong>1–10% selectivity is the danger zone</strong>. Too sparse for graph, too large for default exact kNN thresholds.</li> <li> <strong>The 10k rule</strong>: Below 10k filtered docs, exact kNN (<code class="language-plaintext highlighter-rouge">script_score</code>) beats HNSW on speed and recall.</li> <li> <strong>Use routing for multi-tenancy</strong>. Physical shard isolation keeps per-tenant graphs dense. Works best when traffic/volume is roughly uniform per tenant; otherwise consider bucketing or index-per-tenant.</li> </ol> </div> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.5/dist/js/lightbox.min.js" integrity="sha256-A6jI5V9s1JznkWwsBaRK8kSeXLgIqQfxfnvdDOZEURY=" crossorigin="anonymous"></script> <script>
+      function wrapImages() {
+        const images = document.querySelectorAll('img[src*="/assets/img/"]');
+
+        images.forEach((img) => {
+          if (img.dataset.lightboxed === '1') return;
+          if (img.closest('a')) return;
+
+          const imgSrc = img.currentSrc || img.src;
+          if (!imgSrc) return;
+          if (imgSrc.startsWith('data:') || imgSrc.startsWith('blob:')) return;
+
+          let pathname;
+          try {
+            pathname = new URL(imgSrc, window.location.origin).pathname;
+          } catch (e) {
+            pathname = imgSrc;
+          }
+
+          if (!pathname.includes('/assets/img/')) return;
+          if (img.closest('figure') || img.closest('.mermaid') || img.closest('.math') || img.closest('mjx-container')) {
+            return;
+          }
+
+          const altRaw = img.getAttribute('alt') || '';
+          const alt = altRaw.toLowerCase();
+          if (alt.includes('nolightbox') || img.classList.contains('no-lightbox')) {
+            return;
+          }
+
+          if (
+            img.classList.contains('emoji') ||
+            img.classList.contains('icon') ||
+            img.classList.contains('badge') ||
+            img.classList.contains('avatar')
+          ) {
+            return;
+          }
+
+          if (!img.parentNode) return;
+
+          const a = document.createElement('a');
+          a.href = imgSrc;
+          a.setAttribute('data-lightbox', 'post');
+          if (altRaw) {
+            a.setAttribute('data-title', altRaw);
+          }
+
+          img.parentNode.insertBefore(a, img);
+          a.appendChild(img);
+          img.dataset.lightboxed = '1';
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', wrapImages);
+      } else {
+        wrapImages();
+      }
+
+      document.addEventListener(
+        'click',
+        (e) => {
+          const a = e.target.closest('a[data-lightbox="post"]');
+          if (!a) return;
+          if (window.lightbox && !window.__lbConfigured) {
+            lightbox.option({ positionFromTop: 80 });
+            window.__lbConfigured = true;
+          }
+        },
+        { capture: true }
+      );
+    </script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> </body> </html>

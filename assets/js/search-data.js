@@ -45,6 +45,17 @@ ninja.data = [{
             window.location.href = "/blog/2025/reflection-evaluation-agent-critic/";
           
         },
+      },{id: "post-vector-search-hard-filters-in-elasticsearch-the-hidden-rag-bottleneck",
+        
+          title: "Vector Search + Hard Filters in Elasticsearch: The Hidden RAG Bottleneck",
+        
+        description: "HNSW graph topology breaks under metadata filtering. A hybrid retrieval strategy for production RAG systems.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/elasticsearch-hard-filters-rag-bottleneck/";
+          
+        },
       },{id: "post-architecture-design-a-constraint-satisfaction-approach",
         
           title: "Architecture design: a constraint-satisfaction approach",
