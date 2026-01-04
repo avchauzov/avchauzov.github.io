@@ -91,7 +91,7 @@
                 {% elsif p.permalink == '/' and page.layout == 'post' %}
                   {% assign is_active = true %}
                 {% endif %}
-                {% unless page.permalink == '/' and p.permalink == '/' %}
+                {% unless is_active and page.layout != 'post' %}
                   <li class="nav-item {% if is_active %}active{% endif %}">
                     {% assign page_url = p.url | remove: 'index.html' %}
                     <a class="nav-link" href="{{ page_url | relative_url }}">
