@@ -360,20 +360,16 @@ ul.task-list input[type="checkbox"] {
     font-family: inherit;
     white-space: nowrap;
     color: var(--global-text-color);
+    font-weight: 400;
 
     .navbar-name,
     .navbar-sep,
     .navbar-tagline {
       font-family: inherit;
       font-weight: 400;
-      letter-spacing: normal;
-      text-transform: none;
+      font-size: 1em;
+      opacity: 1;
       display: inline;
-    }
-
-    .navbar-tagline {
-      opacity: 0.8;
-      font-size: 0.95em;
     }
   }
 

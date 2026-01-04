@@ -4,7 +4,7 @@
       {% if site.enable_navbar_social and page.url == '/' %}
         <div class="navbar-brand social">{% include social.liquid %}</div>
       {% else %}
-        <a class="navbar-brand title font-weight-lighter" href="{{ '/' | relative_url }}">
+        <a class="navbar-brand title" href="{{ '/' | relative_url }}">
           <span class="navbar-name">
             {% if site.title == 'blank' %}
               {% if site.first_name %}
@@ -49,14 +49,15 @@
           {% if current != '/' and current != '' and (current | slice: -1) != '/' %}
             {% assign current = current | append: '/' %}
           {% endif %}
-
-          {%- unless current == '/' -%}
+          <!-- DEBUG page.url={{ page.url }} current={{ current }} -->
+          {% assign is_home = current == '/' or current == '/page/1/' %}
+          {% assign is_about = current == '/about/' or current == '/about' %}
+          {%- unless is_home -%}
             <li class="nav-item">
               <a class="nav-link" href="{{ '/' | relative_url }}">blog</a>
             </li>
           {%- endunless -%}
-
-          {%- unless current == '/about/' -%}
+          {%- unless is_about -%}
             <li class="nav-item">
               <a class="nav-link" href="{{ '/about/' | relative_url }}">about</a>
             </li>
