@@ -51,8 +51,6 @@
           {% endif %}
           {% assign current = current | replace: '//', '/' %}
 
-          <!-- DEBUG page.url={{ page.url }} current={{ current }} -->
-
           {%- unless current == '/' -%}
             <li class="nav-item">
               <a class="nav-link" href="{{ '/' | relative_url }}">blog</a>
