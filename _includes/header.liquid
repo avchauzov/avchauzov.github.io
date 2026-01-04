@@ -21,6 +21,29 @@
         </a>
       {% elsif site.enable_navbar_social %}
         <div class="navbar-brand social">{% include social.liquid %}</div>
+      {% else %}
+        <div class="navbar-brand">
+          <div class="navbar-brand-title">
+            {% if site.title == 'blank' %}
+              {% if site.first_name %}
+                <span class="font-weight-bold">
+                  {{- site.first_name -}}
+                </span>
+              {% endif %}
+              {% if site.middle_name %}
+                {{- site.middle_name -}}
+              {% endif %}
+              {% if site.last_name %}
+                {{- site.last_name -}}
+              {% endif %}
+            {% else %}
+              {{- site.title -}}
+            {% endif %}
+          </div>
+          {% if site.blog_description %}
+            <div class="navbar-tagline">{{ site.blog_description }}</div>
+          {% endif %}
+        </div>
       {% endif %}
       <button
         class="navbar-toggler collapsed ml-auto"

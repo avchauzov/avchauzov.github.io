@@ -358,6 +358,23 @@ ul.task-list input[type="checkbox"] {
 
   .navbar-brand {
     color: var(--global-text-color);
+
+    .navbar-brand-title {
+      line-height: 1.2;
+    }
+
+    .navbar-tagline {
+      font-size: 0.75rem;
+      color: var(--global-text-color);
+      opacity: 0.7;
+      line-height: 1.2;
+      margin-top: 0.125rem;
+      font-weight: normal;
+
+      @media (max-width: 576px) {
+        display: none;
+      }
+    }
   }
 
   .navbar-nav .nav-item .nav-link {
