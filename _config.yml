@@ -89,7 +89,7 @@ bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 # -----------------------------------------------------------------------------
 
 blog_name: AI Engineering Insights
-blog_description: AI Engineering, Systems
+blog_description: Production AI systems, evaluation, and architecture
 permalink: /blog/:year/:title/
 lsi: false # produce an index for related posts
 
