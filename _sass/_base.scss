@@ -356,35 +356,42 @@ ul.task-list input[type="checkbox"] {
     }
   }
 
-  .navbar-brand {
+  .navbar {
     font-family: inherit;
-    white-space: nowrap;
-    color: var(--global-text-color);
-    font-weight: 400;
+    font-size: 1rem;
+  }
 
-    .navbar-name,
-    .navbar-sep,
-    .navbar-tagline {
-      font-family: inherit;
-      font-weight: 400;
-      font-size: 1em;
-      opacity: 1;
-      display: inline;
-    }
+  .navbar-brand,
+  .navbar-brand .navbar-name,
+  .navbar-brand .navbar-sep,
+  .navbar-brand .navbar-tagline {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--global-text-color);
+    opacity: 0.95;
+    white-space: nowrap;
+    display: inline;
   }
 
   .navbar-nav .nav-item .nav-link {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 400;
     color: var(--global-text-color);
+    opacity: 0.7;
 
     &:hover {
+      opacity: 1;
       color: var(--global-hover-color);
     }
   }
 
   .navbar-nav .nav-item.active > .nav-link {
     background-color: inherit;
-    font-weight: bolder;
+    font-weight: 400;
     color: var(--global-theme-color);
+    opacity: 1;
 
     &:hover {
       color: var(--global-hover-color);
@@ -673,6 +680,7 @@ footer.sticky-bottom {
   margin: 0;
   margin-bottom: 40px;
   padding: 0;
+  padding-left: 0;
 
   li {
     border-bottom: 1px solid var(--global-divider-color);
