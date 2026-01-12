@@ -23,9 +23,31 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-the-metric-gap-bridging-business-outcomes-and-ai-component-optimization",
+        },{id: "post-similarity-metrics-for-embeddings",
         
-          title: "The Metric Gap: Bridging Business Outcomes and AI Component Optimization",
+          title: "Similarity metrics for embeddings",
+        
+        description: "Why almost always cosine and what actually works?",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/similarity-metrics-embeddings/";
+          
+        },
+      },{id: "post-tokenizers-production-economics-cheat-sheet",
+        
+          title: "Tokenizers: production economics cheat-sheet",
+        
+        description: "Compact reference for tokenizer selection, metrics, and failure modes in production LLM systems.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/tokenizer-production-cheatsheet/";
+          
+        },
+      },{id: "post-the-metric-gap-bridging-business-outcomes-and-ai-component-optimization",
+        
+          title: "The metric gap: bridging business outcomes and AI component optimization",
         
         description: "Why high component scores often mask system failures. A methodology for using E2E evaluation to prioritize engineering work.",
         section: "Posts",
@@ -36,7 +58,7 @@ ninja.data = [{
         },
       },{id: "post-reflection-vs-evaluation-why-the-agent-critic-pattern-fails-without-separation-of-concerns",
         
-          title: "Reflection vs Evaluation: Why the Agent-Critic pattern fails without separation of concerns",
+          title: "Reflection vs evaluation: why the Agent-Critic pattern fails without separation of concerns",
         
         description: "Architectural separation of reflection (context generation) and evaluation (quality gating) prevents confirmation bias, premature stopping, and infinite loops in multi-agent research systems.",
         section: "Posts",
@@ -47,7 +69,7 @@ ninja.data = [{
         },
       },{id: "post-vector-search-hard-filters-in-elasticsearch-the-hidden-rag-bottleneck",
         
-          title: "Vector Search + Hard Filters in Elasticsearch: The Hidden RAG Bottleneck",
+          title: "Vector search + hard filters in Elasticsearch: the hidden RAG bottleneck",
         
         description: "HNSW graph topology breaks under metadata filtering. A hybrid retrieval strategy for production RAG systems.",
         section: "Posts",
@@ -60,7 +82,7 @@ ninja.data = [{
         
           title: "Architecture design: a constraint-satisfaction approach",
         
-        description: "Methodology for reducing the architectural search space through hierarchical constraint definition: Problem, Boundaries, and Trade-offs.",
+        description: "Methodology for reducing the architectural search space through hierarchical constraint definition: problem, boundaries, and trade-offs.",
         section: "Posts",
         handler: () => {
           
@@ -93,7 +115,7 @@ ninja.data = [{
         
           title: "Hierarchical signal tuning: optimizing components before fusion",
         
-        description: "Fusion algorithms like Linear Combination or RRF cannot fix poor input signals. Effective hybrid search requires a bottom-up optimization strategy: tuning field weights within BM25 and embedding strategies within Dense components before attempting to merge them.",
+        description: "Fusion algorithms like linear combination or RRF cannot fix poor input signals. Effective hybrid search requires a bottom-up optimization strategy: tuning field weights within BM25 and embedding strategies within dense components before attempting to merge them.",
         section: "Posts",
         handler: () => {
           
@@ -104,7 +126,7 @@ ninja.data = [{
         
           title: "Jensen-Shannon divergence for meaningful clustering",
         
-        description: "Silhouette Score validates geometry, not meaning. Using Jensen-Shannon Divergence to measure feature distribution divergence bridges the gap between mathematical separation and interpretability.",
+        description: "Silhouette score validates geometry, not meaning. Using Jensen-Shannon divergence to measure feature distribution divergence bridges the gap between mathematical separation and interpretability.",
         section: "Posts",
         handler: () => {
           
@@ -115,7 +137,7 @@ ninja.data = [{
         
           title: "Hybrid intent classification: the rationale for production-grade shallow-model-first architectures",
         
-        description: "Production chatbots route most requests through fast shallow classifiers, escalating to Large Language Models (LLMs) only on low-confidence queries. This hybrid architecture mitigates the latency and cost overheads of monolithic LLM solutions, achieving significant speed gains while preserving high classification accuracy.",
+        description: "Production chatbots route most requests through fast shallow classifiers, escalating to large language models only on low-confidence queries. This hybrid architecture mitigates the latency and cost overheads of monolithic LLM solutions, achieving significant speed gains while preserving high classification accuracy.",
         section: "Posts",
         handler: () => {
           
@@ -159,7 +181,7 @@ ninja.data = [{
         
           title: "Domain-driven design for AI systems: architectural patterns and production experience",
         
-        description: "Exploring how Domain-Driven Design principles (Bounded Contexts, Anti-Corruption Layer, Ubiquitous Language, Domain Events) enable modularity, safety, and traceability in production AI and LLM systems.",
+        description: "Exploring how domain-driven design principles (bounded contexts, anti-corruption layer, ubiquitous language, domain events) enable modularity, safety, and traceability in production AI and LLM systems.",
         section: "Posts",
         handler: () => {
           
@@ -192,7 +214,7 @@ ninja.data = [{
         
           title: "Structured output engineering for production LLMs",
         
-        description: "Transitioning from 85% parse rates to production-grade reliability. Constrained Decoding guarantees format, Pydantic ensures correctness, token optimization cuts costs by 50%.",
+        description: "Transitioning from 85% parse rates to production-grade reliability. Constrained decoding guarantees format, Pydantic ensures correctness, token optimization cuts costs by 50%.",
         section: "Posts",
         handler: () => {
           
@@ -214,7 +236,7 @@ ninja.data = [{
         
           title: "Mitigating positional bias in LLM-as-a-judge evaluation: the swapping technique",
         
-        description: "Large Language Model judges often exhibit a strong preference for the first presented option (position bias). A position-swapping methodology significantly improves agreement with human ratings.",
+        description: "Large language model judges often exhibit a strong preference for the first presented option (position bias). A position-swapping methodology significantly improves agreement with human ratings.",
         section: "Posts",
         handler: () => {
           
@@ -225,7 +247,7 @@ ninja.data = [{
         
           title: "Hybrid retrieval with reciprocal rank fusion: solving the score normalization problem",
         
-        description: "Pure vector search isn&#39;t always enough. Weighted averaging of BM25 and vector scores breaks due to incompatible scales. Reciprocal Rank Fusion solves this by using ranks instead of scores.",
+        description: "Pure vector search isn&#39;t always enough. Weighted averaging of BM25 and vector scores breaks due to incompatible scales. Reciprocal rank fusion solves this by using ranks instead of scores.",
         section: "Posts",
         handler: () => {
           
@@ -258,7 +280,7 @@ ninja.data = [{
         
           title: "Why vision-language models ignore visual evidence (and how to fix it)",
         
-        description: "Vision-Language Models have a strong contextual bias, prioritizing &quot;logical&quot; conclusions over visual facts. We fixed this in a production case by explicitly telling the model to ignore what it thought it knew.",
+        description: "Vision-language models have a strong contextual bias, prioritizing &#39;logical&#39; conclusions over visual facts. We fixed this in a production case by explicitly telling the model to ignore what it thought it knew.",
         section: "Posts",
         handler: () => {
           
@@ -280,7 +302,7 @@ ninja.data = [{
         
           title: "Vision-language model pipeline debugging: lessons from visual monitoring",
         
-        description: "Hard-won insights from building Proof of Concept Vision-Language Model pipelines for visual monitoring, where hallucinations hide in plain sight, preprocessing decisions make or break everything, and the question is: can we forget classical Computer Vision?",
+        description: "Hard-won insights from building proof of concept vision-language model pipelines for visual monitoring, where hallucinations hide in plain sight, preprocessing decisions make or break everything, and the question is: can we forget classical computer vision?",
         section: "Posts",
         handler: () => {
           
