@@ -9,8 +9,8 @@ LLM pipelines are fragile, often crashing mid-process from API timeouts, rate li
 
 Temporal solves this with **Durable Execution**. This is a programming model that:
 
-- Lets processes resume exactly where they failed.
-- Avoids re-executing expensive steps that already completed.
+- Lets processes resume exactly where they failed
+- Avoids re-executing expensive steps that already completed
 
 ## What Temporal provides
 
@@ -30,16 +30,16 @@ The decision depends on pipeline characteristics and operational constraints.
 
 **Use Temporal when**:
 
-- **Long-running processes** (hours/days/months) where losing progress is expensive, **such as** multi-stage document analysis, conversational agents maintaining long-term state, or financial audit workflows.
-- **Critical fault tolerance** requirements, **for example** in payment processing triggered by LLM agents, medical diagnosis pipelines, or any scenario requiring compensating transactions (part of the "Saga" pattern) to handle rollbacks.
-- **Dynamic agent loops** where next steps are determined by LLM output at runtime, **including** ReAct agents, tool selection workflows, or multi-agent coordination that cannot be expressed as static DAGs.
-- **Human-in-the-loop** approval flows, **like** HR recruitment or compliance pipelines, where processes must pause indefinitely for user input and resume without state loss.
+- **Long-running processes** (hours/days/months) where losing progress is expensive, **such as** multi-stage document analysis, conversational agents maintaining long-term state, or financial audit workflows
+- **Critical fault tolerance** requirements, **for example** in payment processing triggered by LLM agents, medical diagnosis pipelines, or any scenario requiring compensating transactions (part of the "Saga" pattern) to handle rollbacks
+- **Dynamic agent loops** where next steps are determined by LLM output at runtime, **including** ReAct agents, tool selection workflows, or multi-agent coordination that cannot be expressed as static DAGs
+- **Human-in-the-loop** approval flows, **like** HR recruitment or compliance pipelines, where processes must pause indefinitely for user input and resume without state loss
 
 **Don't use Temporal for**:
 
-- **Simple batch jobs** (\<10 minutes) with low failure risk, **like** standard ETL/ELT tasks where Prefect or Airflow provide faster time-to-value with less operational overhead.
-- **Stateless API services** requiring sub-100ms latency. Single synchronous LLM calls don't benefit from durable execution — they add unnecessary complexity.
-- **Rapid prototyping** where determinism constraints slow iteration. Temporal requires learning distributed systems patterns (Event Sourcing, deterministic workflows) that increase initial development friction.
+- **Simple batch jobs** (\<10 minutes) with low failure risk, **like** standard ETL/ELT tasks where Prefect or Airflow provide faster time-to-value with less operational overhead
+- **Stateless API services** requiring sub-100ms latency. Single synchronous LLM calls don't benefit from durable execution — they add unnecessary complexity
+- **Rapid prototyping** where determinism constraints slow iteration. Temporal requires learning distributed systems patterns (Event Sourcing, deterministic workflows) that increase initial development friction
 
 **Key tradeoff**: Temporal's core workflow code must be **strictly deterministic**. All non-deterministic operations (LLM calls, `time.now()`, random number generation) must be isolated in Activities. Violating this causes non-deterministic errors during event replay. This is a steep learning curve for AI developers used to standard imperative Python.
 
@@ -61,8 +61,8 @@ def parse_document(doc_id: str):
 
 ### Step 1: basic workflow with durable state
 
-- **Problem**: The original `parse_document` function is completely stateless. If the worker crashes, everything is lost, including the `doc_id` being processed.
-- **Change**: We move from a simple Python function to a `DocumentWorkflow` class. State is now held in `self.state`, which Temporal automatically persists.
+- **Problem**: The original `parse_document` function is completely stateless. If the worker crashes, everything is lost, including the `doc_id` being processed
+- **Change**: We move from a simple Python function to a `DocumentWorkflow` class. State is now held in `self.state`, which Temporal automatically persists
 
 ```python
 from temporalio import workflow
@@ -91,8 +91,8 @@ class DocumentWorkflow:
 
 ### Step 2: LLM activity with retry policy
 
-- **Problem**: Our LLM call has no retry logic. If it fails due to a rate limit (HTTP 429), the entire workflow fails instead of just waiting and trying again.
-- **Change**: We wrap the LLM call in an `Activity` (`generate_summary`). This isolates the non-deterministic code and allows the Workflow to add a `RetryPolicy`.
+- **Problem**: Our LLM call has no retry logic. If it fails due to a rate limit (HTTP 429), the entire workflow fails instead of just waiting and trying again
+- **Change**: We wrap the LLM call in an `Activity` (`generate_summary`). This isolates the non-deterministic code and allows the Workflow to add a `RetryPolicy`
 
 ```python
 from temporalio import activity
@@ -136,8 +136,8 @@ self.state["summary"] = summary
 
 ### Step 3: human-in-the-loop via signals
 
-- **Problem**: The process is fully automated. It cannot pause and wait for a human to approve the generated summary before saving it to the database.
-- **Change**: We add `workflow.wait_condition` to allow the workflow to "sleep" (without consuming worker resources). We also add a `Signal` (`approve_summary`) to let an external user "wake" the workflow with an input.
+- **Problem**: The process is fully automated. It cannot pause and wait for a human to approve the generated summary before saving it to the database
+- **Change**: We add `workflow.wait_condition` to allow the workflow to "sleep" (without consuming worker resources). We also add a `Signal` (`approve_summary`) to let an external user "wake" the workflow with an input
 
 ```python
 @workflow.defn
@@ -171,8 +171,8 @@ class DocumentWorkflow:
 
 ### Step 4: query for status monitoring
 
-- **Problem**: We have no idea what's happening inside a running workflow. Is it stuck or waiting for approval? The only way to know is to check logs or the database.
-- **Change**: We add a `@workflow.query` method (`get_status`). This lets our UI (or any other service) synchronously read the workflow's internal `self.state` at any time without interrupting it.
+- **Problem**: We have no idea what's happening inside a running workflow. Is it stuck or waiting for approval? The only way to know is to check logs or the database
+- **Change**: We add a `@workflow.query` method (`get_status`). This lets our UI (or any other service) synchronously read the workflow's internal `self.state` at any time without interrupting it
 
 ```python
 @workflow.query
@@ -188,8 +188,8 @@ def get_status(self) -> dict:
 
 ### Step 5: GPU resource isolation via task queues
 
-- **Problem**: We have an expensive `run_local_model` Activity that requires a GPU. If a normal CPU worker picks it up, it will either crash (OOM) or block other tasks.
-- **Change**: When executing the activity, we specify `task_queue="gpu-workers"`. This ensures only workers specifically configured to listen to that queue (and deployed on GPU machines) will execute this task.
+- **Problem**: We have an expensive `run_local_model` Activity that requires a GPU. If a normal CPU worker picks it up, it will either crash (OOM) or block other tasks
+- **Change**: When executing the activity, we specify `task_queue="gpu-workers"`. This ensures only workers specifically configured to listen to that queue (and deployed on GPU machines) will execute this task
 
 ```python
 @activity.defn
@@ -220,8 +220,8 @@ worker = Worker(
 
 ### Step 6: continue-as-new for long processes
 
-- **Problem**: If the workflow processes 10,000 documents in a loop or runs for months (like a chatbot), its Event History becomes huge. This slows down replay/recovery.
-- **Change**: We periodically check the history size (`workflow.info().get_current_history_length()`). If it exceeds a threshold, we use `workflow.continue_as_new()` to start a fresh workflow execution, carrying over the state but with a clean history.
+- **Problem**: If the workflow processes 10,000 documents in a loop or runs for months (like a chatbot), its Event History becomes huge. This slows down replay/recovery
+- **Change**: We periodically check the history size (`workflow.info().get_current_history_length()`). If it exceeds a threshold, we use `workflow.continue_as_new()` to start a fresh workflow execution, carrying over the state but with a clean history
 
 ```python
 @workflow.run

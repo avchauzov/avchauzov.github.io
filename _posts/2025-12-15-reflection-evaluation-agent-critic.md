@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Reflection vs Evaluation: Why the Agent-Critic pattern fails without separation of concerns"
+title: "Reflection vs evaluation: why the Agent-Critic pattern fails without separation of concerns"
 description: "Architectural separation of reflection (context generation) and evaluation (quality gating) prevents confirmation bias, premature stopping, and infinite loops in multi-agent research systems."
 date: 2025-12-15 00:00:00 +0000
 ---
@@ -13,8 +13,8 @@ This is the "Lazy Agent" pattern. It occurs when we ask the agent "Is the result
 
 To fix this, we need to carefully define the popular **Agent-Critic** pattern and not to confuse two distinct critical roles:
 
-1. **The Reflector (Constructive Critic)**: Helps _improve_ the current step.
-2. **The Evaluator (Judgmental Critic)**: Delivers the _verdict_.
+1. **The Reflector (Constructive Critic)**: Helps _improve_ the current step
+2. **The Evaluator (Judgmental Critic)**: Delivers the _verdict_
 
 Mixing these roles leads to structural bias.
 
@@ -22,8 +22,8 @@ Mixing these roles leads to structural bias.
 
 The root cause of failure is using the same criteria to steer the process and to grade the result.
 
-1. **Reflector**: Operates **inside** the loop. It drives the research forward. Its goal is **Completeness and Consistency**. It shouldn't care if the article is well-written; it only cares if it fills a specific gap in the schema or contradicts previous data. It acts as a "Competitor" to the current findings, actively looking for what is missing or conflicting.
-2. **Evaluator**: Operates **outside** (or as a gate for) the loop. It assesses the final artifact. Its goal is **Quality and Relevance**. It checks if the final compiled answer meets the user's standards.
+1. **Reflector**: Operates **inside** the loop. It drives the research forward. Its goal is **Completeness and Consistency**. It shouldn't care if the article is well-written; it only cares if it fills a specific gap in the schema or contradicts previous data. It acts as a "Competitor" to the current findings, actively looking for what is missing or conflicting
+2. **Evaluator**: Operates **outside** (or as a gate for) the loop. It assesses the final artifact. Its goal is **Quality and Relevance**. It checks if the final compiled answer meets the user's standards
 
 ### Visualizing the architecture
 
@@ -90,7 +90,7 @@ The Evaluator is a discriminative mechanism. It runs after the research loop pro
 
 **Key metrics**:
 
-- **Source Authority**: Are the domains trusted? (e.g., arxiv.org vs random blog).
+- **Source Authority**: Are the domains trusted? (e.g., arxiv.org vs random blog)
 - **Relevance**: Does the answer actually address the user's prompt?
 - **Hallucination Check**: Do the citations actually support the claims?
 
@@ -354,10 +354,10 @@ Track these metric pairs to identify which component broke:
 1. **Separation of Concerns**: Never let the component searching for data decide if the data is "good." Let it only decide if the data is "there."
 2. **Opposing Criteria**:
 
-   - **Reflector** criteria: "What is missing? What doesn't add up? Who disagrees?" (Drive for entropy reduction).
-   - **Evaluator** criteria: "Is this authoritative? Is this safe? Is this precise?" (Quality control).
+   - **Reflector** criteria: "What is missing? What doesn't add up? Who disagrees?" (Drive for entropy reduction)
+   - **Evaluator** criteria: "Is this authoritative? Is this safe? Is this precise?" (Quality control)
 
-3. **The Schema is Important**: Use structured Canonical Models to drive Reflection. An abstract "search until done" instruction leads to lazy agents.
-4. **Fail-Fast vs Fail-Late**: The Reflector should fail fast (iterate quickly). The Evaluator should fail late (reject the final product), triggering a focused repair loop.
+3. **The Schema is Important**: Use structured Canonical Models to drive Reflection. An abstract "search until done" instruction leads to lazy agents
+4. **Fail-Fast vs Fail-Late**: The Reflector should fail fast (iterate quickly). The Evaluator should fail late (reject the final product), triggering a focused repair loop
 
-By architecturalizing this separation, we move from agents that "hallucinate success" to agents that rigorously construct answers.
+By defining this separation, we move from agents that "hallucinate success" to agents that rigorously construct answers.

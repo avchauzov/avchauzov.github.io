@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Hybrid intent classification: the rationale for production-grade shallow-model-first architectures"
-description: "Production chatbots route most requests through fast shallow classifiers, escalating to Large Language Models (LLMs) only on low-confidence queries. This hybrid architecture mitigates the latency and cost overheads of monolithic LLM solutions, achieving significant speed gains while preserving high classification accuracy."
+description: "Production chatbots route most requests through fast shallow classifiers, escalating to large language models only on low-confidence queries. This hybrid architecture mitigates the latency and cost overheads of monolithic LLM solutions, achieving significant speed gains while preserving high classification accuracy."
 date: 2025-11-19 00:00:00 +0000
 ---
 
@@ -24,9 +24,9 @@ architectures. These compact SLMs (typically 5–20MB) perform the initial class
 
 The deployment of this hybrid architecture shows significant performance improvements:
 
-- **Latency Reduction**: Average processing latency is reduced by 50% compared to monolithic LLM-only systems.
-- **Accuracy Preservation**: The classification accuracy of the hybrid system is usually within $\pm 2\%$ from the accuracy of the standalone LLM.
-- **Cost Efficiency**: A reduction in external API usage translates to an estimated 70–85% decrease in overall operational API costs.
+- **Latency Reduction**: Average processing latency is reduced by 50% compared to monolithic LLM-only systems
+- **Accuracy Preservation**: The classification accuracy of the hybrid system is usually within $\pm 2\%$ from the accuracy of the standalone LLM
+- **Cost Efficiency**: A reduction in external API usage translates to an estimated 70–85% decrease in overall operational API costs
 
 For instance, in a Natural Language Understanding (NLU) system for a complex domain, using a **specialized, contrastive encoder model** in Stage 1 yielded an accuracy of 90–94% for routine intents. The costly LLM fallback was invoked for only approximately 15% of the total query volume.
 
@@ -36,15 +36,15 @@ The decision to adopt this pattern depends on specific constraints and applicati
 
 **This hybrid routing pattern is recommended when**:
 
-- The latency requirement is very strict (e.g., $P_{95}$ latency must be less than 500ms).
-- The system must process a high volume of requests (e.g., thousands of transactions per day).
-- The majority of user intents are simple, repetitive, and easy to define.
+- The latency requirement is very strict (e.g., $P_{95}$ latency must be less than 500ms)
+- The system must process a high volume of requests (e.g., thousands of transactions per day)
+- The majority of user intents are simple, repetitive, and easy to define
 
 **Adoption is not recommended for**:
 
-- Initial prototypes or applications with low traffic, where the added complexity is not justified.
-- Domains of extreme complexity where even simple queries need deep reasoning from a large model.
-- Situations where there is not enough training data for the specialized SLM.
+- Initial prototypes or applications with low traffic, where the added complexity is not justified
+- Domains of extreme complexity where even simple queries need deep reasoning from a large model
+- Situations where there is not enough training data for the specialized SLM
 
 ### Implementation best practices
 

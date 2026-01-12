@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "The Metric Gap: Bridging Business Outcomes and AI Component Optimization"
+title: "The metric gap: bridging business outcomes and AI component optimization"
 description: "Why high component scores often mask system failures. A methodology for using E2E evaluation to prioritize engineering work."
 date: 2025-12-19 00:00:00 +0000
 ---
@@ -9,9 +9,9 @@ Engineering teams often face an observability disconnect: despite having dashboa
 
 Here's a common pattern:
 
-1. Days are spent on optimizing a specific component (e.g., improving reranker precision by 5%).
-2. The update is deployed to production.
-3. **User satisfaction metrics (Customer Satisfaction (CSAT) or Resolution Rate) remain flat**.
+1. Days are spent on optimizing a specific component (e.g., improving reranker precision by 5%)
+2. The update is deployed to production
+3. **User satisfaction metrics (Customer Satisfaction (CSAT) or Resolution Rate) remain flat**
 
 The problem isn't a lack of validation; it is validating in a vacuum. Component metrics are often treated as the goal rather than as diagnostic signals for the actual product.
 
@@ -153,10 +153,10 @@ This query shows how to apply conditional analysis: it evaluates correlation bet
 
 ### Summary
 
-1. **Component scores mask system failures**. High precision in one component does not guarantee a successful system if the input to that component is flawed.
-2. **Work backwards**. Start with the Success Criteria (User Satisfaction/Task Success). If it falls below target, drill down to find the specific component causing the bottleneck.
-3. **Handle dependencies**. When analyzing pipelines, remember that downstream performance is conditional on upstream success.
-4. **Prioritize via impact**. Only optimize components whose metrics demonstrably correlate with business outcomes.
+1. **Component scores mask system failures**. High precision in one component does not guarantee a successful system if the input to that component is flawed
+2. **Work backwards**. Start with the Success Criteria (User Satisfaction/Task Success). If it falls below target, drill down to find the specific component causing the bottleneck
+3. **Handle dependencies**. When analyzing pipelines, remember that downstream performance is conditional on upstream success
+4. **Prioritize via impact**. Only optimize components whose metrics demonstrably correlate with business outcomes
 
 ---
 

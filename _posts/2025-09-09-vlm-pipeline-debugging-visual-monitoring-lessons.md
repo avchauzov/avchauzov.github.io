@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Vision-language model pipeline debugging: lessons from visual monitoring"
-description: "Hard-won insights from building Proof of Concept Vision-Language Model pipelines for visual monitoring, where hallucinations hide in plain sight, preprocessing decisions make or break everything, and the question is: can we forget classical Computer Vision?"
+description: "Hard-won insights from building proof of concept vision-language model pipelines for visual monitoring, where hallucinations hide in plain sight, preprocessing decisions make or break everything, and the question is: can we forget classical computer vision?"
 date: 2025-09-09 00:00:00 +0000
 ---
 

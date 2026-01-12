@@ -11,7 +11,7 @@ Three patterns reduce these costs: **API-level prompt caching** for static conte
 
 ## Pattern 1: API-level caching
 
-OpenAI and Anthropic implement token-level caching at infrastructure level. The mechanism is simple: if your prompt prefix matches a cached prefix byte-for-byte, the API reuses computed attention states. Cost reduction is approximately **90%** for cached tokens.
+Major LLM providers implement token-level caching at infrastructure level. The mechanism is simple: if your prompt prefix matches a cached prefix byte-for-byte, the API reuses computed attention states. Cost reduction is approximately **90%** for cached tokens
 
 The constraint is positional. Cached content must be at the start of the messages array. One character difference breaks the cache.
 
@@ -190,9 +190,9 @@ Token optimization requires tracking effective token usage, not just raw counts.
 
 Key metrics:
 
-- **Cache Hit Rate**: $\frac{\text{hits}}{\text{total requests}}$. Target: >30% for API cache, >40% for semantic cache.
-- **Effective Compression Ratio**: $\frac{\text{original tokens}}{\text{processed tokens}}$. Includes both caching and compression.
-- **Cost Reduction**: $1 - \frac{\text{current cost}}{\text{baseline cost}}$.
+- **Cache Hit Rate**: $\frac{\text{hits}}{\text{total requests}}$. Target: >30% for API cache, >40% for semantic cache
+- **Effective Compression Ratio**: $\frac{\text{original tokens}}{\text{processed tokens}}$. Includes both caching and compression
+- **Cost Reduction**: $1 - \frac{\text{current cost}}{\text{baseline cost}}$
 
 ```python
 from dataclasses import dataclass

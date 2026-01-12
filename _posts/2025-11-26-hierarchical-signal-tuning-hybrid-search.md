@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Hierarchical signal tuning: optimizing components before fusion"
-description: "Fusion algorithms like Linear Combination or RRF cannot fix poor input signals. Effective hybrid search requires a bottom-up optimization strategy: tuning field weights within BM25 and embedding strategies within Dense components before attempting to merge them."
+description: "Fusion algorithms like linear combination or RRF cannot fix poor input signals. Effective hybrid search requires a bottom-up optimization strategy: tuning field weights within BM25 and embedding strategies within dense components before attempting to merge them."
 date: 2025-11-26 00:00:00 +0000
 ---
 
@@ -44,9 +44,9 @@ $$S_{\text{BM25}}(q, d) = \sum_{f \in \text{fields}} w_f \cdot \text{BM25}(q, d_
 
 **Optimization Protocol**:
 
-1. Disable fusion ($\alpha=0$ or disable Dense component entirely).
+1. Disable fusion ($\alpha=0$ or disable Dense component entirely)
 2. Assign initial weights based on signal density hypothesis. Titles typically require $w_{\text{title}} \gg w_{\text{body}}$
-3. Optimize for **NDCG@10** (precision at top ranks).
+3. Optimize for **NDCG@10** (precision at top ranks)
 4. Monitor **HitRate@10** (recall constraint). Configurations that boost NDCG but reduce HitRate indicate over-filtering
 
 Field weights force correct ranking order. Doc A (title match) must rank above Doc B (body noise) before reaching fusion stage.
@@ -63,9 +63,9 @@ With optimized inputs, $\alpha$ acts as semantic balancer rather than noise filt
 
 Simultaneous optimization of all parameters ($w_{\text{title}}, w_{\text{body}}, \alpha$) creates combinatorial explosion. Sequential approach is more efficient:
 
-1. **Step 1 (Sparse)**: Fix $\alpha=0$. Optimize field weights for NDCG@10 and HitRate@10. Freeze configuration.
-2. **Step 2 (Dense)**: Fix $\alpha=1$. Optimize embedding model or chunking strategy. Freeze configuration.
-3. **Step 3 (Fusion)**: Sweep $\alpha \in [0.0, 1.0]$ or RRF constant $k$.
+1. **Step 1 (Sparse)**: Fix $\alpha=0$. Optimize field weights for NDCG@10 and HitRate@10. Freeze configuration
+2. **Step 2 (Dense)**: Fix $\alpha=1$. Optimize embedding model or chunking strategy. Freeze configuration
+3. **Step 3 (Fusion)**: Sweep $\alpha \in [0.0, 1.0]$ or RRF constant $k$
 
 This coordinate descent approach reduces search space while maintaining optimization quality.
 

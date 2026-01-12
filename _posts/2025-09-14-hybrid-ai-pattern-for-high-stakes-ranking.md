@@ -15,9 +15,9 @@ The goal of our PoC was to rank medical drugs based on a variety of data sources
 
 Our initial architecture was a modular graph built with **LangGraph**. It was not a simple hierarchy, but a structured workflow designed for clarity and control:
 
-1. A **Reviewer Agent** would receive the initial query (e.g., "Find treatments for Type 2 Diabetes").
-2. It would then dispatch tasks to multiple, specialized **Model Context Protocol (MCP) Agents**. Each of these agents was responsible for a specific data source, using the **MCP** to access medical knowledge bases, clinical trial results, and FDA databases — not for inter-agent communication.
-3. Finally, a **Summarizer Agent** would collect the structured outputs from all MCP agents to synthesize and rank the final list.
+1. A **Reviewer Agent** would receive the initial query (e.g., "Find treatments for Type 2 Diabetes")
+2. It would then dispatch tasks to multiple, specialized **Model Context Protocol (MCP) Agents**. Each of these agents was responsible for a specific data source, using the **MCP** to access medical knowledge bases, clinical trial results, and FDA databases — not for inter-agent communication
+3. Finally, a **Summarizer Agent** would collect the structured outputs from all MCP agents to synthesize and rank the final list
 
 The orchestration was handled by **LangGraph**; the problem emerged within the logical "brain" of the Summarizer.
 
@@ -28,7 +28,7 @@ Our first implementation gave the Summarizer agent autonomy to reason about the 
 In initial tests, the reasoning-first agent often **exceeded 50+ iterations without converging**, cycling through similar top candidates. The financial cost was staggering:
 
 - **~50 iterations** × 4 agents × ~1,000 tokens/call = **~200,000 tokens**
-- Using a cost-effective LLM (at ~\$0.001 per 1k mixed tokens), this cost **~$0.20** per query for a result that was fundamentally unusable.
+- Using a cost-effective LLM (at ~\$0.001 per 1k mixed tokens), this cost **~$0.20** per query for a result that was fundamentally unusable
 
 To combat this, we had to add explicit loop detection mechanisms — a clear sign that our core approach was flawed.
 
@@ -53,13 +53,13 @@ if ranking_history:
 The breakthrough came when we redefined the agents' roles. Instead of having one agent handle both understanding and judgment, we split the responsibilities — a classic hybrid AI pattern.
 
 - **LLM for Perception & Feature Extraction**: The MCP agents' primary role became extracting specific, structured attributes from unstructured text. They were no longer asked "what's important?" but rather "find the value for this specific field."
-- **Deterministic Engine for Judgment & Ranking**: The Summarizer was stripped of its reasoning capabilities and rebuilt as a deterministic engine that applied a formulaic, weighted-scoring model to the structured data provided by the other agents.
+- **Deterministic Engine for Judgment & Ranking**: The Summarizer was stripped of its reasoning capabilities and rebuilt as a deterministic engine that applied a formulaic, weighted-scoring model to the structured data provided by the other agents
 
 We replaced simplistic criteria with medically relevant, quantifiable metrics:
 
-- **Approval Status**: FDA Approved = 100, Phase 3 Trials = 50, Pre-clinical = 10.
-- **Evidence Level**: Based on the GRADE framework. Level A (High) = 100, Level B (Moderate) = 70, Level C (Low) = 30.
-- **Contraindication Score**: A risk factor where lower is better. We inverted it for scoring: (1 - num_critical_contraindications / 10) \* 100.
+- **Approval Status**: FDA Approved = 100, Phase 3 Trials = 50, Pre-clinical = 10
+- **Evidence Level**: Based on the GRADE framework. Level A (High) = 100, Level B (Moderate) = 70, Level C (Low) = 30
+- **Contraindication Score**: A risk factor where lower is better. We inverted it for scoring: (1 - num_critical_contraindications / 10) \* 100
 
 The core of the new Summarizer was a clear, auditable function. A key part of its robustness was handling missing data gracefully with default values.
 
@@ -85,15 +85,15 @@ def calculate_drug_score(drug_profile: dict, weights: dict) -> float:
 This new approach was remarkably effective. The system achieved a stable ranking in just 4 iterations. The stability and correctness were validated against a golden dataset of drug rankings. This also had a dramatic impact on cost:
 
 - **~4 iterations** × 4 agents × ~1,000 tokens/call = **~16,000 tokens**
-- This cost **~$0.016 per query**, representing a **92% cost savings** while delivering a superior, reliable result.
+- This cost **~$0.016 per query**, representing a **92% cost savings** while delivering a superior, reliable result
 
 ## Enterprise implications: a pattern for trustworthy AI
 
 This isn't just a story about one PoC; it's about a scalable pattern for building trustworthy AI systems in the enterprise. This hybrid approach is directly applicable to other high-stakes domains:
 
-- **Finance**: For credit scoring or fraud detection, where an LLM can parse transaction notes for features, but a deterministic model must make the final risk assessment.
-- **Legal Tech**: For ranking documents by relevance in e-discovery, where an LLM can summarize documents, but a rule-based engine ranks them based on specific legal criteria.
-- **Industrial Safety**: For analyzing sensor data, where an LLM might interpret anomalous text-based alerts, but a state machine or rule engine must decide whether to trigger a shutdown.
+- **Finance**: For credit scoring or fraud detection, where an LLM can parse transaction notes for features, but a deterministic model must make the final risk assessment
+- **Legal Tech**: For ranking documents by relevance in e-discovery, where an LLM can summarize documents, but a rule-based engine ranks them based on specific legal criteria
+- **Industrial Safety**: For analyzing sensor data, where an LLM might interpret anomalous text-based alerts, but a state machine or rule engine must decide whether to trigger a shutdown
 
 The pattern allows businesses to leverage the power of LLMs for what they do best — understanding unstructured data — while cordoning off the critical decision-making logic in a component that is stable, auditable, and transparent.
 

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Hybrid retrieval with reciprocal rank fusion: solving the score normalization problem"
-description: "Pure vector search isn't always enough. Weighted averaging of BM25 and vector scores breaks due to incompatible scales. Reciprocal Rank Fusion solves this by using ranks instead of scores."
+description: "Pure vector search isn't always enough. Weighted averaging of BM25 and vector scores breaks due to incompatible scales. Reciprocal rank fusion solves this by using ranks instead of scores."
 date: 2025-10-06 00:00:00 +0000
 ---
 
@@ -49,8 +49,8 @@ Here, `rank(d)` is the document's position in each ranked list (starting from 1)
 
 **Example**: Consider how RRF weighs different results. Suppose we have two search systems (BM25 and Vector) and two documents, A and B.
 
-- **Document A** is ranked #1 by BM25 (a perfect keyword match) but is only ranked #25 by the vector search (semantically less relevant).
-- **Document B** is ranked #5 by both BM25 and vector search, showing consistent relevance.
+- **Document A** is ranked #1 by BM25 (a perfect keyword match) but is only ranked #25 by the vector search (semantically less relevant)
+- **Document B** is ranked #5 by both BM25 and vector search, showing consistent relevance
 
 From a user perspective, we'd prefer to see consistently relevant results (even if not perfect by one criterion) rather than a result that excels in one dimension but fails in another. Which one should be ranked higher? Let's calculate their scores with `k=60`:
 
@@ -68,9 +68,9 @@ Why does this matter? This mechanism makes your search results more **robust**. 
 
 **Why this works**:
 
-- **Score-agnostic**: A rank is a universal measure, whether it comes from a BM25 score of 8.3 or a cosine similarity of 0.9.
-- **Consensus-driven**: Documents ranking high across multiple systems are a strong signal of true relevance.
-- **Smoothing**: The constant `k` (e.g., 60) prevents extreme bias toward top-ranked results. While it's tunable, the default often works well.
+- **Score-agnostic**: A rank is a universal measure, whether it comes from a BM25 score of 8.3 or a cosine similarity of 0.9
+- **Consensus-driven**: Documents ranking high across multiple systems are a strong signal of true relevance
+- **Smoothing**: The constant `k` (e.g., 60) prevents extreme bias toward top-ranked results. While it's tunable, the default often works well
 
 ## When to use hybrid retrieval
 
@@ -135,8 +135,8 @@ if __name__ == "__main__":
 
 **Key Considerations**:
 
-- **Retrieval Window**: It's good practice to fetch more results from each retriever than you ultimately need (e.g., 2x your target). This gives RRF a larger pool of candidates to fuse and re-rank.
-- **The k parameter**: While `k=60` is a balanced default, you can experiment. A lower `k` (e.g., 10–20) gives more weight to top ranks, while a higher `k` (e.g., 80–100) flattens the curve, giving deeper results more influence.
+- **Retrieval Window**: It's good practice to fetch more results from each retriever than you ultimately need (e.g., 2x your target). This gives RRF a larger pool of candidates to fuse and re-rank
+- **The k parameter**: While `k=60` is a balanced default, you can experiment. A lower `k` (e.g., 10–20) gives more weight to top ranks, while a higher `k` (e.g., 80–100) flattens the curve, giving deeper results more influence
 
 ## Production results
 
@@ -160,9 +160,9 @@ The latency increase comes primarily from running two retrieval paths. Parallel 
 
 RRF often serves as a key component in a multi-stage retrieval cascade. For example:
 
-1. **Stage 1: Retrieval**. Fetch candidates using hybrid search (e.g., 128 from BM25 + 128 from Vector) → up to 256 candidates.
-2. **Stage 2: Fusion**. Apply RRF to the candidate pool → 32 finalists.
-3. **Stage 3: Reranking**. Use a powerful cross-encoder to rerank the finalists → 8 final results.
+1. **Stage 1: Retrieval**. Fetch candidates using hybrid search (e.g., 128 from BM25 + 128 from Vector) → up to 256 candidates
+2. **Stage 2: Fusion**. Apply RRF to the candidate pool → 32 finalists
+3. **Stage 3: Reranking**. Use a powerful cross-encoder to rerank the finalists → 8 final results
 
 ## The core principle
 

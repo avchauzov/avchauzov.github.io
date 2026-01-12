@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Mitigating positional bias in LLM-as-a-judge evaluation: the swapping technique"
-description: "Large Language Model judges often exhibit a strong preference for the first presented option (position bias). A position-swapping methodology significantly improves agreement with human ratings."
+description: "Large language model judges often exhibit a strong preference for the first presented option (position bias). A position-swapping methodology significantly improves agreement with human ratings."
 date: 2025-10-10 00:00:00 +0000
 ---
 
@@ -13,9 +13,9 @@ This phenomenon, known as **position bias**, is one of the most pervasive and mi
 
 LLM judges display a consistent tendency to favor the answer presented in the first positional slot. Analysis indicates that judge models select the first response in **68%** of comparisons, even when human annotators clearly prefer the second option. This happens because:
 
-- **Training Patterns**: The model's training data may contain patterns where preferred or correct items are more likely to appear early in sequences.
-- **Attention Mechanisms**: The inherent functionality of transformer architectures can lead to a disproportionate weighting or prioritization of tokens that appear earlier in the input sequence.
-- **Architectural Preferences**: The model's internal structure may encode a functional preference for the first positional representation during comparison tasks.
+- **Training Patterns**: The model's training data may contain patterns where preferred or correct items are more likely to appear early in sequences
+- **Attention Mechanisms**: The inherent functionality of transformer architectures can lead to a disproportionate weighting or prioritization of tokens that appear earlier in the input sequence
+- **Architectural Preferences**: The model's internal structure may encode a functional preference for the first positional representation during comparison tasks
 
 Position bias is a widespread issue, affecting a variety of LLMs, with documented bias rates in the literature typically ranging from 60% to 75%.
 

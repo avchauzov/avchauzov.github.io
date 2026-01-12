@@ -144,7 +144,7 @@ chunks = hierarchical_chunk(document, levels=['section', 'paragraph'])
 
 ### Decision framework
 
-1. **Start with empirical testing**: Evaluate 3–5 chunk sizes on a representative query set (minimum 100 queries).
+1. **Start with empirical testing**: Evaluate 3–5 chunk sizes on a representative query set (minimum 100 queries)
 
 2. **Document-type specific tuning**:
 
@@ -152,15 +152,15 @@ chunks = hierarchical_chunk(document, levels=['section', 'paragraph'])
    - Long-form content: 512–768 tokens
    - FAQ/structured: 128–256 tokens
 
-3. **Apply overlap**: ~10% sliding window as default (e.g., 64 tokens for 512-token chunks).
+3. **Apply overlap**: ~10% sliding window as default (e.g., 64 tokens for 512-token chunks)
 
 4. **Monitor in production**:
 
-   - Track retrieval precision@k over time.
-   - Measure answer relevance via LLM judge or user feedback.
-   - A/B test chunk size adjustments.
+   - Track retrieval precision@k over time
+   - Measure answer relevance via LLM judge or user feedback
+   - A/B test chunk size adjustments
 
-5. **Re-evaluate on content changes**: Document structure shifts may require chunk size recalibration.
+5. **Re-evaluate on content changes**: Document structure shifts may require chunk size recalibration
 
 ## Conclusion
 

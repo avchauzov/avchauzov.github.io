@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Vector Search + Hard Filters in Elasticsearch: The Hidden RAG Bottleneck"
+title: "Vector search + hard filters in Elasticsearch: the hidden RAG bottleneck"
 description: "HNSW graph topology breaks under metadata filtering. A hybrid retrieval strategy for production RAG systems."
 date: 2025-12-12 00:00:00 +0000
 ---
@@ -23,9 +23,9 @@ Performance degradation is non-linear. Worst case: filter matches **1–10%** of
 
 ![](/assets/img/2025-12-12-elasticsearch-hard-filters-rag-bottleneck/1.png)
 
-- **< 1% match (low selectivity)**: At very low selectivity, filtered HNSW may become inefficient; consider explicitly falling back to exact kNN (`script_score`) for small filtered sets.
-- **> 10% match (high selectivity)**: Enough valid nodes to maintain graph connectivity. Normal speed.
-- **1–10% match (the trap)**: Too sparse for efficient graph traversal, yet too large for default exact kNN thresholds. Latency explodes here.
+- **< 1% match (low selectivity)**: At very low selectivity, filtered HNSW may become inefficient; consider explicitly falling back to exact kNN (`script_score`) for small filtered sets
+- **> 10% match (high selectivity)**: Enough valid nodes to maintain graph connectivity. Normal speed
+- **1–10% match (the trap)**: Too sparse for efficient graph traversal, yet too large for default exact kNN thresholds. Latency explodes here
 
 ## Strategy comparison
 
@@ -96,7 +96,7 @@ _Note: For routing to work, documents must be indexed with `?routing=tenant_id`.
 
 ## Summary
 
-1. **HNSW doesn't see metadata**. Filters create holes in the graph, not a clean subgraph.
-2. **1–10% selectivity is the danger zone**. Too sparse for graph, too large for default exact kNN thresholds.
-3. **The 10k rule**: Below 10k filtered docs, exact kNN (`script_score`) beats HNSW on speed and recall.
-4. **Use routing for multi-tenancy**. Physical shard isolation keeps per-tenant graphs dense. Works best when traffic/volume is roughly uniform per tenant; otherwise consider bucketing or index-per-tenant.
+1. **HNSW doesn't see metadata**. Filters create holes in the graph, not a clean subgraph
+2. **1–10% selectivity is the danger zone**. Too sparse for graph, too large for default exact kNN thresholds
+3. **The 10k rule**: Below 10k filtered docs, exact kNN (`script_score`) beats HNSW on speed and recall
+4. **Use routing for multi-tenancy**. Physical shard isolation keeps per-tenant graphs dense. Works best when traffic/volume is roughly uniform per tenant; otherwise consider bucketing or index-per-tenant

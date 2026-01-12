@@ -1,0 +1,64 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.2.5 Chrome/138.0.7204.251 Electron/37.6.1 Safari/537.36" version="28.2.5" pages="2">
+  <diagram name="1" id="KwFk2PN4d6LStmu4jWOH">
+    <mxGraphModel dx="1090" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="dEXqvgOibeEABVQI9vZs-1" value="TechSupport BC&#xa;(TechSupport Agent)" style="whiteSpace=wrap;strokeWidth=2;sketch=1;curveFitting=1;jiggle=2;fontFamily=Verdana;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="dEXqvgOibeEABVQI9vZs-2" value="Billing BC&#xa;(Billing Agent)" style="whiteSpace=wrap;strokeWidth=2;sketch=1;curveFitting=1;jiggle=2;fontFamily=Verdana;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="280" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="dEXqvgOibeEABVQI9vZs-3" value="" style="curved=1;startArrow=block;endArrow=block;entryX=0;entryY=0.5;rounded=0;sketch=1;curveFitting=1;jiggle=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;fontFamily=Verdana;fontSize=12;" edge="1" parent="1" source="dEXqvgOibeEABVQI9vZs-1" target="dEXqvgOibeEABVQI9vZs-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+            <mxPoint x="340" y="150" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="TAdFO8EPacSt_3EIPVz_" name="2">
+    <mxGraphModel dx="1090" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ZJXHr0Qxyl9B7R2YabqC-1" value="User Request" style="whiteSpace=wrap;strokeWidth=2;sketch=1;curveFitting=1;jiggle=2;fontFamily=Verdana;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZJXHr0Qxyl9B7R2YabqC-2" value="TriageAgent" style="whiteSpace=wrap;strokeWidth=2;sketch=1;curveFitting=1;jiggle=2;fontFamily=Verdana;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="200" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZJXHr0Qxyl9B7R2YabqC-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;sketch=1;curveFitting=1;jiggle=2;fontFamily=Verdana;fontSize=12;" edge="1" parent="1" source="ZJXHr0Qxyl9B7R2YabqC-3" target="ZJXHr0Qxyl9B7R2YabqC-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ZJXHr0Qxyl9B7R2YabqC-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;sketch=1;curveFitting=1;jiggle=2;fontFamily=Verdana;fontSize=12;" edge="1" parent="1" source="ZJXHr0Qxyl9B7R2YabqC-3" target="ZJXHr0Qxyl9B7R2YabqC-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ZJXHr0Qxyl9B7R2YabqC-3" value="TicketClassified&#xa;Domain Event" style="whiteSpace=wrap;strokeWidth=2;sketch=1;curveFitting=1;jiggle=2;fontFamily=Verdana;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="440" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZJXHr0Qxyl9B7R2YabqC-4" value="BillingAgent" style="whiteSpace=wrap;strokeWidth=2;sketch=1;curveFitting=1;jiggle=2;fontFamily=Verdana;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="560" y="160" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZJXHr0Qxyl9B7R2YabqC-5" value="TechSupportAgent" style="whiteSpace=wrap;strokeWidth=2;sketch=1;curveFitting=1;jiggle=2;fontFamily=Verdana;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="560" y="240" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZJXHr0Qxyl9B7R2YabqC-6" value="" style="curved=1;startArrow=none;endArrow=block;exitX=1;exitY=0.5;entryX=0;entryY=0.5;rounded=0;sketch=1;curveFitting=1;jiggle=2;fontFamily=Verdana;fontSize=12;" edge="1" parent="1" source="ZJXHr0Qxyl9B7R2YabqC-1" target="ZJXHr0Qxyl9B7R2YabqC-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ZJXHr0Qxyl9B7R2YabqC-7" value="Publishes" style="curved=1;startArrow=none;endArrow=block;exitX=1;exitY=0.5;entryX=0;entryY=0.5;rounded=0;sketch=1;curveFitting=1;jiggle=2;fontFamily=Verdana;fontSize=12;" edge="1" parent="1" source="ZJXHr0Qxyl9B7R2YabqC-2" target="ZJXHr0Qxyl9B7R2YabqC-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ZJXHr0Qxyl9B7R2YabqC-13" value="&lt;span style=&quot;text-wrap-mode: nowrap;&quot;&gt;Subscribes&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;strokeColor=none;fontStyle=0;fontFamily=Verdana;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="440" y="110" width="120" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

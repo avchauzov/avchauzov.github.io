@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Jensen-Shannon divergence for meaningful clustering"
-description: "Silhouette Score validates geometry, not meaning. Using Jensen-Shannon Divergence to measure feature distribution divergence bridges the gap between mathematical separation and interpretability."
+description: "Silhouette score validates geometry, not meaning. Using Jensen-Shannon divergence to measure feature distribution divergence bridges the gap between mathematical separation and interpretability."
 date: 2025-11-22 00:00:00 +0000
 ---
 
@@ -15,8 +15,8 @@ In my practice, the robust solution is **Jensen-Shannon Divergence (JSD)**. Unli
 
 The logic is simple: For every cluster and every feature, we calculate the divergence between:
 
-1.  The distribution of the feature **inside** the cluster ($P$).
-2.  The distribution of the feature **outside** the cluster ($Q$).
+1. The distribution of the feature **inside** the cluster ($P$)
+2. The distribution of the feature **outside** the cluster ($Q$)
 
 **Why not Kullback-Leibler (KL)?**
 KL divergence is asymmetric ($KL(P||Q) \neq KL(Q||P)$) and explodes to infinity if distributions don't overlap (which happens constantly in clustering). JSD solves this: it is symmetric and strictly bounded to $[0, \ln(2)] \approx [0, 0.693]$ with natural logarithm (or $[0, 1]$ with base-2 logarithm). This bounded nature makes it numerically stable for hyperparameter tuning, whereas KL divergence often explodes and breaks optimizers.
@@ -69,11 +69,11 @@ def calculate_jsd_metric(df, labels, feature_cols, penalty_weight=0.1):
 
 I use this metric in two distinct ways:
 
-1.  **For Cluster Interpretability (Post-hoc)**: To explain _why_ a cluster exists, I calculate JSD for all features. Instead of staring at centroids, I sort features by JSD. The top features define the cluster's identity (e.g., _"Segment B is distinct because of low 'Recency' and high 'Frequency'"_).
+1. **For Cluster Interpretability (Post-hoc)**: To explain _why_ a cluster exists, I calculate JSD for all features. Instead of staring at centroids, I sort features by JSD. The top features define the cluster's identity (e.g., _"Segment B is distinct because of low 'Recency' and high 'Frequency'"_)
 
-2.  **For Optimization Target**: When standard grid search yields geometric blobs with no business value, I add JSD to the objective function:
-    $$\text{Score} = (1 - \alpha) \cdot \text{Silhouette} + \alpha \cdot \text{JSD}$$
-    A weight of $\alpha \approx 0.3$ usually forces the algorithm to sacrifice some compactness for better distinguishability.
+2. **For Optimization Target**: When standard grid search yields geometric blobs with no business value, I add JSD to the objective function:
+   $$\text{Score} = (1 - \alpha) \cdot \text{Silhouette} + \alpha \cdot \text{JSD}$$
+   A weight of $\alpha \approx 0.3$ usually forces the algorithm to sacrifice some compactness for better distinguishability.
 
 ---
 

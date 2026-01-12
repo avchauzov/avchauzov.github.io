@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Domain-driven design for AI systems: architectural patterns and production experience"
-description: "Exploring how Domain-Driven Design principles (Bounded Contexts, Anti-Corruption Layer, Ubiquitous Language, Domain Events) enable modularity, safety, and traceability in production AI and LLM systems."
+description: "Exploring how domain-driven design principles (bounded contexts, anti-corruption layer, ubiquitous language, domain events) enable modularity, safety, and traceability in production AI and LLM systems."
 date: 2025-11-04 00:00:00 +0000
 ---
 
@@ -17,17 +17,12 @@ This section consolidates the key concepts, architectural patterns, and producti
 
 A **Bounded Context (BC)** defines a static, architectural boundary where all terms and models have consistent meaning. It isolates domains at a design level.
 
-- **Without Bounded Contexts**: A single, monolithic "Support Agent" tries to handle everything: billing questions, technical support, and account upgrades. Its prompt is massive, its vector store is polluted with all document types, and it constantly confuses billing rules with technical troubleshooting steps, leading to high error rates.
-- **With Bounded Contexts**: The system is split into multiple agents, each in its own BC. A `BillingAgent` (BC_Billing) only has access to billing documents and only knows how to handle payments. A `TechSupportAgent` (BC_Support) only sees technical manuals. This isolation prevents context pollution and makes each agent smaller, faster, and more accurate.
+- **Without Bounded Contexts**: A single, monolithic "Support Agent" tries to handle everything: billing questions, technical support, and account upgrades. Its prompt is massive, its vector store is polluted with all document types, and it constantly confuses billing rules with technical troubleshooting steps, leading to high error rates
+- **With Bounded Contexts**: The system is split into multiple agents, each in its own BC. A `BillingAgent` (BC_Billing) only has access to billing documents and only knows how to handle payments. A `TechSupportAgent` (BC_Support) only sees technical manuals. This isolation prevents context pollution and makes each agent smaller, faster, and more accurate
 
 In multi-agent LLM systems, each agent — or agent group — should be a BC.
 
-```text
-+----------------------+     +----------------------+
-|   TechSupport BC     |<--->|     Billing BC       |
-| (TechSupport Agent)  |     |   (Billing Agent)    |
-+----------------------+     +----------------------+
-```
+![](/assets/img/2025-11-04-domain-driven-design-ai-systems/1.png)
 
 The problem of "agent sprawl" is solved by aligning each agent with a specific Bounded Context. Production metrics from representative implementations show clear gains:
 
@@ -45,8 +40,8 @@ The problem of "agent sprawl" is solved by aligning each agent with a specific B
 
 Once the architectural boundary (BC) is defined, the next challenge is dynamically managing the information within it. This is the role of **Context Engineering (CE)**.
 
-- **Without CE**: A prompt is naively built with 1,000 documents from the `Billing` vector store, resulting in a slow, expensive 20,000-token prompt.
-- **With CE**: The pattern is applied: `Isolate` the context to only the `Billing` domain (the BC), then `Select` (via RAG) only the top 3 relevant documents for this specific user's question. The result is a fast, cheap, and focused 3,000-token prompt.
+- **Without CE**: A prompt is naively built with 1,000 documents from the `Billing` vector store, resulting in a slow, expensive 20,000-token prompt
+- **With CE**: The pattern is applied: `Isolate` the context to only the `Billing` domain (the BC), then `Select` (via RAG) only the top 3 relevant documents for this specific user's question. The result is a fast, cheap, and focused 3,000-token prompt
 
 This tactical application of DDD patterns is what drives efficiency. The `Select` step often involves filtering vector search results by metadata before passing them to the LLM.
 
@@ -79,8 +74,8 @@ Applying CE inside BCs reduced prompt size by **55%** and inference latency by *
 
 While a BC isolates the domain and CE filters its content, a **Trust Boundary** secures the agent at runtime. It ensures that even if one agent is compromised, it cannot damage another.
 
-- **Without Trust Boundaries**: All agents run in the same process or network space. A prompt injection attack on the `TriageAgent` (which should be low-privilege) allows it to discover and call internal functions of the `BillingAgent`, potentially accessing sensitive data or issuing an unauthorized refund.
-- **With Trust Boundaries**: Each agent runs in its own "sandbox" (e.g., a separate container, process, or serverless function). The `TriageAgent` has no direct access to the `BillingAgent`. It can only communicate by publishing a `Domain Event` (see Pattern 6). The `BillingAgent` subscribes to this event, isolating the two agents completely.
+- **Without Trust Boundaries**: All agents run in the same process or network space. A prompt injection attack on the `TriageAgent` (which should be low-privilege) allows it to discover and call internal functions of the `BillingAgent`, potentially accessing sensitive data or issuing an unauthorized refund
+- **With Trust Boundaries**: Each agent runs in its own "sandbox" (e.g., a separate container, process, or serverless function). The `TriageAgent` has no direct access to the `BillingAgent`. It can only communicate by publishing a `Domain Event` (see Pattern 6). The `BillingAgent` subscribes to this event, isolating the two agents completely
 
 Boundaries in DDD map directly to trust boundaries. Each agent should run in a sandbox with strict access policies.
 
@@ -102,8 +97,8 @@ With the agent's container secured, the next step is to standardize the content 
 
 This removes ambiguity, which is a primary cause of model hallucinations.
 
-- **Without UL (Ambiguous)**: A prompt says, "Find problems in this support ticket." The LLM must guess what a "problem" is — a typo? An angry customer? A technical bug? This leads to hallucinations.
-- **With UL (Precise)**: The prompt says, "Classify this `SupportTicket` with `Priority: (P0-P4)` and `Category: (Billing|Technical|Account)`." The LLM is given no room to guess; it must execute a specific task using defined terms.
+- **Without UL (Ambiguous)**: A prompt says, "Find problems in this support ticket." The LLM must guess what a "problem" is — a typo? An angry customer? A technical bug? This leads to hallucinations
+- **With UL (Precise)**: The prompt says, "Classify this `SupportTicket` with `Priority: (P0-P4)` and `Category: (Billing|Technical|Account)`." The LLM is given no room to guess; it must execute a specific task using defined terms
 
 **Example**: Fragment of system prompt
 
@@ -132,8 +127,8 @@ Integrating UL into prompt templates also simplifies evaluation because outputs 
 
 The Ubiquitous Language defines the clean data; the **Anti-Corruption Layer (ACL)** is the "border control" that enforces it. It's a translator that protects the clean domain model from "dirty" external data, whether from legacy APIs or the LLM itself.
 
-- **Without ACL**: An external CRM API returns `{"user_id": null, "name": "Guest"}`. This `null` value flows directly into the agent, which then fails with an error or hallucinates a response about "user null".
-- **With ACL**: The ACL intercepts the API response. It validates the data, converts `null` to a safe, default value (like `GUEST_USER_ID`), or raises a specific `UserNotFound` exception before the agent is called. This protects the agent from "dirty" data.
+- **Without ACL**: An external CRM API returns `{"user_id": null, "name": "Guest"}`. This `null` value flows directly into the agent, which then fails with an error or hallucinates a response about "user null"
+- **With ACL**: The ACL intercepts the API response. It validates the data, converts `null` to a safe, default value (like `GUEST_USER_ID`), or raises a specific `UserNotFound` exception before the agent is called. This protects the agent from "dirty" data
 
 This pattern is also critical for handling LLM outputs, validating them before they are used by the system.
 
@@ -165,8 +160,8 @@ def parse_llm_output(text):
 
 After the ACL validates a request, **Domain Events** allow the system to process it asynchronously and safely. An event (e.g., `TicketClassified`) is an immutable record of something that happened. This enables an Event-Driven Architecture (EDA).
 
-- **Without Domain Events (Sequential)**: `Request → [Agent A: Classify] → [Agent B: Update CRM] → [Agent C: Send Email] → Response`. The user waits for A+B+C to finish. If the email (C) fails, the whole chain fails.
-- **With Domain Events (EDA)**: `Request → [Agent A: Classify] → Response`. Agent A immediately publishes a `TicketClassified` event. Agents B and C subscribe to this event and run in the background.
+- **Without Domain Events (Sequential)**: `Request → [Agent A: Classify] → [Agent B: Update CRM] → [Agent C: Send Email] → Response`. The user waits for A+B+C to finish. If the email (C) fails, the whole chain fails
+- **With Domain Events (EDA)**: `Request → [Agent A: Classify] → Response`. Agent A immediately publishes a `TicketClassified` event. Agents B and C subscribe to this event and run in the background
 
 This asynchronous approach is why the metrics improve so drastically. The perceived latency for the user drops (they only wait for Agent A), throughput increases (the system isn't locked waiting), and fault isolation is high (if the email agent fails, it doesn't affect the user or Agent A).
 
@@ -199,19 +194,13 @@ Having established the core patterns, let's examine how they work together in a 
 
 This system uses three **Bounded Contexts** to form a resilient pipeline:
 
-1. **Triage BC**: A fast, cheap agent that classifies incoming tickets.
-2. **Billing BC**: A specialized agent that handles payment, refund, and subscription issues.
-3. **Technical Support BC**: A RAG-heavy agent that helps with troubleshooting.
+1. **Triage BC**: A fast, cheap agent that classifies incoming tickets
+2. **Billing BC**: A specialized agent that handles payment, refund, and subscription issues
+3. **Technical Support BC**: A RAG-heavy agent that helps with troubleshooting
 
 The data flow is decoupled using **Domain Events**:
 
-```text
-[User Request] → [TriageAgent] → (Publishes "TicketClassified" Event)
-                                        |
-                                        +--> [BillingAgent] (Subscribes)
-                                        |
-                                        +--> [TechSupportAgent] (Subscribes)
-```
+![](/assets/img/2025-11-04-domain-driven-design-ai-systems/2.png)
 
 ## Context map and integration
 
@@ -248,9 +237,9 @@ DDD introduces overhead — vocabulary definition, context mapping, event infras
 
 Avoid it when:
 
-- The system is a simple RAG chatbot or prototype.
-- You don't yet know the final domain boundaries.
-- Latency is critical (`<200ms`) and each extra layer adds cost.
+- The system is a simple RAG chatbot or prototype
+- You don't yet know the final domain boundaries
+- Latency is critical (`<200ms`) and each extra layer adds cost
 
 In practice, teams find that DDD pays off only once the system exceeds ~5 agents or 3+ distinct data sources.
 
@@ -260,9 +249,9 @@ Domain-Driven Design gives AI engineers a framework to structure LLM systems tha
 
 Instead of a simple summary, here is a practical framework for implementation:
 
-1. **Start small**. Define a single Bounded Context for one agent. Focus entirely on its **Ubiquitous Language** — codify every entity (`User`, `Ticket`, `Policy`) in its prompt and Pydantic models.
-2. **Build defenses**. Wrap all external API calls (to databases, CRMs, or other services) in an **Anti-Corruption Layer (ACL)**. Do the same for the LLM's final output to guarantee clean, structured data.
-3. **Decouple to scale**. Once a second agent is needed, do not make them call each other directly. Use **Domain Events** to communicate, ensuring the system remains asynchronous, fault-tolerant, and respects its **Trust Boundaries**.
+1. **Start small**. Define a single Bounded Context for one agent. Focus entirely on its **Ubiquitous Language** — codify every entity (`User`, `Ticket`, `Policy`) in its prompt and Pydantic models
+2. **Build defenses**. Wrap all external API calls (to databases, CRMs, or other services) in an **Anti-Corruption Layer (ACL)**. Do the same for the LLM's final output to guarantee clean, structured data
+3. **Decouple to scale**. Once a second agent is needed, do not make them call each other directly. Use **Domain Events** to communicate, ensuring the system remains asynchronous, fault-tolerant, and respects its **Trust Boundaries**
 
 ---
 

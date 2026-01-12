@@ -23,16 +23,16 @@ class Classification(BaseModel):
 
 **Constraints and limitations**:
 
-- Field ordering matters because of autoregressive generation dynamics. `reasoning` must precede `category` — if reasoning comes after, it cannot influence the classification decision because the token has already been sampled.
-- Raw scores are uncalibrated. They function well for relative ranking but fail as absolute probabilities. Production thresholds require post-hoc calibration.
+- Field ordering matters because of autoregressive generation dynamics. `reasoning` must precede `category` — if reasoning comes after, it cannot influence the classification decision because the token has already been sampled
+- Raw scores are uncalibrated. They function well for relative ranking but fail as absolute probabilities. Production thresholds require post-hoc calibration
 
 ### Pattern: Post-processing calibration
 
 Two main post-processing approaches can help to calibrate these outputs:
 
-- **Temperature Scaling**: Learns a single parameter T that rescales confidence scores. Train T to minimize calibration error on validation set (<1000 samples sufficient). Simpler and faster, but assumes uniform miscalibration across all confidence ranges.
+- **Temperature Scaling**: Learns a single parameter T that rescales confidence scores. Train T to minimize calibration error on validation set (<1000 samples sufficient). Simpler and faster, but assumes uniform miscalibration across all confidence ranges
 
-- **Isotonic Regression**: Learns a non-decreasing mapping function from raw scores to calibrated probabilities. Handles complex patterns where the model is overconfident at some ranges (e.g., 0.8–0.9) but underconfident at others (e.g., 0.4–0.6). Requires more validation data (>1000 samples).
+- **Isotonic Regression**: Learns a non-decreasing mapping function from raw scores to calibrated probabilities. Handles complex patterns where the model is overconfident at some ranges (e.g., 0.8–0.9) but underconfident at others (e.g., 0.4–0.6). Requires more validation data (>1000 samples)
 
 Use Temperature Scaling first. Switch to Isotonic only if **Expected Calibration Error (ECE)** remains high.
 
@@ -60,15 +60,15 @@ Generate free-form text first, parse second. Libraries like Instructor (which su
 
 Trading compute and latency for higher accuracy is necessary for borderline cases.
 
-- **Sampling Consistency**: Generate `k=5` responses at `temperature > 0.7`. The agreement rate becomes the confidence score. Cost increases `k`×, but this is the most reliable method for hallucination detection.
-- **Adaptive early stopping**: Generate samples sequentially (not in parallel). Stop when first 3 consecutive samples agree. If after 10 samples no consensus, return majority vote. This reduces average cost by 25–50% while maintaining accuracy for high-confidence cases.
-- **Sequential Refinement**: Instead of `k` parallel samples, use iterative improvement. The model critiques and corrects its previous attempt. This is more token-efficient than parallel sampling for similar accuracy gains.
+- **Sampling Consistency**: Generate `k=5` responses at `temperature > 0.7`. The agreement rate becomes the confidence score. Cost increases `k`×, but this is the most reliable method for hallucination detection
+- **Adaptive early stopping**: Generate samples sequentially (not in parallel). Stop when first 3 consecutive samples agree. If after 10 samples no consensus, return majority vote. This reduces average cost by 25–50% while maintaining accuracy for high-confidence cases
+- **Sequential Refinement**: Instead of `k` parallel samples, use iterative improvement. The model critiques and corrects its previous attempt. This is more token-efficient than parallel sampling for similar accuracy gains
 
 ### Pattern: Proxy Scoring
 
 Proprietary APIs often withhold logprobs which can be useful as a probability proxy.
 
-Perform classification with the proprietary model (e.g., Claude). Then use a small open-source model (Llama, Mistral) to score that prediction. Since we have direct access to open-source model weights, we can evaluate the probability of the exact predicted answer.
+Perform classification with the proprietary model. Then use a small open-source model to score that prediction. Since we have direct access to open-source model weights, we can evaluate the probability of the exact predicted answer.
 
 ```python
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -116,7 +116,7 @@ def score_answer_probability(
     return np.exp(np.mean(answer_logprobs))
 
 # Usage
-big_model_prediction = "positive"  # From Claude/GPT-4
+big_model_prediction = "positive"  # From proprietary model
 proxy_confidence = score_answer_probability(input_text, big_model_prediction)
 ```
 
@@ -135,9 +135,9 @@ LLM classification is justified primarily when training data is unavailable or c
 1. **Baseline**: Start with verbalized confidence + reasoning field + Null Category
 2. **Calibration**:
 
-   - Start with **Temperature Scaling** and measure **ECE** on validation set.
-   - If **ECE** > 0.1 after Temperature Scaling and you have >1000 samples, try **Isotonic Regression**.
-   - For binary classification specifically, **Platt Scaling** is an alternative to Isotonic.
+   - Start with **Temperature Scaling** and measure **ECE** on validation set
+   - If **ECE** > 0.1 after Temperature Scaling and you have >1000 samples, try **Isotonic Regression**
+   - For binary classification specifically, **Platt Scaling** is an alternative to Isotonic
 
 3. **High-Stakes**: For accuracy-critical paths, combine multiple patterns:
    - Use **Sampling Consistency** for hallucination detection

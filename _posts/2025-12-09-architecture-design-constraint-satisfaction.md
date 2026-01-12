@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Architecture design: a constraint-satisfaction approach"
-description: "Methodology for reducing the architectural search space through hierarchical constraint definition: Problem, Boundaries, and Trade-offs."
+description: "Methodology for reducing the architectural search space through hierarchical constraint definition: problem, boundaries, and trade-offs."
 date: 2025-12-09 00:00:00 +0000
 ---
 
@@ -17,7 +17,7 @@ Define the system's objective function before any design. Without these definiti
 
 Identify the specific negative outcome of _not_ having the system. If the impact cannot be quantified, the architecture cannot be justified. If the system is not critical, the optimal architecture is "do nothing."
 
-- **Incorrect**: "We need to modernize the technology stack." (This is a tautology).
+- **Incorrect**: "We need to modernize the technology stack." (This is a tautology)
 - **Correct**: "The current transaction drop-off rate is 15% due to latency. This results in a projected revenue loss of $X per annum."
 
 **2. Quantifiable success metrics**
@@ -31,9 +31,9 @@ Qualitative descriptions ("high performance," "scalable") are not engineering re
 
 Different stakeholders maximize different variables. This creates conflicting optimization goals and hidden veto points.
 
-- **End users**: Maximize utility, minimize latency.
-- **Engineering team**: Maximize maintainability, minimize operational complexity.
-- **Business entity**: Minimize risk, maximize ROI.
+- **End users**: Maximize utility, minimize latency
+- **Engineering team**: Maximize maintainability, minimize operational complexity
+- **Business entity**: Minimize risk, maximize ROI
 
 ### Layer 2: hard boundary constraints
 
@@ -43,15 +43,15 @@ These constraints are binary: if a solution does not meet these criteria, it is 
 
 Legal frameworks eliminate non-compliant regions immediately.
 
-- **GDPR**: Mandates that data for citizens of the EU must reside within the EU.
-- **HIPAA**: Mandates strict encryption standards, access controls, and audit logs for healthcare data.
+- **GDPR**: Mandates that data for citizens of the EU must reside within the EU
+- **HIPAA**: Mandates strict encryption standards, access controls, and audit logs for healthcare data
 
 **2. Economic constraints (Capital Expenditure and Operational Expenditure)**
 
 Budget constraints exclude infrastructure classes (Enterprise Oracle vs PostgreSQL).
 
-- **CAPEX (Capital Expenditure)**: The upfront cost to build the infrastructure.
-- **OPEX (Operational Expenditure)**: The recurring cost to maintain the system over time.
+- **CAPEX (Capital Expenditure)**: The upfront cost to build the infrastructure
+- **OPEX (Operational Expenditure)**: The recurring cost to maintain the system over time
 
 If the budget for OPEX is low, managed services are excluded. Use simpler VPS hosting or serverless architectures.
 
@@ -59,8 +59,8 @@ If the budget for OPEX is low, managed services are excluded. Use simpler VPS ho
 
 Architecture must match team capabilities. Exotic technologies impose a "skill tax" that blocks maintenance.
 
-- **Competency matrix**: If the team specializes in Python, introducing a Rust-based microservices architecture creates a "knowledge debt" that increases delivery time.
-- **Team size**: A distributed system requires a minimum number of engineers for on-call rotation. A smaller team cannot support complex distributed topology.
+- **Competency matrix**: If the team specializes in Python, introducing a Rust-based microservices architecture creates a "knowledge debt" that increases delivery time
+- **Team size**: A distributed system requires a minimum number of engineers for on-call rotation. A smaller team cannot support complex distributed topology
 
 **4. Load and scalability constraints**
 
@@ -76,15 +76,15 @@ After eliminating impossible solutions, the remaining options require trade-off 
 
 CAP theorem (Consistency, Availability, Partition tolerance): Network partitions force a choice between Consistency and Availability.
 
-- **Strong consistency (ACID — Atomicity, Consistency, Isolation, Durability)**: Required for financial ledgers. Increases latency because nodes must coordinate.
-- **Eventual consistency**: Acceptable for social feeds or analytics. Decreases latency as nodes accept writes independently.
+- **Strong consistency (ACID — Atomicity, Consistency, Isolation, Durability)**: Required for financial ledgers. Increases latency because nodes must coordinate
+- **Eventual consistency**: Acceptable for social feeds or analytics. Decreases latency as nodes accept writes independently
 
 **2. Complexity vs velocity**
 
 This determines the choice between monolith and microservices.
 
-- **Microservices**: High operational complexity, allows independent deployment (high velocity for large teams).
-- **Monolith**: Low operational complexity, coupled deployment (high velocity for small teams).
+- **Microservices**: High operational complexity, allows independent deployment (high velocity for large teams)
+- **Monolith**: Low operational complexity, coupled deployment (high velocity for small teams)
 
 For small teams, distributed system overhead (tracing, service mesh) outweighs decoupling benefits.
 
@@ -92,8 +92,8 @@ For small teams, distributed system overhead (tracing, service mesh) outweighs d
 
 Processing cost scales inversely with latency tolerance. Real-time is 10–30× more expensive than batch.
 
-- **Real-time stream processing**: High infrastructure cost; minimal delay.
-- **Batch processing**: Low infrastructure cost; delay of minutes or hours.
+- **Real-time stream processing**: High infrastructure cost; minimal delay
+- **Batch processing**: Low infrastructure cost; delay of minutes or hours
 
 If the business accepts 1-hour delay, streaming architecture wastes budget.
 
@@ -101,9 +101,9 @@ If the business accepts 1-hour delay, streaming architecture wastes budget.
 
 This methodology moves from an abstract desire to a concrete engineering specification.
 
-- **Layer 1** provides the target metrics (e.g., p95 < 200ms).
-- **Layer 2** provides the boundaries (e.g., Must use EU region, Budget < $X, Team knows Python).
-- **Layer 3** defines the acceptable sacrifices (e.g., We accept eventual consistency to save cost).
+- **Layer 1** provides the target metrics (e.g., p95 < 200ms)
+- **Layer 2** provides the boundaries (e.g., Must use EU region, Budget < $X, Team knows Python)
+- **Layer 3** defines the acceptable sacrifices (e.g., We accept eventual consistency to save cost)
 
 Consequently, the infinite solution space collapses to a finite set of viable architectures (e.g., "Monolithic Python application with PostgreSQL (EU region) and read replicas").
 
