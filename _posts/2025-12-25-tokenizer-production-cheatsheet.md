@@ -64,7 +64,7 @@ Match tokenizer architecture to workload characteristics:
 
 **Symptom**: Model generates awkwardly or fails to continue prompts correctly.
 
-**Cause**: Tokenizers distinguish `"word"` and `" word"` as different tokens. If a prompt ends with a space, the model expects the next token to merge with that space. But tokenization already split them—breaking continuation patterns learned during training.
+**Cause**: Tokenizers distinguish `"word"` and `" word"` as different tokens. If a prompt ends with a space, the model expects the next token to merge with that space. But tokenization already split them — breaking continuation patterns learned during training.
 
 **Mitigation**: Token Healing (re-tokenize boundary) or template hygiene (avoid trailing spaces, use explicit markers).
 
@@ -115,7 +115,9 @@ Test compression efficiency across representative data types:
 ```python
 import tiktoken
 
-enc = tiktoken.get_encoding("cl100k_base")
+# Replace with your encoding (e.g. cl100k_base for OpenAI)
+encoding_name = "your-encoding"
+enc = tiktoken.get_encoding(encoding_name)
 
 samples = {
     "english": "The quick brown fox jumps over the lazy dog.",

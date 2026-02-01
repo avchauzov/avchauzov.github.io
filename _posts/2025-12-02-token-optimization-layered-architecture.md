@@ -7,7 +7,7 @@ date: 2025-12-02 00:00:00 +0000
 
 Production LLM costs scale quadratically $O(N^2)$ with input length during the prefill phase. For RAG systems retrieving 10 documents at 500 tokens each, this means 5,000 input tokens per request before generation starts.
 
-Three patterns reduce these costs: **API-level prompt caching** for static context, **semantic caching** for similar queries, and **dynamic compression** for long variable inputs. These are not alternatives—they stack. Each layer operates on tokens that survived previous filters.
+Three patterns reduce these costs: **API-level prompt caching** for static context, **semantic caching** for similar queries, and **dynamic compression** for long variable inputs. These are not alternatives — they stack. Each layer operates on tokens that survived previous filters.
 
 ## Pattern 1: API-level caching
 
@@ -17,7 +17,7 @@ The constraint is positional. Cached content must be at the start of the message
 
 **Primary Target**: System Context
 
-Static instructions, few-shot examples, policy documents—anything that does not change between requests.
+Static instructions, few-shot examples, policy documents — anything that does not change between requests.
 
 ```python
 from llm_client import LLMClient  # Abstract client interface
@@ -239,7 +239,7 @@ In production RAG:
 
 **API Cache Breaks Silently**
 
-If prompt structure changes—reordering, adding metadata—cache misses occur without warning. Monitor hit rate. Drop below 20% indicates structural drift.
+If prompt structure changes — reordering, adding metadata — cache misses occur without warning. Monitor hit rate. Drop below 20% indicates structural drift.
 
 **Semantic Cache False Positives**
 

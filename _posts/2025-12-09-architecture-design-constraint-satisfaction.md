@@ -7,7 +7,7 @@ date: 2025-12-09 00:00:00 +0000
 
 Engineers select technologies before defining constraints, but this inverts the design process. The result is predictable: systems that cannot be built within budget, systems the team cannot maintain, or systems that solve the wrong problem.
 
-Architecture is not tool selection - it is constraint satisfaction. The solution space starts infinite and the architect reduces this space to 3–5 viable options through three layers of filtration. Each layer eliminates categories of solutions. Layer 1 defines what success means. Layer 2 eliminates what is impossible. Layer 3 clarifies what must be sacrificed.
+Architecture is not tool selection — it is constraint satisfaction. The solution space starts infinite and the architect reduces this space to 3–5 viable options through three layers of filtration. Each layer eliminates categories of solutions. Layer 1 defines what success means. Layer 2 eliminates what is impossible. Layer 3 clarifies what must be sacrificed.
 
 ### Layer 1: define the objective function
 

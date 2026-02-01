@@ -167,7 +167,7 @@ Evaluation is then applied as a post-hoc filter.
 
 ## Production implementation: LangGraph architecture
 
-This separation isn't just theoretical—it's implementable in production systems. Here's how to structure it using LangGraph:
+This separation isn't just theoretical — it's implementable in production systems. Here's how to structure it using LangGraph:
 
 ```python
 from __future__ import annotations
@@ -351,7 +351,7 @@ Track these metric pairs to identify which component broke:
 
 ## Summary: Design rules
 
-1. **Separation of Concerns**: Never let the component searching for data decide if the data is "good." Let it only decide if the data is "there."
+1. **Separation of Concerns**: Never let the component searching for data decide if the data is "good." Let it only decide if the data is "there"
 2. **Opposing Criteria**:
 
    - **Reflector** criteria: "What is missing? What doesn't add up? Who disagrees?" (Drive for entropy reduction)

@@ -76,15 +76,15 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 def score_answer_probability(
     input_text: str,
     predicted_answer: str,
-    model_name: str = "your-model-name"  # Replace with your model
+    scoring_model_name: str = "your-scoring-model"  # Replace with your model
 ) -> float:
     """
     Score probability that small model assigns to predicted_answer.
     Evaluates only answer tokens, not the full prompt.
     Returns: per-token geometric mean probability (length-normalized).
     """
-    model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto")
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForCausalLM.from_pretrained(scoring_model_name, device_map="auto")
+    tokenizer = AutoTokenizer.from_pretrained(scoring_model_name)
 
     # Separate prompt and answer
     prompt = f"Classify: {input_text}\nAnswer:"
