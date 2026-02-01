@@ -15,15 +15,15 @@ Ambiguous or mixed sentiment should still be classified as neutral."
 <span class="k">def</span> <span class="nf">score_answer_probability</span><span class="p">(</span>
     <span class="n">input_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">predicted_answer</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sh">"</span><span class="s">your-model-name</span><span class="sh">"</span>  <span class="c1"># Replace with your model
+    <span class="n">scoring_model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sh">"</span><span class="s">your-scoring-model</span><span class="sh">"</span>  <span class="c1"># Replace with your model
 </span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sh">"""</span><span class="s">
     Score probability that small model assigns to predicted_answer.
     Evaluates only answer tokens, not the full prompt.
     Returns: per-token geometric mean probability (length-normalized).
     </span><span class="sh">"""</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="p">.</span><span class="nf">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">device_map</span><span class="o">=</span><span class="sh">"</span><span class="s">auto</span><span class="sh">"</span><span class="p">)</span>
-    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="p">.</span><span class="nf">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="p">.</span><span class="nf">from_pretrained</span><span class="p">(</span><span class="n">scoring_model_name</span><span class="p">,</span> <span class="n">device_map</span><span class="o">=</span><span class="sh">"</span><span class="s">auto</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="p">.</span><span class="nf">from_pretrained</span><span class="p">(</span><span class="n">scoring_model_name</span><span class="p">)</span>
 
     <span class="c1"># Separate prompt and answer
 </span>    <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="s">Classify: </span><span class="si">{</span><span class="n">input_text</span><span class="si">}</span><span class="se">\n</span><span class="s">Answer:</span><span class="sh">"</span>

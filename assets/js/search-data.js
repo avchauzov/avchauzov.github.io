@@ -331,6 +331,17 @@ ninja.data = [{
             window.location.href = "/blog/2025/pragmatic-llm-debugging-copy/";
           
         },
+      },{id: "post-embeddings-for-intent-classification-architecture-trade-offs",
+        
+          title: "Embeddings for intent classification: architecture trade-offs",
+        
+        description: "Practical guide to building intent classifiers with embeddings. When shallow classifiers beat fine-tuning, how to handle confidence thresholds, and what actually matters in production.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/intent-routing-architecture-tradeoffs/";
+          
+        },
       },{id: "books-the-godfather",
           title: 'The Godfather',
           description: "",
