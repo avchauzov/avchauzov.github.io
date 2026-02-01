@@ -2,7 +2,7 @@
 layout: default
 title: "Embeddings for intent classification: architecture trade-offs"
 description: "Practical guide to building intent classifiers with embeddings. When shallow classifiers beat fine-tuning, how to handle confidence thresholds, and what actually matters in production."
-date: 2025-01-04 00:00:00 +0000
+date: 2026-01-04 00:00:00 +0000
 ---
 
 Intent classification in chatbots is not just an ML task. It is a routing layer that determines resource consumption of the entire system. Wrong architecture forces expensive LLM calls for trivial queries, burning budget and increasing latency.
