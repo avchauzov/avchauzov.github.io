@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-embeddings-for-intent-classification-architecture-trade-offs",
+        },{id: "post-context-engineering-as-a-production-discipline",
+        
+          title: "Context engineering as a production discipline",
+        
+        description: "Failure modes, architectural patterns, and evidence from real systems.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/context-engineering-production-patterns/";
+          
+        },
+      },{id: "post-embeddings-for-intent-classification-architecture-trade-offs",
         
           title: "Embeddings for intent classification: architecture trade-offs",
         
