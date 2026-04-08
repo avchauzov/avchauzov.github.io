@@ -15,7 +15,7 @@ Define the system's objective function before any design. Without these definiti
 
 **1. The criticality assessment**
 
-Identify the specific negative outcome of _not_ having the system. If the impact cannot be quantified, the architecture cannot be justified. If the system is not critical, the optimal architecture is "do nothing."
+Identify the specific negative outcome of **not** having the system. If the impact cannot be quantified, the architecture cannot be justified. If the system is not critical, the optimal architecture is "do nothing."
 
 - **Incorrect**: "We need to modernize the technology stack." (This is a tautology)
 - **Correct**: "The current transaction drop-off rate is 15% due to latency. This results in a projected revenue loss of $X per annum."

@@ -24,12 +24,12 @@ Four families dominate production systems, each optimizing different constraints
 
 ---
 
-| Family         | Core Mechanism              | Strength                  | Weakness                                             | Primary Users    |
-| -------------- | --------------------------- | ------------------------- | ---------------------------------------------------- | ---------------- |
-| **BPE**        | Merge frequent pairs        | Simple, fast, greedy      | Inconsistent number splitting                        | GPT-2/3, RoBERTa |
-| **WordPiece**  | Merge by information gain   | Better morpheme alignment | Mostly legacy                                        | BERT family      |
-| **Unigram**    | Start large, prune by loss  | Supports regularization   | Slower training (EM algorithm)                       | T5, mBART        |
-| **Byte-level** | Base vocabulary = 256 bytes | Zero unknown tokens       | Can inflate token count by several× for some scripts | GPT-4, Llama 3   |
+| Family         | Core Mechanism              | Strength                  | Weakness                                             | Primary Users                                    |
+| -------------- | --------------------------- | ------------------------- | ---------------------------------------------------- | ------------------------------------------------ |
+| **BPE**        | Merge frequent pairs        | Simple, fast, greedy      | Inconsistent number splitting                        | Decoder-style LMs, RoBERTa-style encoders        |
+| **WordPiece**  | Merge by information gain   | Better morpheme alignment | Mostly legacy                                        | Encoder-only transformers (BERT-style)           |
+| **Unigram**    | Start large, prune by loss  | Supports regularization   | Slower training (EM algorithm)                       | Encoder–decoder seq2seq, multilingual seq2seq    |
+| **Byte-level** | Base vocabulary = 256 bytes | Zero unknown tokens       | Can inflate token count by several× for some scripts | Frontier chat models, large open-weight chat LMs |
 
 ---
 
@@ -55,7 +55,7 @@ Match tokenizer architecture to workload characteristics:
 
 **Rules of thumb**:
 
-- If TpW doubles vs baseline, treat it as an infrastructure issue—API cost doubles, context halves
+- If TpW doubles vs baseline, treat it as an infrastructure issue — API cost doubles, context halves
 - Vocabulary scaling: ~60k vocab is optimal for 7B models, while ~200k is justified for ~70B models. Beyond ~200k vocabulary, embedding memory and serving cost grow linearly, while compression gains become marginal (<5%). Rare tokens (<0.0001% frequency) remain under-trained even in large vocabularies
 
 ## Production failure modes

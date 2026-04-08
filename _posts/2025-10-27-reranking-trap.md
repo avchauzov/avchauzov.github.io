@@ -15,8 +15,8 @@ Production systems show different results. Adding neural rerankers introduces la
 
 **LLM rerankers** fall into two categories:
 
-- _Pointwise_ approaches evaluate each pair independently, often generating reasoning traces before scoring
-- _Listwise_ methods process multiple documents in a single forward pass, significantly reducing inference overhead compared to pointwise alternatives
+- **Pointwise** approaches evaluate each pair independently, often generating reasoning traces before scoring
+- **Listwise** methods process multiple documents in a single forward pass, significantly reducing inference overhead compared to pointwise alternatives
 
 **Late interaction models** (**ColBERT**) represent a middle ground. They compute token-level embeddings for queries and documents separately, then perform **MaxSim** matching at retrieval time. This preserves some cross-encoder precision while maintaining better scalability.
 

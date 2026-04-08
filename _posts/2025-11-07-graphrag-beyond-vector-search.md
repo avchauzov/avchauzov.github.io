@@ -82,7 +82,7 @@ If you must build a graph, these methods can reduce costs.
 
 - If your current RAG accuracy **already meets business requirements**
 - If you have a **strict low-latency budget** (\<500ms) for all queries
-- If data churns rapidly, but you _don't_ have multi-hop query requirements
+- If data churns rapidly, but you **don't** have multi-hop query requirements
 - If the **10–100x indexing cost** isn't justified by the precision gain
 
 **Choosing your architecture**:

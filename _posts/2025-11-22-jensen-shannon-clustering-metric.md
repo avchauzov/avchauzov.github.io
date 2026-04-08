@@ -69,7 +69,7 @@ def calculate_jsd_metric(df, labels, feature_cols, penalty_weight=0.1):
 
 I use this metric in two distinct ways:
 
-1. **For Cluster Interpretability (Post-hoc)**: To explain _why_ a cluster exists, I calculate JSD for all features. Instead of staring at centroids, I sort features by JSD. The top features define the cluster's identity (e.g., _"Segment B is distinct because of low 'Recency' and high 'Frequency'"_)
+1. **For Cluster Interpretability (Post-hoc)**: To explain **why** a cluster exists, I calculate JSD for all features. Instead of staring at centroids, I sort features by JSD. The top features define the cluster's identity (e.g., **"Segment B is distinct because of low 'Recency' and high 'Frequency'"**)
 
 2. **For Optimization Target**: When standard grid search yields geometric blobs with no business value, I add JSD to the objective function:
    $$\text{Score} = (1 - \alpha) \cdot \text{Silhouette} + \alpha \cdot \text{JSD}$$

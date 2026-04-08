@@ -13,8 +13,8 @@ This is the "Lazy Agent" pattern. It occurs when we ask the agent "Is the result
 
 To fix this, we need to carefully define the popular **Agent-Critic** pattern and not to confuse two distinct critical roles:
 
-1. **The Reflector (Constructive Critic)**: Helps _improve_ the current step
-2. **The Evaluator (Judgmental Critic)**: Delivers the _verdict_
+1. **The Reflector (Constructive Critic)**: Helps **improve** the current step
+2. **The Evaluator (Judgmental Critic)**: Delivers the **verdict**
 
 Mixing these roles leads to structural bias.
 
@@ -35,7 +35,7 @@ Here, the Reflector and Evaluator are effectively the same entity or share the s
 ![](/assets/img/2025-12-15-reflection-evaluation-agent-critic/1.png)
 
 **The Solution (Separated Concerns)**:
-Here, the **Reflector** acts as an architect ensuring the structure is built, while the **Evaluator** acts as a separate quality gate. The agent stops only when the _structure_ is complete. Quality is checked only afterwards.
+Here, the **Reflector** acts as an architect ensuring the structure is built, while the **Evaluator** acts as a separate quality gate. The agent stops only when the **structure** is complete. Quality is checked only afterwards.
 
 ![](/assets/img/2025-12-15-reflection-evaluation-agent-critic/2.png)
 
@@ -43,12 +43,12 @@ Here, the **Reflector** acts as an architect ensuring the structure is built, wh
 
 The Reflector is a generative mechanism. It analyzes the history of actions to produce the next instruction. It answers: **"Do I have enough information to form a comprehensive view?"**
 
-It relies on a **Canonical Model** — a schema of what the answer _should_ look like (e.g., "Pros", "Cons", "Market Data", "Competitor View").
+It relies on a **Canonical Model** — a schema of what the answer **should** look like (e.g., "Pros", "Cons", "Market Data", "Competitor View").
 
 **Key logic**:
 
 - **Gap Analysis**: "I have the 'Pros', but the 'Cons' field is empty."
-- **Contradiction Detection**: "Source A says _X_, Source B says _Y_. I need a third source to resolve this."
+- **Contradiction Detection**: "Source A says **X**, Source B says **Y**. I need a third source to resolve this."
 - **Perspective Taking**: "I have the CEO's view. I need the Expert's view."
 
 **Implementation (Logic-focused)**:
@@ -157,7 +157,7 @@ $$
 This means the agent is statistically likely to stop at the first "good looking" local maximum, ignoring the global truth.
 
 **Correct Approach**:
-Stopping should depend on the _Saturation_ of the schema, independent of the _Quality_ of the content:
+Stopping should depend on the **Saturation** of the schema, independent of the **Quality** of the content:
 
 $$
 P(\text{stop}) = f(S_{\text{completeness}}, S_{\text{consistency}})
