@@ -34,6 +34,17 @@ ninja.data = [{
             window.location.href = "/blog/2026/context-engineering-production-patterns/";
           
         },
+      },{id: "post-rag-fails-upstream",
+        
+          title: "RAG fails upstream",
+        
+        description: "Why most RAG failures originate in the data preparation layer, and what to do about it.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/rag-knowledge-foundation-layer/";
+          
+        },
       },{id: "post-embeddings-for-intent-classification-architecture-trade-offs",
         
           title: "Embeddings for intent classification: architecture trade-offs",
@@ -350,7 +361,7 @@ ninja.data = [{
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2025/pragmatic-llm-debugging-copy/";
+            window.location.href = "/blog/2025/pragmatic-llm-debugging/";
           
         },
       },{id: "books-the-godfather",
