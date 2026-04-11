@@ -68,7 +68,7 @@ Scale determines topology. Low load (< 100 RPS — requests per second) fits mon
 
 Designing for high load when the current requirement is low violates You Aren't Gonna Need It (YAGNI). This principle states: do not build functionality until it is actually needed. Premature optimization wastes resources and increases complexity.
 
-### Layer 3: trade-off analysis (soft constraints)
+### Layer 3: trade-off analysis for soft constraints
 
 After eliminating impossible solutions, the remaining options require trade-off analysis. No system can optimize all variables simultaneously.
 

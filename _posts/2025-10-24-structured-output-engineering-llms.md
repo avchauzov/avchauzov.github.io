@@ -46,7 +46,7 @@ While guaranteeing syntactic correctness, CD introduces significant trade-offs:
 
 **TPOT** — **Time Per Output Token** — measures the average time required to generate each token after the first.
 
-### Runtime validation (Pydantic): the semantic safety net
+### Runtime validation with Pydantic: the semantic safety net
 
 The **Pydantic + Runtime Validation** approach uses a standard LLM call (often with native JSON Mode for high initial quality) and subsequently validates the output against a **Pydantic data model**. This model enforces structural constraints **and** custom business logic.
 
@@ -61,8 +61,8 @@ The `instructor` library facilitates this by automating the retry loop: a `Valid
 
 For tasks requiring complex reasoning (e.g., multi-step logic), forcing structured output immediately degrades accuracy by up to **27%**. The **Generate & Organize (G&O)** solution uses a two-step, decoupled approach:
 
-- **Step 1: Free-form Reasoning**. A powerful LLM generates the answer and detailed reasoning in natural language, preserving maximum task accuracy
-- **Step 2: Structure Extraction**. A smaller, cheaper LLM extracts the final structured data from the natural language output
+- **Step 1**: Free-form reasoning — a powerful LLM generates the answer and detailed reasoning in natural language, preserving maximum task accuracy
+- **Step 2**: Structure extraction — a smaller, cheaper LLM extracts the final structured data from the natural language output
 
 ---
 
@@ -96,17 +96,17 @@ With tokens optimized, the next step is validating output quality across multipl
 
 Production testing must validate the output across three distinct dimensions, moving beyond a simple parse-rate check:
 
-### 1. Syntactic correctness (100% target)
+### 1. Syntactic correctness
 
-This validates if the output is valid JSON (pass/fail `json.loads()`).
+This validates if the output is valid JSON (pass/fail `json.loads()`). The practical target is a **100%** syntactic parse rate.
 
-### 2. Structural compliance (100% target)
+### 2. Structural compliance
 
-This ensures the parsed JSON adheres to the data types, field constraints, and required fields defined in the Pydantic schema (pass/fail `PydanticModel(output)`).
+This ensures the parsed JSON adheres to the data types, field constraints, and required fields defined in the Pydantic schema (pass/fail `PydanticModel(output)`). The practical target is full structural match on every required field.
 
-### 3. Semantic accuracy (>90% target)
+### 3. Semantic accuracy
 
-This critical metric measures if the extracted data is **factually and contextually correct**. Since manual validation is expensive, **LLM-as-a-Judge** works as the standard approach, comparing the generated structured output against ground truth via a high-quality model.
+This critical metric measures if the extracted data is **factually and contextually correct**. In production, teams often aim above **90%** agreement with ground truth or human review on this dimension. Since manual validation is expensive, **LLM-as-a-Judge** works as the standard approach, comparing the generated structured output against ground truth via a high-quality model.
 
 Constrained Decoding only guarantees dimensions 1 and 2; it provides no assurance for the third.
 
@@ -118,13 +118,13 @@ Even with proper validation, production systems face specific edge cases.
 
 The first request using a new or modified schema with **Constrained Decoding frameworks** (e.g., vLLM, Outlines) can incur a **2–60 second** latency penalty. This occurs because the system must first **compile** the JSON Schema into an executable format (like a Context-Free Grammar or **Finite State Machine (FSM)**).
 
-**Solution: Schema Pre-warming**. Send a dummy request for every critical schema **before** serving user traffic to force the initial compilation, ensuring subsequent user requests benefit from the cached, compiled grammar.
+**Solution**: Schema Pre-warming. Send a dummy request for every critical schema **before** serving user traffic to force the initial compilation, ensuring subsequent user requests benefit from the cached, compiled grammar.
 
 ### Complex string and code escaping
 
 LLMs often struggle with multi-level **escaping** special characters (`\n`, `"`, `\`) required when complex text or code is contained within a single JSON string field. This multi-level escaping often leads to errors.
 
-**Solution: Containerization**. Instead of requiring a single escaped string, use alternative, structured containers such as an array of strings (`lines: list[str]`) where each element is a single, un-escaped line. Alternatively, use formats like **XML** for text blocks.
+**Solution**: Containerization. Instead of requiring a single escaped string, use alternative, structured containers such as an array of strings (`lines: list[str]`) where each element is a single, un-escaped line. Alternatively, use formats like **XML** for text blocks.
 
 ## Synthesis of production recommendations
 

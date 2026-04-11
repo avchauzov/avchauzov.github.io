@@ -144,7 +144,7 @@ comparison_model = {
 
 By making `contrarian_view` a required field, you force the Reflector to explicitly search for criticism, preventing the agent from stopping after finding just positive articles.
 
-## Why mixing them fails (The math of bias)
+## Why mixing them fails: the math of bias
 
 When the Reflector uses Evaluation metrics (quality) to decide stopping, you introduce **Selection Bias**.
 

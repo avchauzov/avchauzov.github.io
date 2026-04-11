@@ -92,7 +92,7 @@ def adaptive_vector_search(es_client, query_vector, tenant_id, limit=10):
     )
 ```
 
-**Note:** For routing to work, documents must be indexed with `?routing=tenant_id`.
+**Note**: For routing to work, documents must be indexed with `?routing=tenant_id`.
 
 ## Summary
 

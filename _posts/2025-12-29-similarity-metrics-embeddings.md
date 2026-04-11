@@ -75,9 +75,9 @@ Risks to consider:
 
 **Important note**: If vectors are already normalized (`||v||=1`), dot product and cosine produce identical ranking. In this case, choosing dot product is purely computational optimization.
 
-## Euclidean distance (L2): correct but demanding
+## Euclidean distance: correct but demanding
 
-When it applies:
+The L2 (Euclidean) norm is the standard geometry for this metric. When it applies:
 
 - Clustering algorithms (k-means is built on L2)
 - Computer vision tasks (comparing pixel intensities)
@@ -91,9 +91,9 @@ Why it is rarely used directly for retrieval:
 
 **Scale sensitivity**. Without normalization, longer vectors are always "farther" from query, even if semantically they are richer.
 
-## Manhattan distance (L1): where it applies
+## Manhattan distance: where it applies
 
-Where it has legitimate use:
+L1 (Manhattan) distance treats space as axis-aligned. Where it has legitimate use:
 
 - Sparse vectors (BM25-style representations)
 - Binary embeddings (where L1 reduces to Hamming distance) — used in production for first-stage retrieval with 32x memory savings
@@ -109,7 +109,7 @@ As a result, L1 distance is highly sensitive to arbitrary basis rotations introd
 
 From a systems perspective, L1 is also poorly supported by **Approximate Nearest Neighbor (ANN)** indexes and hardware acceleration paths, making it both **geometrically unsound and operationally inefficient** for dense embeddings.
 
-### Quick reference (mental map)
+### Quick reference map
 
 ---
 

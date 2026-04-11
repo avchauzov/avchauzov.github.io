@@ -160,9 +160,9 @@ The latency increase comes primarily from running two retrieval paths. Parallel 
 
 RRF often serves as a key component in a multi-stage retrieval cascade. For example:
 
-1. **Stage 1: Retrieval**. Fetch candidates using hybrid search (e.g., 128 from BM25 + 128 from Vector) → up to 256 candidates
-2. **Stage 2: Fusion**. Apply RRF to the candidate pool → 32 finalists
-3. **Stage 3: Reranking**. Use a powerful cross-encoder to rerank the finalists → 8 final results
+1. **Stage 1**: Retrieval — fetch candidates using hybrid search (e.g., 128 from BM25 + 128 from Vector) → up to 256 candidates
+2. **Stage 2**: Fusion — apply RRF to the candidate pool → 32 finalists
+3. **Stage 3**: Reranking — use a powerful cross-encoder to rerank the finalists → 8 final results
 
 ## The core principle
 
