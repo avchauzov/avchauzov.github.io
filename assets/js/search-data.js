@@ -34,6 +34,17 @@ ninja.data = [{
             window.location.href = "/blog/2026/context-engineering-production-patterns/";
           
         },
+      },{id: "post-context-limits-degrade-routing-quality-faster-than-generation",
+        
+          title: "Context limits degrade routing quality faster than generation",
+        
+        description: "Routing and classification under long prompts: score dilution, margin collapse, routing collapse, and practical caps.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/routing-quality-context-limits/";
+          
+        },
       },{id: "post-rag-fails-upstream",
         
           title: "RAG fails upstream",
