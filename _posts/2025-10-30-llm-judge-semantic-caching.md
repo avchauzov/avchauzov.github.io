@@ -84,7 +84,7 @@ if confidence > 0.90:
 return response.text
 ```
 
-This adds **zero latency to retrieval**—validation happens at write time, not read time.
+This adds **zero latency to retrieval** — validation happens at write time, not read time.
 
 **Multi-turn conversations**: include conversation state in equivalence check. Same query in different dialogue contexts needs different responses.
 
