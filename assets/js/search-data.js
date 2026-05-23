@@ -34,6 +34,17 @@ ninja.data = [{
             window.location.href = "/blog/2026/context-engineering-production-patterns/";
           
         },
+      },{id: "post-why-llm-evaluation-metrics-look-stable-but-customers-are-unhappy",
+        
+          title: "Why LLM evaluation metrics look stable but customers are unhappy",
+        
+        description: "Classic metrics hide the failures users notice. Production evaluation should measure friction, drift, and task completion.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/evaluation-metrics-user-satisfaction-gap/";
+          
+        },
       },{id: "post-context-limits-degrade-routing-quality-faster-than-generation",
         
           title: "Context limits degrade routing quality faster than generation",
@@ -177,11 +188,11 @@ ninja.data = [{
             window.location.href = "/blog/2025/jensen-shannon-clustering-metric/";
           
         },
-      },{id: "post-hybrid-intent-classification-the-rationale-for-production-grade-shallow-model-first-architectures",
+      },{id: "post-hybrid-intent-classification-compact-encoder-first-routing-for-production-systems",
         
-          title: "Hybrid intent classification: the rationale for production-grade shallow-model-first architectures",
+          title: "Hybrid intent classification: compact-encoder-first routing for production systems",
         
-        description: "Production chatbots route most requests through fast shallow classifiers, escalating to large language models only on low-confidence queries. This hybrid architecture mitigates the latency and cost overheads of monolithic LLM solutions, achieving significant speed gains while preserving high classification accuracy.",
+        description: "Production chatbots route most requests through fast compact encoder classifiers, escalating to LLMs only on low-confidence queries. This hybrid architecture mitigates the latency and cost overheads of monolithic LLM solutions, achieving significant speed gains while preserving high classification accuracy.",
         section: "Posts",
         handler: () => {
           
@@ -280,18 +291,18 @@ ninja.data = [{
         
           title: "Mitigating positional bias in LLM-as-a-judge evaluation: the swapping technique",
         
-        description: "Large language model judges often exhibit a strong preference for the first presented option (position bias). A position-swapping methodology significantly improves agreement with human ratings.",
+        description: "LLM judges often exhibit a strong preference for the first presented option (position bias). A position-swapping methodology significantly improves agreement with human ratings.",
         section: "Posts",
         handler: () => {
           
             window.location.href = "/blog/2025/llm-judge-position-bias-swapping/";
           
         },
-      },{id: "post-hybrid-retrieval-with-reciprocal-rank-fusion-solving-the-score-normalization-problem",
+      },{id: "post-hybrid-retrieval-with-rrf-solving-the-score-normalization-problem",
         
-          title: "Hybrid retrieval with reciprocal rank fusion: solving the score normalization problem",
+          title: "Hybrid retrieval with RRF: solving the score normalization problem",
         
-        description: "Pure vector search isn&#39;t always enough. Weighted averaging of BM25 and vector scores breaks due to incompatible scales. Reciprocal rank fusion solves this by using ranks instead of scores.",
+        description: "Pure vector search isn&#39;t always enough. Weighted averaging of BM25 and vector scores breaks due to incompatible scales. RRF solves this by using ranks instead of scores.",
         section: "Posts",
         handler: () => {
           
@@ -320,11 +331,11 @@ ninja.data = [{
             window.location.href = "/blog/2025/qdrant-quantization-cuts-rag-latency/";
           
         },
-      },{id: "post-why-vision-language-models-ignore-visual-evidence-and-how-to-fix-it",
+      },{id: "post-why-vlms-ignore-visual-evidence-and-how-to-fix-it",
         
-          title: "Why vision-language models ignore visual evidence (and how to fix it)",
+          title: "Why VLMs ignore visual evidence (and how to fix it)",
         
-        description: "Vision-language models have a strong contextual bias, prioritizing &#39;logical&#39; conclusions over visual facts. We fixed this in a production case by explicitly telling the model to ignore what it thought it knew.",
+        description: "VLMs have a strong contextual bias, prioritizing logical conclusions over visual facts. We fixed this in a production case by explicitly telling the model to ignore what it thought it knew.",
         section: "Posts",
         handler: () => {
           
@@ -342,11 +353,11 @@ ninja.data = [{
             window.location.href = "/blog/2025/hybrid-ai-pattern-for-high-stakes-ranking/";
           
         },
-      },{id: "post-vision-language-model-pipeline-debugging-lessons-from-visual-monitoring",
+      },{id: "post-vlm-pipeline-debugging-lessons-from-visual-monitoring",
         
-          title: "Vision-language model pipeline debugging: lessons from visual monitoring",
+          title: "VLM pipeline debugging: lessons from visual monitoring",
         
-        description: "Hard-won insights from building proof of concept vision-language model pipelines for visual monitoring, where hallucinations hide in plain sight, preprocessing decisions make or break everything, and the question is: can we forget classical computer vision?",
+        description: "Hard-won insights from building proof-of-concept VLM pipelines for visual monitoring, where hallucinations hide in plain sight, preprocessing decisions make or break everything, and the question is: can we forget classical computer vision?",
         section: "Posts",
         handler: () => {
           
