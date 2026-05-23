@@ -1,15 +1,15 @@
 ---
 layout: default
-title: "Vision-language model pipeline debugging: lessons from visual monitoring"
-description: "Hard-won insights from building proof of concept vision-language model pipelines for visual monitoring, where hallucinations hide in plain sight, preprocessing decisions make or break everything, and the question is: can we forget classical computer vision?"
+title: "VLM pipeline debugging: lessons from visual monitoring"
+description: "Hard-won insights from building proof-of-concept VLM pipelines for visual monitoring, where hallucinations hide in plain sight, preprocessing decisions make or break everything, and the question is: can we forget classical computer vision?"
 date: 2025-09-09 00:00:00 +0000
 ---
 
-Building VLM pipelines for visual monitoring has taught me that multimodal systems fail in uniquely creative ways. Like pure language models, VLMs can hallucinate objects that aren't there, misinterpret spatial relationships, and confidently describe non-existent details. And validating them is harder. Here's what I've learned from countless proof-of-concept iterations.
+Building **Vision-Language Model (VLM)** pipelines for visual monitoring has taught me that multimodal systems fail in uniquely creative ways. Like pure language models, VLMs can hallucinate objects that aren't there, misinterpret spatial relationships, and confidently describe non-existent details. And validating them is harder. Here's what I've learned from countless proof-of-concept iterations.
 
 ### The preprocessing trap
 
-Image preprocessing is where most VLM pipelines silently break. I've seen systems fail because of aggressive cropping that removed critical context, inappropriate resolution scaling, or noise that confused the visual encoder. The "resolution curse" is real — even advanced models struggle with high-resolution images, missing fine details that a human would catch instantly.
+Image preprocessing is where most VLM pipelines silently break. I've seen systems fail because of aggressive cropping that removed critical context, inappropriate resolution scaling, or noise that confused the visual encoder. The "resolution curse" is real — even strong visual models struggle with high-resolution images, missing fine details that a human would catch instantly.
 
 My debugging rule: **always inspect what the model actually sees**. I save intermediate preprocessing outputs and manually verify that critical information survives the pipeline. A monitoring system that crops out the very gauge it's supposed to read is worse than useless.
 
@@ -35,7 +35,7 @@ Cross-modal verification is my final validation step. I generate text descriptio
 
 ### The guiding principle: visual grounding
 
-This approach proves that VLMs are not a magical replacement for everything that came before. For tasks requiring high precision and reliability, you can't yet get rid of proven **classical Computer Vision (CV)** methods, and especially not **fine-tuning** for a specific task. VLMs are powerful for general context understanding, but to build truly robust systems, they must be combined with more traditional and controllable approaches.
+This approach proves that VLMs are not a magical replacement for everything that came before. For tasks requiring high precision and reliability, you can't yet get rid of proven **classical computer vision** methods, and especially not **fine-tuning** for a specific task. VLMs are powerful for general context understanding, but to build truly robust systems, they must be combined with more traditional and controllable approaches.
 
 ---
 

@@ -7,7 +7,7 @@ date: 2026-01-11 00:00:00 +0000
 
 Most RAG debugging sessions swap around the same stock: prompt, embedding model, hyperparameters, reranker. Even when retrieval metrics improve, the system still gives wrong answers, because the problem usually started earlier — before any query was issued.
 
-**Retrieval-Augmented Generation (RAG)** systems fail at three distinct points: generation, retrieval, and knowledge preparation. The first two receive most of the engineering attention, while the third — often called the **knowledge foundation layer** — is where failures most often originate and least often get diagnosed.
+**RAG** systems fail at three distinct points: generation, retrieval, and knowledge preparation. The first two receive most of the engineering attention, while the third — often called the **knowledge foundation layer** — is where failures most often originate and least often get diagnosed.
 
 ## The knowledge layer nobody names
 

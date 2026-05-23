@@ -1,7 +1,7 @@
 ---
 layout: default
-title: "Hybrid retrieval with reciprocal rank fusion: solving the score normalization problem"
-description: "Pure vector search isn't always enough. Weighted averaging of BM25 and vector scores breaks due to incompatible scales. Reciprocal rank fusion solves this by using ranks instead of scores."
+title: "Hybrid retrieval with RRF: solving the score normalization problem"
+description: "Pure vector search isn't always enough. Weighted averaging of BM25 and vector scores breaks due to incompatible scales. RRF solves this by using ranks instead of scores."
 date: 2025-10-06 00:00:00 +0000
 ---
 

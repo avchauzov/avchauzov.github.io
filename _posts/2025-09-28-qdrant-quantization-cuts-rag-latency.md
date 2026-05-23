@@ -13,7 +13,7 @@ Median retrieval latency was **~900ms**. Such high baseline latency made more ad
 
 ### What I tried first
 
-My first approach was predictable: lower the `hnsw_ef` parameter (i.e., make the **Hierarchical Navigable Small World (HNSW)** algorithm perform search less thoroughly). Median latency dropped **2x**, but the **Recall@10** metric fell from **0.93 to 0.79**. For downstream generation, this was an unacceptable loss in quality, as critical chunks were missing from the context.
+My first approach was predictable: lower the `hnsw_ef` parameter (i.e., make the **Hierarchical Navigable Small World** algorithm perform search less thoroughly). Median latency dropped **2x**, but the **Recall@10** metric fell from **0.93 to 0.79**. For downstream generation, this was an unacceptable loss in quality, as critical chunks were missing from the context.
 
 The second idea was to reduce vector dimensionality. Some large embedding models natively support this via the `dimensions` parameter. However, we had plans to experiment with other models and implement multi-model approaches, so we needed an **infrastructure-level solution**.
 

@@ -22,7 +22,7 @@ Production systems show different results. Adding neural rerankers introduces la
 
 ### The three problems
 
-**Latency kills throughput**. Bi-encoders work fast because they precompute document embeddings offline, enabling approximate nearest neighbor (ANN) search in milliseconds. **Reranking cannot leverage precomputation** — it must evaluate the interaction between a specific query and document.
+**Latency kills throughput**. Bi-encoders work fast because they precompute document embeddings offline, enabling approximate nearest neighbor search in milliseconds. **Reranking cannot leverage precomputation** — it must evaluate the interaction between a specific query and document.
 
 Pointwise LLM rerankers demonstrate **2–2.7x higher latency** than listwise alternatives due to sequential autoregressive decoding. In-context ranking with full fine-tuning exhibits exponential latency growth. At `N=500` documents, query latency reaches **~1.15s** on a 7B model. Even efficient alternatives like ColBERT still increase query latency compared to pure vector search.
 
@@ -34,7 +34,7 @@ Cross-encoders and pointwise LLM scorers assign scalar relevance scores to indiv
 
 Clustering-based grouping strategies before reranking make things worse. K-Means clustering on BERT embeddings rewards redundancy rather than utility — semantically similar documents cluster together regardless of their complementary information value. For queries requiring comprehensive coverage, aggressive reranking that filters conflicting documents prevents LLM generators from accessing necessary information.
 
-Maximal Marginal Relevance (MMR) was designed specifically to address this problem by explicitly trading relevance for diversity — but the tradeoff remains fundamental.
+**Maximal Marginal Relevance (MMR)** was designed specifically to address this problem by explicitly trading relevance for diversity — but the tradeoff remains fundamental.
 
 **Reranking often provides no benefit**. I've noticed in deployed RAG systems that reranking frequently fails to improve metrics or actively degrades them.
 
@@ -62,7 +62,7 @@ Before adding an expensive reranking step, consider more effective alternatives.
 
 **Context compression** through summarization-based approaches scales linearly `O(N)` when the challenge involves fitting many relevant but redundant documents into limited context windows. This avoids expensive candidate list analysis while addressing the core constraint.
 
-**Maximal Marginal Relevance (MMR)** provides an algorithmic alternative that explicitly trades relevance for diversity through a balancing parameter `lambda`. The algorithm incorporates query similarity `(sim_1)` against dissimilarity with already-selected documents `(sim_2)`. **MMR is always a tradeoff** — increasing diversity deliberately reduces overall relevance, but avoids neural reranking's computational costs.
+**MMR** provides an algorithmic alternative that explicitly trades relevance for diversity through a balancing parameter `lambda`. The algorithm incorporates query similarity `(sim_1)` against dissimilarity with already-selected documents `(sim_2)`. **MMR is always a tradeoff** — increasing diversity deliberately reduces overall relevance, but avoids neural reranking's computational costs.
 
 **GraphRAG** proves necessary for multi-hop or logical reasoning tasks requiring structured knowledge. Vector search followed by semantic reranking cannot effectively model hierarchical structures, causal chains, or logical dependencies critical for these scenarios. However, GraphRAG introduces excessive context for simple queries and should be avoided when tasks don't require deep contextual hierarchy.
 

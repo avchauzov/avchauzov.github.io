@@ -29,7 +29,7 @@ llm_model_name = "your-llm-model"  # Replace with your provider-specific model
 
 # Static context positioned first
 SYSTEM_CONTEXT = """You are a financial analyst.
-Company guidelines: [1000 tokens of static policies]
+Company guidelines: [1,000 tokens of static policies]
 """
 
 def query_with_cache(user_query: str) -> str:
@@ -251,7 +251,7 @@ Token pruning breaks syntax for code, JSON, and reasoning chains (CoT). LLMLingu
 
 **Overhead Dominates Small Inputs**
 
-For $N < 500$, compression latency exceeds prefill savings. The crossover point depends on hardware, but general rule: compress only when input exceeds 1000 tokens.
+For $N < 500$, compression latency exceeds prefill savings. The crossover point depends on hardware, but general rule: compress only when input exceeds 1,000 tokens.
 
 **Embedding Model Drift**
 
@@ -280,4 +280,4 @@ Compression adds ~200ms overhead. Acceptable for batch processing or async workf
 
 **Semantic Caching**: When >20% of queries are semantically similar. Common in support chatbots, internal Q&A, FAQ systems.
 
-**Compression**: When retrieved context regularly exceeds 1000 tokens and latency tolerance is >500ms. Not suitable for real-time chat interfaces.
+**Compression**: When retrieved context regularly exceeds 1,000 tokens and latency tolerance is >500ms. Not suitable for real-time chat interfaces.

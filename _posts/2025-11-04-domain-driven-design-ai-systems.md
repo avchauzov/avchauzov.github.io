@@ -46,7 +46,7 @@ Once the architectural boundary (BC) is defined, the next challenge is dynamical
 This tactical application of DDD patterns is what drives efficiency. The `Select` step often involves filtering vector search results by metadata before passing them to the LLM.
 
 ```python
-# Example: Select step in Context Engineering
+# Example: select step in context engineering
 def get_context_for_user(query: str, user_id: str):
     # Select: Retrieve documents that match the query AND the user_id metadata
     results = vector_store.similarity_search(
@@ -78,6 +78,8 @@ While a BC isolates the domain and CE filters its content, a **Trust Boundary** 
 - **With Trust Boundaries**: Each agent runs in its own "sandbox" (e.g., a separate container, process, or serverless function). The `TriageAgent` has no direct access to the `BillingAgent`. It can only communicate by publishing a `Domain Event` (see Pattern 6). The `BillingAgent` subscribes to this event, isolating the two agents completely
 
 Boundaries in DDD map directly to trust boundaries. Each agent should run in a sandbox with strict access policies.
+
+ACL = Anti-Corruption Layer
 
 ---
 
@@ -204,7 +206,7 @@ The data flow is decoupled using **Domain Events**:
 
 ## Context map and integration
 
-The `TriageAgent` (BC 1) doesn't solve the ticket. It uses the **Ubiquitous Language** (`Category`, `Priority`) to classify it and then publishes a `TicketClassified` **Domain Event**.
+The `TriageAgent` (BC 1) doesn't solve the ticket. It uses the **UL** (`Category`, `Priority`) to classify it and then publishes a `TicketClassified` **Domain Event**.
 
 The `BillingAgent` (BC 2) and `TechSupportAgent` (BC 3) subscribe to this event, protected by **Trust Boundaries**. If `Category == "Billing"`, the `BillingAgent` activates. It uses an **ACL** to fetch the user's payment history from an external CRM, then uses **Context Engineering** (RAG filtered by `user_id`) to find relevant past invoices and resolve the issue.
 
@@ -249,8 +251,8 @@ Domain-Driven Design gives AI engineers a framework to structure LLM systems tha
 
 Instead of a simple summary, here is a practical framework for implementation:
 
-1. **Start small**. Define a single Bounded Context for one agent. Focus entirely on its **Ubiquitous Language** — codify every entity (`User`, `Ticket`, `Policy`) in its prompt and Pydantic models
-2. **Build defenses**. Wrap all external API calls (to databases, CRMs, or other services) in an **Anti-Corruption Layer (ACL)**. Do the same for the LLM's final output to guarantee clean, structured data
+1. **Start small**. Define a single Bounded Context for one agent. Focus entirely on its **UL** — codify every entity (`User`, `Ticket`, `Policy`) in its prompt and Pydantic models
+2. **Build defenses**. Wrap all external API calls (to databases, CRMs, or other services) in an **ACL**. Do the same for the LLM's final output to guarantee clean, structured data
 3. **Decouple to scale**. Once a second agent is needed, do not make them call each other directly. Use **Domain Events** to communicate, ensuring the system remains asynchronous, fault-tolerant, and respects its **Trust Boundaries**
 
 ---

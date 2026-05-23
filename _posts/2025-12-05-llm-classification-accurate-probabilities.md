@@ -36,7 +36,7 @@ Two main post-processing approaches can help to calibrate these outputs:
 
 Use Temperature Scaling first. Switch to Isotonic only if **Expected Calibration Error (ECE)** remains high.
 
-### Pattern: Null Category and Safe Harbor
+### Pattern: null category and safe harbor
 
 Sometimes, adding classes like `"unknown"` or `"other"` to the classification enum works well. Without an escape hatch, constrained decoding forces the model to hallucinate the "least-bad" option to satisfy the schema.
 
@@ -50,13 +50,13 @@ Use 'unknown' ONLY if the text contains no sentiment indicators.
 Ambiguous or mixed sentiment should still be classified as neutral."
 ```
 
-### Pattern: Two-stage Generation
+### Pattern: two-stage generation
 
 Strict `json_mode` acts as a muzzle. If the input is **Out-of-Distribution**, constrained decoding forces a hallucinated valid schema instead of a refusal.
 
 Generate free-form text first, parse second. Libraries like Instructor (which supports multiple output modes including markdown+json) or BAML allow mixed-content responses. The model first outputs a natural language refusal or reasoning ("I cannot classify this image because..."), followed by the JSON block. The parser discards the text preamble and extracts only the valid JSON.
 
-### Pattern: Inference Strategies
+### Pattern: inference strategies
 
 Trading compute and latency for higher accuracy is necessary for borderline cases.
 
@@ -64,7 +64,7 @@ Trading compute and latency for higher accuracy is necessary for borderline case
 - **Adaptive early stopping**: Generate samples sequentially (not in parallel). Stop when first 3 consecutive samples agree. If after 10 samples no consensus, return majority vote. This reduces average cost by 25–50% while maintaining accuracy for high-confidence cases
 - **Sequential Refinement**: Instead of `k` parallel samples, use iterative improvement. The model critiques and corrects its previous attempt. This is more token-efficient than parallel sampling for similar accuracy gains
 
-### Pattern: Proxy Scoring
+### Pattern: proxy scoring
 
 Proprietary APIs often withhold logprobs which can be useful as a probability proxy.
 
@@ -122,7 +122,7 @@ proxy_confidence = score_answer_probability(input_text, big_model_prediction)
 
 **Note**: Proxy score quality depends on prompt format matching. For production, use the same classification prompt structure for both models.
 
-### Pattern: Architecture and Fallback
+### Pattern: architecture and fallback
 
 System-level decisions often outweigh the previous methods.
 

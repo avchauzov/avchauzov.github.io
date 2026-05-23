@@ -66,7 +66,7 @@ Architecture must match team capabilities. Exotic technologies impose a "skill t
 
 Scale determines topology. Low load (< 100 RPS — requests per second) fits monolith. High load (> 10,000 RPS) requires sharding.
 
-Designing for high load when the current requirement is low violates You Aren't Gonna Need It (YAGNI). This principle states: do not build functionality until it is actually needed. Premature optimization wastes resources and increases complexity.
+Designing for high load when the current requirement is low violates the "You Aren't Gonna Need It" principle. This principle states: do not build functionality until it is actually needed. Premature optimization wastes resources and increases complexity.
 
 ### Layer 3: trade-off analysis for soft constraints
 

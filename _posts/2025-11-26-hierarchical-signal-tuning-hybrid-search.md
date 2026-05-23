@@ -5,13 +5,13 @@ description: "Fusion algorithms like linear combination or RRF cannot fix poor i
 date: 2025-11-26 00:00:00 +0000
 ---
 
-Hybrid search combines Dense and Sparse retrieval to improve ranking quality. Standard implementations assume that component systems ($S_{\text{dense}}$ and $S_{\text{BM25}}$) provide valid input signals. This assumption fails in production.
+Hybrid search combines dense and sparse retrieval to improve ranking quality. Standard implementations assume that component systems ($S_{\text{dense}}$ and $S_{\text{BM25}}$) provide valid input signals. This assumption fails in production.
 
-Fusion methods (Linear Combination, RRF) optimize how components are merged. They do not optimize the components themselves. Tuning $\alpha$ or RRF constant $k$ yields minimal improvement when input rankings are corrupted.
+Fusion methods such as linear combination and Reciprocal Rank Fusion (RRF) optimize how components are merged. They do not optimize the components themselves. Tuning $\alpha$ or RRF constant $k$ yields minimal improvement when input rankings are corrupted.
 
 ### The component problem: unweighted field heterogeneity
 
-Documents contain structured fields (Title, Body, Metadata). Standard BM25 implementations treat all fields equally. This ignores signal density.
+Documents contain structured fields: title, body, and metadata. Standard BM25 implementations treat all fields equally. This ignores signal density.
 
 Two common errors:
 
@@ -19,18 +19,18 @@ Two common errors:
 
 **2. The "Flat" Approach**: Querying fields with equal weight (default `multi_match` in Elasticsearch). Term frequency in long fields dominates short but high-signal fields.
 
-**Concrete Example**:
+**Concrete example**:
 
 Query: `connection timeout`
 
 - **Doc A (Relevant)**: Title contains "Connection Timeout"
 - **Doc B (Noise)**: Body contains "...issue not related to connection timeout..." (long troubleshooting log)
 
-Flat BM25 often ranks Doc B higher due to term frequency scaling with document length. The Sparse component recommends incorrect documents.
+Flat BM25 often ranks Doc B higher due to term frequency scaling with document length. The sparse component recommends incorrect documents.
 
-### Why reciprocal rank fusion does not solve this
+### Why RRF does not solve this
 
-RRF (Reciprocal Rank Fusion) is often assumed to eliminate component tuning requirements. The formula:
+RRF is often assumed to eliminate component tuning requirements. The formula:
 
 $$RRF(d) = \sum_{r \in \text{rankings}} \frac{1}{k + r(d)}$$
 
@@ -42,9 +42,9 @@ Component rankings must be fixed before fusion is applied. BM25 is treated as a 
 
 $$S_{\text{BM25}}(q, d) = \sum_{f \in \text{fields}} w_f \cdot \text{BM25}(q, d_f)$$
 
-**Optimization Protocol**:
+**Optimization protocol**:
 
-1. Disable fusion ($\alpha=0$ or disable Dense component entirely)
+1. Disable fusion ($\alpha=0$ or disable dense component entirely)
 2. Assign initial weights based on signal density hypothesis. Titles typically require $w_{\text{title}} \gg w_{\text{body}}$
 3. Optimize for **NDCG@10** (precision at top ranks)
 4. Monitor **HitRate@10** (recall constraint). Configurations that boost NDCG but reduce HitRate indicate over-filtering

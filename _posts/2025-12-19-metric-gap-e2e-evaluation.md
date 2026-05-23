@@ -11,7 +11,7 @@ Here's a common pattern:
 
 1. Days are spent on optimizing a specific component (e.g., improving reranker precision by 5%)
 2. The update is deployed to production
-3. **User satisfaction metrics (Customer Satisfaction (CSAT) or Resolution Rate) remain flat**
+3. **User satisfaction metrics (Customer Satisfaction or Resolution Rate) remain flat**
 
 The problem isn't a lack of validation; it is validating in a vacuum. Component metrics are often treated as the goal rather than as diagnostic signals for the actual product.
 
@@ -49,9 +49,9 @@ Effective evaluation requires metrics that proxy user value, not just system out
 
 **Outcome Metrics (Business)**:
 
-- Code Generation: Did the user copy-paste the code block?
-- Support: Did the conversation end without a "talk to human" request?
-- Search: Did the user click a citation?
+- Code Generation: User copy-paste rate for generated code blocks
+- Support: Conversations that end without a "talk to human" escalation
+- Search: Citation click-through rate
 
 ### Step 2: the golden dataset
 

@@ -44,7 +44,7 @@ While guaranteeing syntactic correctness, CD introduces significant trade-offs:
 
 ---
 
-**TPOT** — **Time Per Output Token** — measures the average time required to generate each token after the first.
+**Time Per Output Token (TPOT)** measures the average time required to generate each token after the first.
 
 ### Runtime validation with Pydantic: the semantic safety net
 
@@ -59,7 +59,7 @@ The `instructor` library facilitates this by automating the retry loop: a `Valid
 
 ### Decoupled generation: preserving complex reasoning
 
-For tasks requiring complex reasoning (e.g., multi-step logic), forcing structured output immediately degrades accuracy by up to **27%**. The **Generate & Organize (G&O)** solution uses a two-step, decoupled approach:
+For tasks requiring complex reasoning (e.g., multi-step logic), forcing structured output immediately degrades accuracy by up to **27%**. The **Generate & Organize** solution uses a two-step, decoupled approach:
 
 - **Step 1**: Free-form reasoning — a powerful LLM generates the answer and detailed reasoning in natural language, preserving maximum task accuracy
 - **Step 2**: Structure extraction — a smaller, cheaper LLM extracts the final structured data from the natural language output
@@ -116,7 +116,7 @@ Even with proper validation, production systems face specific edge cases.
 
 ### Cold start latency mitigation
 
-The first request using a new or modified schema with **Constrained Decoding frameworks** (e.g., vLLM, Outlines) can incur a **2–60 second** latency penalty. This occurs because the system must first **compile** the JSON Schema into an executable format (like a Context-Free Grammar or **Finite State Machine (FSM)**).
+The first request using a new or modified schema with **Constrained Decoding frameworks** (e.g., vLLM, Outlines) can incur a **2–60 second** latency penalty. This occurs because the system must first **compile** the JSON Schema into an executable format (like a Context-Free Grammar or **finite state machine**).
 
 **Solution**: Schema Pre-warming. Send a dummy request for every critical schema **before** serving user traffic to force the initial compilation, ensuring subsequent user requests benefit from the cached, compiled grammar.
 
@@ -132,7 +132,7 @@ Structured output engineering is a multi-layered discipline built on reliability
 
 1. **Prioritize Pydantic + Instructor**: This hybrid approach provides runtime validation that catches **95%** of semantic errors, offering higher value than 100% syntactic fidelity alone
 2. **Aggressively Optimize Token Usage**: Use **Type-Definitions** (up to **76%** input savings) and explicitly require **Minified JSON** (up to **50%** output savings)
-3. **Implement 3D Testing**: Validate against Syntactic Correctness, Structural Compliance, and Semantic Accuracy (using LLM-as-a-Judge)
+3. **Implement three-dimensional testing**: Validate against syntactic correctness, structural compliance, and semantic accuracy
 4. **Adopt Task-Specific Strategy**: Use **Native API tools** for simple extraction, **Pydantic** for business logic, and **Decoupled Generation** for reasoning-intensive tasks
 
 The investment in structured output engineering delivers substantial **15–25% cost savings** and **20–30% quality improvements** by minimizing hallucinations and eliminating API-level failures. Treat structured outputs as a **reliability engineering discipline**, not a feature flag.

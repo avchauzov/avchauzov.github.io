@@ -13,7 +13,7 @@ Previously, we discussed how fine-tuned BERT can be a better alternative to the 
 
 The pattern splits inference into two stages:
 
-1. **Feature extraction**: Frozen encoder (MiniLM, E5, BGE, or similar) converts text to dense vector. Single forward pass, shared across all downstream tasks
+1. **Feature extraction**: Frozen compact encoder (small multilingual or contrastive embedding models, or similar) converts text to dense vector. Single forward pass, shared across all downstream tasks
 2. **Classification head**: Lightweight model (Logistic Regression, Linear SVM) operates on the vector. Inference is matrix multiplication — microseconds on CPU
 
 ### Why this often wins over fine-tuned BERT
@@ -45,11 +45,11 @@ Practical approaches to reduction:
 
 ---
 
-| Method                  | Description                    | Typical quality loss         |
-| ----------------------- | ------------------------------ | ---------------------------- |
-| PCA post-processing     | Reduce 768→256 on your dataset | <1% (often)                  |
-| Matryoshka (MRL) models | Truncate vector at inference   | Depends on cutoff            |
-| Binary quantization     | 1 bit per dimension            | 2–5%, but 32x memory savings |
+| Method              | Description                    | Typical quality loss         |
+| ------------------- | ------------------------------ | ---------------------------- |
+| PCA post-processing | Reduce 768→256 on your dataset | <1% (often)                  |
+| Matryoshka models   | Truncate vector at inference   | Depends on cutoff            |
+| Binary quantization | 1 bit per dimension            | 2–5%, but 32x memory savings |
 
 ---
 
@@ -148,7 +148,7 @@ Mitigation: Merge into single intent with sub-classification, or fine-tune encod
 
 ## Do you need to fine-tune the encoder?
 
-Short answer: usually no. Off-the-shelf embeddings (E5, BGE, OpenAI, Cohere) handle most intent classification tasks.
+Short answer: usually no. Off-the-shelf embedding models from commercial APIs or open encoder families handle most intent classification tasks.
 
 ### When frozen embeddings are sufficient
 
@@ -165,7 +165,7 @@ Short answer: usually no. Off-the-shelf embeddings (E5, BGE, OpenAI, Cohere) han
 
 ### Alternatives before full fine-tuning
 
-1. **Try stronger encoder**: Switch from MiniLM to E5-large or BGE-large. Latency increases but may solve the problem
+1. **Try stronger encoder**: Switch to a larger contrastive embedding model. Latency increases but may solve the problem
 
 2. **Contrastive fine-tuning on hard pairs**: Lighter than full fine-tuning. Collect pairs of confused intents, train with contrastive loss. Often sufficient
 
@@ -186,7 +186,7 @@ Fine-tuning adapts embedding space itself — attention weights learn domain-spe
 
 For chatbot latency (<100ms end-to-end):
 
-- Use small encoder (MiniLM, DistilBERT, TinyBERT)
+- Use small compact encoder (distilled transformer variants)
 - Export to ONNX, apply INT8 quantization — gives 2–5x speedup
 - Add semantic cache for frequent queries — hash lookup is faster than any model
 

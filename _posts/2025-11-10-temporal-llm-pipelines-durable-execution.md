@@ -188,15 +188,15 @@ def get_status(self) -> dict:
 
 ### Step 5: GPU resource isolation via task queues
 
-- **Problem**: We have an expensive `run_local_model` Activity that requires a GPU. If a normal CPU worker picks it up, it will either crash (OOM) or block other tasks
+- **Problem**: We have an expensive `run_local_model` Activity that requires a GPU. If a normal CPU worker picks it up, it will either crash from out of memory or block other tasks
 - **Change**: When executing the activity, we specify `task_queue="gpu-workers"`. This ensures only workers specifically configured to listen to that queue (and deployed on GPU machines) will execute this task
 
 ```python
 @activity.defn
 async def run_local_model(text: str) -> str:
     # Requires GPU, expensive
-    model = load_model()
-    return model.generate(text)
+    local_llm = load_model(local_llm_model_name)
+    return local_llm.generate(text)
 
 # In workflow:
 result = await workflow.execute_activity(

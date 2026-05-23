@@ -39,7 +39,7 @@ Here, the **Reflector** acts as an architect ensuring the structure is built, wh
 
 ![](/assets/img/2025-12-15-reflection-evaluation-agent-critic/2.png)
 
-## The reflector: Engine of curiosity
+## The reflector: engine of curiosity
 
 The Reflector is a generative mechanism. It analyzes the history of actions to produce the next instruction. It answers: **"Do I have enough information to form a comprehensive view?"**
 
@@ -84,15 +84,15 @@ def reflection_step(state: AgentState, schema: CanonicalModel) -> Decision:
     return Decision.STOP(reason="model_complete")
 ```
 
-## The evaluator: Quality gate
+## The evaluator: quality gate
 
 The Evaluator is a discriminative mechanism. It runs after the research loop proposes a "complete" model. It answers: **"Is this answer good enough for the user?"**
 
 **Key metrics**:
 
 - **Source Authority**: Are the domains trusted? (e.g., arxiv.org vs random blog)
-- **Relevance**: Does the answer actually address the user's prompt?
-- **Hallucination Check**: Do the citations actually support the claims?
+- **Relevance**: Whether the answer addresses the user's prompt
+- **Hallucination Check**: Whether citations support the stated claims
 
 **Implementation (Logic-focused)**:
 

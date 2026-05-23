@@ -5,7 +5,7 @@ description: "Vector search finds similar text while GraphRAG finds connected fa
 date: 2025-11-07 00:00:00 +0000
 ---
 
-Vector search (RAG) works well for retrieving semantically similar chunks. This is fine for many information retrieval tasks. It struggles, however, with queries that require **structural reasoning** across multiple, logically-connected facts — facts that may not be semantically similar or appear in the same document.
+Vector search works well for retrieving semantically similar chunks. This is fine for many information retrieval tasks. It struggles, however, with queries that require **structural reasoning** across multiple, logically-connected facts — facts that may not be semantically similar or appear in the same document.
 
 GraphRAG builds a knowledge graph to handle these multi-hop queries. It extracts entities and relationships into a structure that allows for explicit traversal. But this approach adds significant indexing costs and potential query latency, which requires careful trade-offs.
 
@@ -44,7 +44,7 @@ GraphRAG introduces a fundamental trade-off: it shifts the compute load from que
 
 ### The trade-off: measured in metrics
 
-The trade-off is clear: complexity for accuracy. On multi-hop benchmarks (like 2WikiMultiHopQA), advanced GraphRAG systems can achieve **+20–30% F1 score increases** over baseline RAG. On these specific tasks, a fine-tuned agentic system using a small SLM might even outperform a baseline RAG system using a much larger, state-of-the-art model.
+The trade-off is clear: complexity for accuracy. On multi-hop benchmarks (like 2WikiMultiHopQA), advanced GraphRAG systems can achieve **+20–30% F1 score increases** over baseline RAG. On these specific tasks, a fine-tuned agentic system using a Small Language Model (SLM) might even outperform a baseline RAG system using a much larger, state-of-the-art model.
 
 ### Alternatives to computation-heavy indexing
 
@@ -88,7 +88,7 @@ If you must build a graph, these methods can reduce costs.
 **Choosing your architecture**:
 
 - **Full GraphRAG**: For complex, dynamic datasets where relationship discovery is key
-- **Fixed Entity Architecture (FEA)**: For narrow domains with stable schemas and a need to minimize indexing cost
+- **FEA**: For narrow domains with stable schemas and a need to minimize indexing cost
 - **Hybrid Systems**: Architectures designed to balance latency and power, often using incremental updates for real-time data
 
 **Tooling and prototyping**:

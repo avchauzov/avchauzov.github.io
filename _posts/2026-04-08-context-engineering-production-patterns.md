@@ -103,4 +103,6 @@ The engineering question is not "how large is the window?" but "what deserves to
 
 ---
 
-_Treating context as a dynamic, tiered pipeline — assembled per request, pruned under pressure, isolated across agents — is the difference between a system that scales and one that degrades silently as usage grows._
+<p align="center">
+<i>Treating context as a dynamic, tiered pipeline — assembled per request, pruned under pressure, isolated across agents — is the difference between a system that scales and one that degrades silently as usage grows.</i>
+</p>
