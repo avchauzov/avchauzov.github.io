@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-context-engineering-as-a-production-discipline",
+        },{id: "post-why-agent-memory-degrades-in-production",
+        
+          title: "Why agent memory degrades in production",
+        
+        description: "What happens to agent memory stores after weeks of production use, and what the read path never exposes.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/agent-memory-write-path/";
+          
+        },
+      },{id: "post-context-engineering-as-a-production-discipline",
         
           title: "Context engineering as a production discipline",
         
