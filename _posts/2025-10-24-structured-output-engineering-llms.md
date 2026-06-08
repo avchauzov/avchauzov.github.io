@@ -32,7 +32,7 @@ Three approaches address this challenge, each with distinct trade-offs.
 
 **Constrained Decoding (CD)** achieves a **100%** parse rate by applying **logit post-processing** — masking all invalid tokens at each generation step according to a formal grammar (like JSON Schema). Frameworks like `outlines` and self-hosted models utilize this approach for deployments.
 
-While guaranteeing syntactic correctness, CD introduces significant trade-offs:
+While guaranteeing syntactic correctness, CD introduces significant trade-offs. **Time Per Output Token (TPOT)** measures the average time required to generate each token after the first.
 
 ---
 
@@ -43,8 +43,6 @@ While guaranteeing syntactic correctness, CD introduces significant trade-offs:
 | **TPOT overhead** | 30–46ms vs 15ms baseline    | Computational cost of logit masking.                                                                                           |
 
 ---
-
-**Time Per Output Token (TPOT)** measures the average time required to generate each token after the first.
 
 ### Runtime validation with Pydantic: the semantic safety net
 

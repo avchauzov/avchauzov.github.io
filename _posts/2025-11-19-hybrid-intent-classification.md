@@ -56,5 +56,5 @@ Several implementation details matter for optimal performance.
 ---
 
 <p align="center">
-<i>The Hybrid Intent Classification pattern represents a standard production approach. It combines the speed and efficiency of specialized encoder-based models — often overlooked in the LLM era — with the reasoning capacity of **LLMs**, using each component only when necessary.</i>
+<i>The Hybrid Intent Classification pattern represents a standard production approach. It combines the speed and efficiency of specialized encoder-based models — often overlooked in the LLM era — with the reasoning capacity of LLMs, using each component only when necessary.</i>
 </p>

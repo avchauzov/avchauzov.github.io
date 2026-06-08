@@ -44,7 +44,7 @@ GraphRAG introduces a fundamental trade-off: it shifts the compute load from que
 
 ### The trade-off: measured in metrics
 
-The trade-off is clear: complexity for accuracy. On multi-hop benchmarks (like 2WikiMultiHopQA), advanced GraphRAG systems can achieve **+20–30% F1 score increases** over baseline RAG. On these specific tasks, a fine-tuned agentic system using a Small Language Model (SLM) might even outperform a baseline RAG system using a much larger, state-of-the-art model.
+The trade-off is clear: complexity for accuracy. On multi-hop benchmarks (like 2WikiMultiHopQA), advanced GraphRAG systems can achieve **+20–30% F1 score increases** over baseline RAG. On these specific tasks, a fine-tuned agentic system using a **Small Language Model (SLM)** might even outperform a baseline RAG system using a much larger, state-of-the-art model.
 
 ### Alternatives to computation-heavy indexing
 
