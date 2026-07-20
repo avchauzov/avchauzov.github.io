@@ -26,7 +26,7 @@ class Classification(BaseModel):
 - Field ordering matters because of autoregressive generation dynamics. `reasoning` must precede `category` — if reasoning comes after, it cannot influence the classification decision because the token has already been sampled
 - Raw scores are uncalibrated. They function well for relative ranking but fail as absolute probabilities. Production thresholds require post-hoc calibration
 
-### Pattern: Post-processing calibration
+### Pattern: post-processing calibration
 
 Two main post-processing approaches can help to calibrate these outputs:
 

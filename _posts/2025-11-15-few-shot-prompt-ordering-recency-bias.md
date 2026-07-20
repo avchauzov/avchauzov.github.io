@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Few-shot prompt ordering: the impact of example position"
-description: "Investigating positional bias in few-shot prompting. While 'Lost in the Middle' suggests boundary importance, the specific ordering of examples remains an important factor for performance stability."
+description: 'Investigating positional bias in few-shot prompting. While "Lost in the Middle" suggests boundary importance, the specific ordering of examples remains an important factor for performance stability.'
 date: 2025-11-15 00:00:00 +0000
 ---
 

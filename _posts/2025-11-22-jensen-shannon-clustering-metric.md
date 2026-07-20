@@ -7,7 +7,7 @@ date: 2025-11-22 00:00:00 +0000
 
 Standard clustering metrics like Silhouette Score or Davies-Bouldin validate **geometry**, not **meaning**. In unsupervised scenarios without ground truth, we rely on these proxies, assuming that spatial compactness equals semantic relevance.
 
-Often, this assumption fails. You get a high Silhouette Score, but when stakeholders ask, _"What makes Segment A unique?"_, you can't answer because feature distributions overlap. This is the **Explainability Gap**.
+Often, this assumption fails. You get a high Silhouette Score, but when stakeholders ask, "What makes Segment A unique?", you can't answer because feature distributions overlap. This is the **Explainability Gap**.
 
 ### The logic: distribution over distance
 

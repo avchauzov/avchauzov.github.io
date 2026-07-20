@@ -126,7 +126,7 @@ def evaluation_gate(final_data: dict, original_query: str) -> EvaluationResult:
 
 ```
 
-## The canonical model: The bridge
+## The canonical model: the bridge
 
 The Canonical Model is the contract between Reflector and Evaluator. The Reflector tries to fill it; the Evaluator checks the quality of the filling.
 
@@ -250,7 +250,7 @@ def evaluation_node(state: ResearchState) -> ResearchState:
 
 The key architectural decision: `reflection_node` sets `should_continue` based solely on structural completeness, while `evaluation_node` runs only after the loop terminates and assesses quality metrics.
 
-## Monitoring: Detecting system failures
+## Monitoring: detecting system failures
 
 Production systems need metrics to detect when Reflection or Evaluation breaks.
 
@@ -349,7 +349,7 @@ Track these metric pairs to identify which component broke:
 
 ---
 
-## Summary: Design rules
+## Summary: design rules
 
 1. **Separation of Concerns**: Never let the component searching for data decide if the data is "good." Let it only decide if the data is "there"
 2. **Opposing Criteria**:
