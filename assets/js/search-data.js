@@ -23,7 +23,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/about/";
           },
-        },{id: "post-why-agent-memory-degrades-in-production",
+        },{id: "post-prompt-caching-in-production-where-the-savings-disappear",
+        
+          title: "Prompt caching in production: where the savings disappear",
+        
+        description: "KV cache reuse can cut inference costs and latency substantially on paper. Most production deployments capture a fraction of that gap, and the reason is structural rather than a missing configuration flag.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/prompt-caching-in-production/";
+          
+        },
+      },{id: "post-why-agent-memory-degrades-in-production",
         
           title: "Why agent memory degrades in production",
         
@@ -214,7 +225,7 @@ ninja.data = [{
         
           title: "Few-shot prompt ordering: the impact of example position",
         
-        description: "Investigating positional bias in few-shot prompting. While &#39;Lost in the Middle&#39; suggests boundary importance, the specific ordering of examples remains an important factor for performance stability.",
+        description: "Investigating positional bias in few-shot prompting. While &quot;Lost in the Middle&quot; suggests boundary importance, the specific ordering of examples remains an important factor for performance stability.",
         section: "Posts",
         handler: () => {
           
