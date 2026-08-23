@@ -6,7 +6,7 @@ date: 2025-12-05 00:00:00 +0000
 
 Classification tasks (binary or multiclass) require both category and probability. Standard structured output approaches (Instructor, `json_mode`) return the category reliably, but confidence scores are often miscalibrated. Post-RLHF models are systematically overconfident, frequently clustering predictions at 0.85, 0.90, or 0.95 even when actual accuracy is lower.
 
-### Base approach: verbalized confidence
+## Base approach: verbalized confidence
 
 The basic method is adding a `confidence_score: float` field to the Pydantic schema. This forces the model to self-assess probability during generation.
 
@@ -25,7 +25,7 @@ class Classification(BaseModel):
 - Field ordering matters because of autoregressive generation dynamics. `reasoning` must precede `category` — if reasoning comes after, it cannot influence the classification decision because the token has already been sampled
 - Raw scores are uncalibrated. They function well for relative ranking but fail as absolute probabilities. Production thresholds require post-hoc calibration
 
-### Pattern: post-processing calibration
+## Pattern: post-processing calibration
 
 Two main post-processing approaches can help to calibrate these outputs:
 
@@ -35,7 +35,7 @@ Two main post-processing approaches can help to calibrate these outputs:
 
 Use Temperature Scaling first. Switch to Isotonic only if **Expected Calibration Error (ECE)** remains high.
 
-### Pattern: null category and safe harbor
+## Pattern: null category and safe harbor
 
 Sometimes, adding classes like `"unknown"` or `"other"` to the classification enum works well. Without an escape hatch, constrained decoding forces the model to hallucinate the "least-bad" option to satisfy the schema.
 
@@ -49,13 +49,13 @@ Use 'unknown' ONLY if the text contains no sentiment indicators.
 Ambiguous or mixed sentiment should still be classified as neutral."
 ```
 
-### Pattern: two-stage generation
+## Pattern: two-stage generation
 
 Strict `json_mode` acts as a muzzle. If the input is **Out-of-Distribution**, constrained decoding forces a hallucinated valid schema instead of a refusal.
 
 Generate free-form text first, parse second. Libraries like Instructor (which supports multiple output modes including markdown+json) or BAML allow mixed-content responses. The model first outputs a natural language refusal or reasoning ("I cannot classify this image because..."), followed by the JSON block. The parser discards the text preamble and extracts only the valid JSON.
 
-### Pattern: inference strategies
+## Pattern: inference strategies
 
 Trading compute and latency for higher accuracy is necessary for borderline cases.
 
@@ -63,7 +63,7 @@ Trading compute and latency for higher accuracy is necessary for borderline case
 - **Adaptive early stopping**: Generate samples sequentially (not in parallel). Stop when first 3 consecutive samples agree. If after 10 samples no consensus, return majority vote. This reduces average cost by 25–50% while maintaining accuracy for high-confidence cases
 - **Sequential Refinement**: Instead of `k` parallel samples, use iterative improvement. The model critiques and corrects its previous attempt. This is more token-efficient than parallel sampling for similar accuracy gains
 
-### Pattern: proxy scoring
+## Pattern: proxy scoring
 
 Proprietary APIs often withhold logprobs which can be useful as a probability proxy.
 
@@ -121,7 +121,7 @@ proxy_confidence = score_answer_probability(input_text, big_model_prediction)
 
 **Note**: Proxy score quality depends on prompt format matching. For production, use the same classification prompt structure for both models.
 
-### Pattern: architecture and fallback
+## Pattern: architecture and fallback
 
 System-level decisions often outweigh the previous methods.
 
@@ -129,7 +129,7 @@ System-level decisions often outweigh the previous methods.
 
 LLM classification is justified primarily when training data is unavailable or categories change frequently.
 
-### Implementation priority
+## Implementation priority
 
 1. **Baseline**: Start with verbalized confidence + reasoning field + Null Category
 2. **Calibration**:

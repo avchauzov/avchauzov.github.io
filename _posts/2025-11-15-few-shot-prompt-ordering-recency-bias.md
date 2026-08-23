@@ -6,7 +6,7 @@ date: 2025-11-15 00:00:00 +0000
 
 Few-shot prompting is a standard technique in NLP engineering. While we frequently discuss selection strategies (choosing **which** examples to use), the **ordering** of these examples often receives less attention. We typically default to random ordering or static lists. However, given the known positional biases in **LLMs**, it makes sense to treat example ordering as an optimization variable rather than a constant.
 
-### The mechanism: primacy, recency, and the U-curve
+## The mechanism: primacy, recency, and the U-curve
 
 The assumption that models process all context equally is often incorrect. Research into attention mechanisms reveals a **U-shaped performance curve** (often referred to as the "Lost in the Middle" phenomenon). Although newer long-context architectures are mitigating this issue, information at the boundaries (beginning and end) is still typically prioritized over the middle.
 
@@ -15,7 +15,7 @@ The direction of the bias depends on the architecture:
 - **Primacy Bias**: Causal masking creates an inherent preference for early tokens. Larger, more capable models often favor the first examples presented
 - **Recency Bias**: Mechanisms like Rotary Positional Embeddings (RoPE) and attention weight decay can cause the model to favor the most recent tokens. This is often more pronounced in smaller models or when the semantic quality of options is low
 
-### Experiment: the best-last strategy
+## Experiment: the best-last strategy
 
 For context-dependent tasks, such as intent classification or complex reasoning, we can test the hypothesis that maximizing recency helps the model.
 
@@ -47,7 +47,7 @@ ordered = order_examples_best_last(
 prompt = f"{instruction}\n" + "\n".join(ordered) + f"\n{query}"
 ```
 
-### Observations and impact
+## Observations and impact
 
 Research on intent recognition datasets shows this "best last" strategy **increased** accuracy by **0.2–1.7%**.
 
@@ -58,11 +58,11 @@ It is important to note two constraints:
 
 For tasks with limited context, this difference seems marginal. However, in production environments, prompt ordering is a zero-cost hyperparameter. It requires no model fine-tuning and no additional inference latency.
 
-### Broader application
+## Broader application
 
 This principle extends beyond classification. Instruction-tuned models can flip preferences based solely on the order of presentation. This positional bias is particularly evident at higher temperatures ($T=1$), where adherence to ambiguous instructions can fluctuate.
 
-### Conclusion
+## Conclusion
 
 Positional bias is an architectural reality. It is not necessarily a bug to be fixed, but a behavior to be characterized.
 

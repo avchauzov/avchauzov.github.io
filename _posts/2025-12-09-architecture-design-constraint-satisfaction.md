@@ -8,7 +8,7 @@ Engineers select technologies before defining constraints, but this inverts the 
 
 Architecture is not tool selection — it is constraint satisfaction. The solution space starts infinite and the architect reduces this space to 3–5 viable options through three layers of filtration. Each layer eliminates categories of solutions. Layer 1 defines what success means. Layer 2 eliminates what is impossible. Layer 3 clarifies what must be sacrificed.
 
-### Layer 1: define the objective function
+## Layer 1: define the objective function
 
 Define the system's objective function before any design. Without these definitions, technical validation is impossible.
 
@@ -34,7 +34,7 @@ Different stakeholders maximize different variables. This creates conflicting op
 - **Engineering team**: Maximize maintainability, minimize operational complexity
 - **Business entity**: Minimize risk, maximize ROI
 
-### Layer 2: hard boundary constraints
+## Layer 2: hard boundary constraints
 
 These constraints are binary: if a solution does not meet these criteria, it is invalid, regardless of its other technical merits.
 
@@ -67,7 +67,7 @@ Scale determines topology. Low load (< 100 RPS — requests per second) fits mon
 
 Designing for high load when the current requirement is low violates the "You Aren't Gonna Need It" principle. This principle states: do not build functionality until it is actually needed. Premature optimization wastes resources and increases complexity.
 
-### Layer 3: trade-off analysis for soft constraints
+## Layer 3: trade-off analysis for soft constraints
 
 After eliminating impossible solutions, the remaining options require trade-off analysis. No system can optimize all variables simultaneously.
 
@@ -96,7 +96,7 @@ Processing cost scales inversely with latency tolerance. Real-time is 10–30× 
 
 If the business accepts 1-hour delay, streaming architecture wastes budget.
 
-### Output: the reduced solution space
+## Output: the reduced solution space
 
 This methodology moves from an abstract desire to a concrete engineering specification.
 

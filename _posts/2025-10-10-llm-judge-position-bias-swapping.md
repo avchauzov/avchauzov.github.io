@@ -8,7 +8,7 @@ LLM-as-a-Judge evaluation pipelines often suffer from a subtle but critical issu
 
 This phenomenon, known as **position bias**, is one of the most pervasive and misleading issues in automated LLM evaluation.
 
-### Mechanisms driving positional preference
+## Mechanisms driving positional preference
 
 LLM judges display a consistent tendency to favor the answer presented in the first positional slot. Analysis indicates that judge models select the first response in **68%** of comparisons, even when human annotators clearly prefer the second option. This happens because:
 
@@ -18,7 +18,7 @@ LLM judges display a consistent tendency to favor the answer presented in the fi
 
 Position bias is a widespread issue, affecting a variety of LLMs, with documented bias rates in the literature typically ranging from 60% to 75%.
 
-### The fix: position swapping methodology
+## The fix: position swapping methodology
 
 The most effective and robust mitigation strategy involves performing the comparison twice, systematically **swapping the positions of the responses** between runs, and aggregating the resulting judgments conservatively.
 
@@ -43,7 +43,7 @@ def evaluate_with_position_swap(judge_llm, response_a, response_b, prompt):
 
 A genuinely superior response should prevail irrespective of the positional slot it occupies. This two-step methodology effectively isolates and neutralizes the systematic positional preference.
 
-### Results
+## Results
 
 Position swapping delivered substantial improvements:
 
@@ -53,7 +53,7 @@ Position swapping delivered substantial improvements:
 
 The primary operational constraint is the **2x increase in API calls** per comparative judgment. For most use cases, this increased cost is justified by the resulting improvement in signal fidelity and reliability.
 
-### Alternative: prompt-based mitigation
+## Alternative: prompt-based mitigation
 
 For cost-sensitive scenarios, try explicit anti-bias instructions:
 
@@ -69,6 +69,6 @@ system_prompt = """
 
 This reduced the position bias from 68% to 58%. While a positive shift, it is empirically less **robust** and reliable than the structural solution provided by position swapping.
 
-### Conclusion and takeaway
+## Conclusion and takeaway
 
 Position bias is a major source of error in LLM-as-a-Judge evaluations. Position swapping is the most reliable fix, transforming a biased pipeline into a trustworthy evaluation tool.

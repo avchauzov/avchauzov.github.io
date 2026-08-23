@@ -8,38 +8,38 @@ In my experience, **the vast majority of production LLM apps are simple Chains o
 
 This is a pragmatic guide to choosing the right orchestration pattern.
 
-### The spectrum of complexity
+## The spectrum of complexity
 
 - **Chain**: A fixed `A → B → C` flow. The simplest way to link LLM calls or functions
 - **Router**: An `if/else` gateway. A conditional step that directs input to the appropriate Chain or tool
 - **Graph**: A stateful workflow with loops. Nodes are steps (LLM calls, tools) and edges are the paths between them, allowing for cycles and retries
 - **Agent**: The "brain" or reasoning strategy (e.g., ReAct) that decides what to do next. It is often **implemented using a graph structure** to manage its execution
 
-### A pragmatic decision framework
+## A pragmatic decision framework
 
-#### Use a **Chain** when:
+### Use a **Chain** when:
 
 - The workflow is **linear and predictable**
 - **Example**: Retrieve documents → Generate an answer → Format the output
 
-#### Use a **Router** when:
+### Use a **Router** when:
 
 - You need to handle **diverse requests** or **optimize costs**
 - **Example**: Classify a user query. Route a simple "refund policy" request to a fast, cheap model, but route a complex "enterprise API integration" query to a more capable model
 
-#### Use a **Graph** when:
+### Use a **Graph** when:
 
 - You need **loops and retry logic**. If a tool fails, the graph can loop back and try again with different parameters
 - You require **state management** across multiple steps of a long-running task
 - **Example**: A SQL generation loop: `Generate SQL → Execute → (On Error) Loop back to 1 with feedback | (On Success) Format and return`
 
-#### Use an **Agent** when:
+### Use an **Agent** when:
 
 - You **cannot predict the sequence of steps in advance**. The task is open-ended and requires dynamic planning
 - The LLM needs to **decide which tools to call and in what order** based on intermediate results
 - **Example**: A research agent that iteratively searches the Web, parses pages, synthesizes findings, and decides on its next search query
 
-### The real cost of complexity
+## The real cost of complexity
 
 More complexity means higher operational costs. Based on research, the trade-offs are clear:
 
@@ -54,7 +54,7 @@ More complexity means higher operational costs. Based on research, the trade-off
 
 ---
 
-### The pragmatic migration path
+## The pragmatic migration path
 
 Don't start with complexity. Evolve based on need.
 

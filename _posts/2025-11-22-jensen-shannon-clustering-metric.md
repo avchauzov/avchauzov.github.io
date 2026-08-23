@@ -8,7 +8,7 @@ Standard clustering metrics like Silhouette Score or Davies-Bouldin validate **g
 
 Often, this assumption fails. You get a high Silhouette Score, but when stakeholders ask, "What makes Segment A unique?", you can't answer because feature distributions overlap. This is the **Explainability Gap**.
 
-### The logic: distribution over distance
+## The logic: distribution over distance
 
 In my practice, the robust solution is **Jensen-Shannon Divergence (JSD)**. Unlike Euclidean distance, JSD measures the statistical divergence between probability distributions.
 
@@ -20,7 +20,7 @@ The logic is simple: For every cluster and every feature, we calculate the diver
 **Why not Kullback-Leibler (KL)?**
 KL divergence is asymmetric ($KL(P||Q) \neq KL(Q||P)$) and explodes to infinity if distributions don't overlap (which happens constantly in clustering). JSD solves this: it is symmetric and strictly bounded to $[0, \ln(2)] \approx [0, 0.693]$ with natural logarithm (or $[0, 1]$ with base-2 logarithm). This bounded nature makes it numerically stable for hyperparameter tuning, whereas KL divergence often explodes and breaks optimizers.
 
-### Conceptual implementation
+## Conceptual implementation
 
 A critical engineering detail here is the **Size Penalty**. Pure JSD is mathematically maximized by singleton clusters (a single point is perfectly unique). To prevent the metric from "gaming" the system and creating micro-clusters, we must explicitly penalize them.
 
@@ -64,7 +64,7 @@ def calculate_jsd_metric(df, labels, feature_cols, penalty_weight=0.1):
     return total_score / len(unique_labels)
 ```
 
-### Implementation advice
+## Implementation advice
 
 I use this metric in two distinct ways:
 

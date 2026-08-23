@@ -8,7 +8,7 @@ Hybrid search combines dense and sparse retrieval to improve ranking quality. St
 
 Fusion methods such as linear combination and Reciprocal Rank Fusion (RRF) optimize how components are merged. They do not optimize the components themselves. Tuning $\alpha$ or RRF constant $k$ yields minimal improvement when input rankings are corrupted.
 
-### The component problem: unweighted field heterogeneity
+## The component problem: unweighted field heterogeneity
 
 Documents contain structured fields: title, body, and metadata. Standard BM25 implementations treat all fields equally. This ignores signal density.
 
@@ -27,7 +27,7 @@ Query: `connection timeout`
 
 Flat BM25 often ranks Doc B higher due to term frequency scaling with document length. The sparse component recommends incorrect documents.
 
-### Why RRF does not solve this
+## Why RRF does not solve this
 
 RRF is often assumed to eliminate component tuning requirements. The formula:
 
@@ -35,7 +35,7 @@ $$RRF(d) = \sum_{r \in \text{rankings}} \frac{1}{k + r(d)}$$
 
 RRF normalizes score distributions. It does not correct ranking errors. If unweighted BM25 ranks noise at position #1 and signal at position #10, RRF propagates this error. Aggregation does not create relevance from poor rankings.
 
-### Stage 1: component-level optimization
+## Stage 1: component-level optimization
 
 Component rankings must be fixed before fusion is applied. BM25 is treated as a weighted sum:
 
@@ -50,7 +50,7 @@ $$S_{\text{BM25}}(q, d) = \sum_{f \in \text{fields}} w_f \cdot \text{BM25}(q, d_
 
 Field weights force correct ranking order. Doc A (title match) must rank above Doc B (body noise) before reaching fusion stage.
 
-### Stage 2: fusion-level optimization
+## Stage 2: fusion-level optimization
 
 After components are stabilized ($S_{\text{BM25}}^*$ and $S_{\text{dense}}^*$), fusion parameter is tuned:
 
@@ -58,7 +58,7 @@ $$R_{\text{final}} = \alpha \cdot S_{\text{dense}}^* + (1 - \alpha) \cdot S_{\te
 
 With optimized inputs, $\alpha$ acts as semantic balancer rather than noise filter. Optimization surface becomes smoother. Optimal values are more stable across query types.
 
-### Validation workflow: sequential optimization
+## Validation workflow: sequential optimization
 
 Simultaneous optimization of all parameters ($w_{\text{title}}, w_{\text{body}}, \alpha$) creates combinatorial explosion. Sequential approach is more efficient:
 
@@ -68,13 +68,13 @@ Simultaneous optimization of all parameters ($w_{\text{title}}, w_{\text{body}},
 
 This coordinate descent approach reduces search space while maintaining optimization quality.
 
-### Practical implementation notes
+## Practical implementation notes
 
 Field weight optimization requires validation set stratification. Query types (factual vs conceptual) may require different weight configurations. If optimal weights vary significantly across strata, per-query routing should be considered.
 
 For legal/compliance corpora with structured sections (statute references, definitions, procedures), hierarchical tuning typically yields 3–5% NDCG@10 improvement over flat $\alpha=0.5$ baseline. Latency remains unchanged.
 
-### Conclusion
+## Conclusion
 
 Hybrid search quality is bounded by component quality. Fusion algorithms cannot compensate for poorly ranked inputs.
 

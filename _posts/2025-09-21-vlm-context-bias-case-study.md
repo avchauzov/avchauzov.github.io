@@ -4,11 +4,11 @@ description: "VLMs have a strong contextual bias, prioritizing logical conclusio
 date: 2025-09-21 00:00:00 +0000
 ---
 
-### TL;DR
+## TL;DR
 
 Vision-Language Models (VLMs) suffer from a powerful contextual bias. They prefer to make "logical" inferences based on the overall scene rather than analyzing specific visual evidence. We found a simple fix: explicitly instruct the model to ignore the context.
 
-### The problem
+## The problem
 
 I was using a VLM to detect idle workers in a factory setting. My initial prompt was detailed: I provided context (a description of the scene), an explanation of what constituted "work" in this environment, and specific visual criteria for idleness, such as "a person standing still, with no hand movement."
 
@@ -21,7 +21,7 @@ Here's a breakdown of its flawed reasoning versus the ground truth:
 
 The model was so confident in the context ("worker in a factory") that it completely disregarded the visual evidence that contradicted its assumption.
 
-### The root of the problem
+## The root of the problem
 
 VLMs suffer from a critical perception bottleneck that stems from three core issues:
 
@@ -29,7 +29,7 @@ VLMs suffer from a critical perception bottleneck that stems from three core iss
 2. **Visual Encoder Detail Loss**: Encoders based on architectures like CLIP are excellent at capturing high-level semantics ("worker," "factory," "uniform"). However, they often lose the fine-grained details necessary for this task, such as precise body-part pose, micro-movements, or the direction of a person's gaze
 3. **Logical Errors from Flawed Inputs**: The **LLM** component of the VLM applies powerful, internally consistent logic, but it does so based on the fuzzy, high-level, and sometimes inaccurate data it receives from the visual encoder. The reasoning is sound, but the premise is wrong
 
-### The solution
+## The solution
 
 A single, simple instruction in the prompt fixed nearly all of our false negatives:
 
@@ -37,11 +37,11 @@ A single, simple instruction in the prompt fixed nearly all of our false negativ
 
 This prompt forces the model to discard its powerful contextual priors and base its judgment solely on the specific visual evidence requested.
 
-### Why it works
+## Why it works
 
 This instruction acts as a form of **causal intervention**. It effectively blocks the model's default reasoning path, which relies on indirect contextual clues. By telling it what **not** to look at, we force it down a different path — one that relies only on the direct visual evidence of body posture and movement. You are isolating the direct visual effect from the confounding, indirect contextual effect.
 
-### Practical takeaways
+## Practical takeaways
 
 For anyone building production-ready VLM systems, especially for analytical tasks, these lessons are critical:
 
