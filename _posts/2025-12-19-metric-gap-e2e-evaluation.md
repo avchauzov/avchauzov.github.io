@@ -1,8 +1,9 @@
 ---
-layout: default
 title: "The metric gap: bridging business outcomes and AI component optimization"
 description: "Why high component scores often mask system failures. A methodology for using E2E evaluation to prioritize engineering work."
 date: 2025-12-19 00:00:00 +0000
+mermaid:
+  enabled: true
 ---
 
 Engineering teams often face an observability disconnect: despite having dashboards for embedding latency, RAGAS scores, and reranker precision, production deployments with improved component metrics frequently fail to lift user satisfaction.
@@ -17,11 +18,19 @@ The problem isn't a lack of validation; it is validating in a vacuum. Component 
 
 **End-to-End** evaluation is not just a final quality check; it is a **prioritization engine**. By linking business outcomes (what the user cares about) to component metrics (what you control), you can identify which technical improvements will actually impact the user experience.
 
-### The probability leak
+## The probability leak
 
 AI pipelines are probabilistic chains.
 
-![](/assets/img/2025-12-19-metric-gap-e2e-evaluation/1.png)
+```mermaid
+flowchart LR
+    A([User query]) -->|100%| B["Embedding model<br/>95% accuracy"]
+    B -->|95% flow| C["Retrieval<br/>90% recall"]
+    C -->|85.5% flow| D["Reranker<br/>92% precision"]
+    D -->|78.7% flow| E[LLM generation]
+    E --> F(["User outcome<br/>~78% success"])
+```
+
 
 The diagram illustrates error compounding in a typical RAG pipeline. Each component's failure probability multiplies, creating a "probability leak" where system-level performance degrades faster than component metrics suggest.
 
@@ -35,7 +44,23 @@ This failure mode requires systematic diagnosis. The Drill-Down methodology prov
 
 To avoid wasted engineering effort, evaluation should work **backwards** from the business metric. Do not start by asking "How do we improve retrieval?" Start by asking "Why is the Task Success Rate low?" and drill down until the technical bottleneck is isolated.
 
-![](/assets/img/2025-12-19-metric-gap-e2e-evaluation/2.png)
+```mermaid
+flowchart TD
+    A(["Satisfaction < 4.0"]) --> B{"Task success low?"}
+    B -->|Yes| H1[Hypothesis: intent routing]
+    B -->|No| C{"Answer quality low?"}
+    C -->|Yes| H2[Hypothesis: context or hallucination]
+    C -->|No| D{"Latency or cost high?"}
+    D -->|Yes| H3[Hypothesis: retrieval or model size]
+    H1 --> I1[Inspect intent classifier]
+    H2 --> I2[Check recall vs LLM adherence]
+    H3 --> I3[Profile vector search]
+    I1 --> O[Optimize component]
+    I2 --> O
+    I3 --> O
+    O --> RE([Re-evaluate E2E])
+```
+
 
 ### Step 1: defining success criteria
 

@@ -1,8 +1,9 @@
 ---
-layout: default
 title: "Vector search + hard filters in Elasticsearch: the hidden RAG bottleneck"
 description: "HNSW graph topology breaks under metadata filtering. A hybrid retrieval strategy for production RAG systems."
 date: 2025-12-12 00:00:00 +0000
+mermaid:
+  enabled: true
 ---
 
 Standard RAG pattern: semantic search scoped by metadata (`tenant_id`, `permissions`). In production, it causes **latency spikes (p99 > 2s)** and sometimes **no results** — even when matching documents exist.
@@ -21,7 +22,11 @@ Zero results typically occur with **post-filtering** (global kNN then filter) or
 
 Performance degradation is non-linear. Worst case: filter matches **1–10%** of data.
 
-![](/assets/img/2025-12-12-elasticsearch-hard-filters-rag-bottleneck/1.png)
+```mermaid
+flowchart LR
+    A["< 1% matches<br/>Brute-force"] --> B["1–10% matches<br/>Disconnected HNSW"]
+    B --> C["> 10% matches<br/>Connected HNSW"]
+```
 
 - **< 1% match (low selectivity)**: At very low selectivity, filtered HNSW may become inefficient; consider explicitly falling back to exact kNN (`script_score`) for small filtered sets
 - **> 10% match (high selectivity)**: Enough valid nodes to maintain graph connectivity. Normal speed

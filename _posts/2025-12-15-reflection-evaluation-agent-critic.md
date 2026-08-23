@@ -1,8 +1,9 @@
 ---
-layout: default
 title: "Reflection vs evaluation: why the Agent-Critic pattern fails without separation of concerns"
 description: "Architectural separation of reflection (context generation) and evaluation (quality gating) prevents confirmation bias, premature stopping, and infinite loops in multi-agent research systems."
 date: 2025-12-15 00:00:00 +0000
+mermaid:
+  enabled: true
 ---
 
 Imagine an AI research agent tasked with "analyzing the risks of a new technology." On the first iteration, it finds a well-written, authoritative article claiming the technology is perfectly safe. The agent checks its metrics: source authority is high, content is clear, relevance is perfect.
@@ -25,19 +26,42 @@ The root cause of failure is using the same criteria to steer the process and to
 1. **Reflector**: Operates **inside** the loop. It drives the research forward. Its goal is **Completeness and Consistency**. It shouldn't care if the article is well-written; it only cares if it fills a specific gap in the schema or contradicts previous data. It acts as a "Competitor" to the current findings, actively looking for what is missing or conflicting
 2. **Evaluator**: Operates **outside** (or as a gate for) the loop. It assesses the final artifact. Its goal is **Quality and Relevance**. It checks if the final compiled answer meets the user's standards
 
-### Visualizing the architecture
+### The trap: mixed concerns
 
-The difference is best understood visually.
-
-**The Trap (Mixed Concerns)**:
 Here, the Reflector and Evaluator are effectively the same entity or share the same goal. The agent stops as soon as it finds "good enough" information, prone to confirmation bias.
 
-![](/assets/img/2025-12-15-reflection-evaluation-agent-critic/1.png)
+```mermaid
+flowchart LR
+    Q([Query]) --> SR[Search and read]
+    subgraph Loop
+        SR --> D{"Is quality high?"}
+        D -->|Not good enough| SR
+    end
+    D -->|Looks good| F([Final answer])
+```
 
-**The Solution (Separated Concerns)**:
+### The solution: separated concerns
+
 Here, the **Reflector** acts as an architect ensuring the structure is built, while the **Evaluator** acts as a separate quality gate. The agent stops only when the **structure** is complete. Quality is checked only afterwards.
 
-![](/assets/img/2025-12-15-reflection-evaluation-agent-critic/2.png)
+```mermaid
+flowchart LR
+    Q([Query]) --> SR[Search and read]
+
+    subgraph Iterate
+        SR --> R[Reflector]
+        R --> C{"Structure complete?"}
+        C -->|No| SR
+    end
+
+    subgraph Evaluate
+        C -->|Yes| E[Evaluator]
+        E --> G{"Quality sufficient?"}
+    end
+
+    G -->|No| SR
+    G -->|Yes| F([Final answer])
+```
 
 ## The reflector: engine of curiosity
 
