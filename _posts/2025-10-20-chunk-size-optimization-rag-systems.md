@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "The chunk size dilemma: identifying the optimal value in RAG systems"
 description: "Finding the optimal chunk size is non-trivial: too small loses context, too large dilutes semantics through mean pooling. A systematic methodology for identifying the sweet spot."
 date: 2025-10-20 00:00:00 +0000

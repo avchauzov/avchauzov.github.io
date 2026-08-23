@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "RAG fails upstream"
 description: "Why most RAG failures originate in the data preparation layer, and what to do about it."
 date: 2026-01-11 00:00:00 +0000

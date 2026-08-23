@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "Prompt caching in production: where the savings disappear"
 description: "KV cache reuse can cut inference costs and latency substantially on paper. Most production deployments capture a fraction of that gap, and the reason is structural rather than a missing configuration flag."
 date: 2026-07-21 00:00:00 +0000

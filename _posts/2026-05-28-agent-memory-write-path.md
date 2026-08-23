@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "Why agent memory degrades in production"
 description: "What happens to agent memory stores after weeks of production use, and what the read path never exposes."
 date: 2026-05-28 00:00:00 +0000

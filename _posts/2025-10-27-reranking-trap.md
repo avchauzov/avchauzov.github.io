@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "The reranking trap: when cross-encoders make things worse"
 description: "Cross-encoders and LLM rerankers promise better retrieval precision, but the 200% latency penalty, diversity collapse, and production failures reveal when this expensive step becomes counterproductive."
 date: 2025-10-27 00:00:00 +0000

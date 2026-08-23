@@ -976,8 +976,10 @@ figure.highlight {
 pre {
   color: inherit; /* trust GitHub theme and/or local tokens */
   background-color: var(--global-code-bg-color);
-  border-radius: 6px;
-  padding: 6px 12px;
+  border-radius: 8px;
+  padding: 16px 18px;
+  line-height: 1.5;
+  overflow-x: auto;
 
   pre,
   code {

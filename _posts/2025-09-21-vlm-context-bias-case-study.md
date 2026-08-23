@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "Why VLMs ignore visual evidence (and how to fix it)"
 description: "VLMs have a strong contextual bias, prioritizing logical conclusions over visual facts. We fixed this in a production case by explicitly telling the model to ignore what it thought it knew."
 date: 2025-09-21 00:00:00 +0000

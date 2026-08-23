@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "GraphRAG: beyond vector search for connecting the dots"
 description: "Vector search finds similar text while GraphRAG finds connected facts. A look at the trade-offs, high indexing costs, and lighter-weight alternatives."
 date: 2025-11-07 00:00:00 +0000

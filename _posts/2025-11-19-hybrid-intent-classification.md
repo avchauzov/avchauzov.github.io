@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "Hybrid intent classification: compact-encoder-first routing for production systems"
 description: "Production chatbots route most requests through fast compact encoder classifiers, escalating to LLMs only on low-confidence queries. This hybrid architecture mitigates the latency and cost overheads of monolithic LLM solutions, achieving significant speed gains while preserving high classification accuracy."
 date: 2025-11-19 00:00:00 +0000

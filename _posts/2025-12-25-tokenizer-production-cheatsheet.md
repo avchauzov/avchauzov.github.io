@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "Tokenizers: production economics cheat-sheet"
 description: "Compact reference for tokenizer selection, metrics, and failure modes in production LLM systems."
 date: 2025-12-25 00:00:00 +0000

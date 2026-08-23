@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "Our agents argued endlessly. Here's how a hybrid AI pattern tamed LLM chaos"
 description: "A deep dive into building a medical ranking PoC where pure LLM reasoning failed, and how a hybrid pattern combining LLM feature extraction with a deterministic rule engine achieved stable, auditable results."
 date: 2025-09-14 00:00:00 +0000

@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "Why LLM evaluation metrics look stable but customers are unhappy"
 description: "Classic metrics hide the failures users notice. Production evaluation should measure friction, drift, and task completion."
 date: 2026-01-25 00:00:00 +0000

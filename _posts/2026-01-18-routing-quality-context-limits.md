@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "Context limits degrade routing quality faster than generation"
 description: "Routing and classification under long prompts: score dilution, margin collapse, routing collapse, and practical caps."
 date: 2026-01-18 00:00:00 +0000

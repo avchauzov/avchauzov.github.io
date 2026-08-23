@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "Similarity metrics for embeddings"
 description: "Why almost always cosine and what actually works?"
 date: 2025-12-29 00:00:00 +0000

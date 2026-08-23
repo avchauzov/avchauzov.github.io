@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "VLM pipeline debugging: lessons from visual monitoring"
 description: "Hard-won insights from building proof-of-concept VLM pipelines for visual monitoring, where hallucinations hide in plain sight, preprocessing decisions make or break everything, and the question is: can we forget classical computer vision?"
 date: 2025-09-09 00:00:00 +0000

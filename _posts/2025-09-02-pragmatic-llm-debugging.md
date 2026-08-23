@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "Pragmatic LLM debugging: a survival guide to chaos"
 description: "My approach to breaking down complex RAG and agent systems when time is short, golden datasets are missing, and quality needs a fast boost."
 date: 2025-09-02 00:00:00 +0000

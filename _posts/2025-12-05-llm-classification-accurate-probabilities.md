@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "Classification with LLMs: getting accurate probabilities from structured output"
 description: "Verbalized confidence in JSON schema provides fast probability estimates for classification tasks. Optimization patterns improve calibration."
 date: 2025-12-05 00:00:00 +0000

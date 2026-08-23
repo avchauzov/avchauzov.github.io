@@ -98,7 +98,7 @@ pagination:
   enabled: true
 
 related_blog_posts:
-  enabled: true
+  enabled: false
   max_related: 5
 
 # Giscus comments (RECOMMENDED)
@@ -218,6 +218,7 @@ defaults:
       path: ""
       type: posts
     values:
+      layout: post
       images:
         lightbox2: true
 

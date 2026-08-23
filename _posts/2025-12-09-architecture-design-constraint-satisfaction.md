@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "Architecture design: a constraint-satisfaction approach"
 description: "Methodology for reducing the architectural search space through hierarchical constraint definition: problem, boundaries, and trade-offs."
 date: 2025-12-09 00:00:00 +0000

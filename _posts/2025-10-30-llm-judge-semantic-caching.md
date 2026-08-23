@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "Semantic prompt caching: when LLM-judge beats exact match"
 description: "Standard prompt caching requires exact prefix match. LLM-Judge validates semantic equivalence, rescuing cache hits on paraphrases while adding controllable latency overhead."
 date: 2025-10-30 00:00:00 +0000

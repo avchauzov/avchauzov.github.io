@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "Context engineering as a production discipline"
 description: "Failure modes, architectural patterns, and evidence from real systems."
 date: 2026-04-08 00:00:00 +0000

@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "Temporal for LLM pipelines: durable execution starter pack"
 description: "LLM agents often crash, losing state and expensive API work. Temporal provides durable execution for LLM pipelines: automatic state recovery, configurable retries, and long-running orchestration at the cost of determinism constraints and ops overhead."
 date: 2025-11-10 00:00:00 +0000
