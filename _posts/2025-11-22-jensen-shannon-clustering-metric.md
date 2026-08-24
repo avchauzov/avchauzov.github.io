@@ -2,6 +2,7 @@
 title: "Jensen-Shannon divergence for meaningful clustering"
 description: "Silhouette score validates geometry, not meaning. Using Jensen-Shannon divergence to measure feature distribution divergence bridges the gap between mathematical separation and interpretability."
 date: 2025-11-22 00:00:00 +0000
+math: true
 ---
 
 Standard clustering metrics like Silhouette Score or Davies-Bouldin validate **geometry**, not **meaning**. In unsupervised scenarios without ground truth, we rely on these proxies, assuming that spatial compactness equals semantic relevance.

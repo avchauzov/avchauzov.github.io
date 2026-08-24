@@ -2,6 +2,7 @@
 title: "Token optimization: three production patterns that reduce LLM costs by 70%"
 description: "API-level caching, semantic similarity-based caching, and dynamic compression with LLMLingua form a layered approach to token reduction. Each pattern targets different inefficiencies in the prompt processing pipeline."
 date: 2025-12-02 00:00:00 +0000
+math: true
 ---
 
 Production LLM costs scale quadratically $O(N^2)$ with input length during the prefill phase. For RAG systems retrieving 10 documents at 500 tokens each, this means 5,000 input tokens per request before generation starts.

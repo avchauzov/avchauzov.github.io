@@ -12,10 +12,7 @@ description: > # the ">" symbol means to ignore newlines until "footer_text:"
   Senior AI Architect with 7+ years building enterprise-scale AI solutions,
   specializing in NLP, MLOps, and intelligent infrastructure.
   Building the future of AI systems that scale.
-footer_text: >
-  Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
-  Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
-  Photos from <a href="https://unsplash.com" target="_blank">Unsplash</a>.
+footer_text:
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: favicon.jpg
 
@@ -116,7 +113,7 @@ giscus:
   lang: en
 
 # Disqus comments (DEPRECATED)
-disqus_shortname: al-folio # put your disqus shortname
+disqus_shortname:
 # https://help.disqus.com/en/articles/1717111-what-s-a-shortname
 
 # -----------------------------------------------------------------------------
@@ -134,13 +131,13 @@ newsletter:
 
 collections:
   books:
-    output: true
+    output: false
   news:
     defaults:
       layout: post
-    output: true
+    output: false
   projects:
-    output: true
+    output: false
 
 # -----------------------------------------------------------------------------
 # Jekyll settings
@@ -183,6 +180,15 @@ exclude:
   - README.md
   - readme_preview/
   - vendor
+  # Unpublished al-folio demo/placeholder pages (not generated; data kept for later cleanup)
+  - _pages/publications.md
+  - _pages/books.md
+  - _pages/news.md
+  - _pages/cv.md
+  - _pages/teaching.md
+  - _pages/projects.md
+  - _pages/profiles.md
+  - _pages/dropdown.md
 keep_files:
   - CNAME
   - .nojekyll
@@ -218,8 +224,6 @@ defaults:
       type: posts
     values:
       layout: post
-      images:
-        lightbox2: true
 
 sass:
   style: compressed
@@ -252,16 +256,13 @@ jekyll-archives:
       tags: "/blog/:type/:name/"
       categories: "/blog/:type/:name/"
   books:
-    enabled: [year, tags, categories] # enables year, tag and category archives (remove if you need to disable one of them).
+    enabled: []
 
 # -----------------------------------------------------------------------------
 # Jekyll Scholar
 # -----------------------------------------------------------------------------
 
 scholar:
-  last_name: [Einstein]
-  first_name: [Albert, A.]
-
   style: apa
   locale: en
 
@@ -377,7 +378,7 @@ enable_pirsch_analytics: false # enables Pirsch analytics (https://pirsch.io/)
 enable_openpanel_analytics: false # enables Openpanel analytics (https://openpanel.dev/)
 enable_google_verification: false # enables google site verification
 enable_bing_verification: false # enables bing site verification
-enable_masonry: true # enables automatic project cards arrangement
+enable_masonry: false # enables automatic project cards arrangement
 enable_math: true # enables math typesetting (uses MathJax)
 enable_tooltips: false # enables automatic tooltip links generated for each section titles on pages and posts
 enable_darkmode: true # enables switching between light/dark modes
@@ -436,7 +437,7 @@ third_party_libraries:
     version: "5.5.0"
   google_fonts:
     url:
-      fonts: "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&display=swap"
+      fonts: "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
   highlightjs:
     integrity:
       css:

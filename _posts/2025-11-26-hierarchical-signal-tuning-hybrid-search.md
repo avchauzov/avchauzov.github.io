@@ -2,6 +2,7 @@
 title: "Hierarchical signal tuning: optimizing components before fusion"
 description: "Fusion algorithms like linear combination or RRF cannot fix poor input signals. Effective hybrid search requires a bottom-up optimization strategy: tuning field weights within BM25 and embedding strategies within dense components before attempting to merge them."
 date: 2025-11-26 00:00:00 +0000
+math: true
 ---
 
 Hybrid search combines dense and sparse retrieval to improve ranking quality. Standard implementations assume that component systems ($S_{\text{dense}}$ and $S_{\text{BM25}}$) provide valid input signals. This assumption fails in production.

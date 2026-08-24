@@ -2,6 +2,7 @@
 title: "Few-shot prompt ordering: the impact of example position"
 description: 'Investigating positional bias in few-shot prompting. While "Lost in the Middle" suggests boundary importance, the specific ordering of examples remains an important factor for performance stability.'
 date: 2025-11-15 00:00:00 +0000
+math: true
 ---
 
 Few-shot prompting is a standard technique in NLP engineering. While we frequently discuss selection strategies (choosing **which** examples to use), the **ordering** of these examples often receives less attention. We typically default to random ordering or static lists. However, given the known positional biases in **LLMs**, it makes sense to treat example ordering as an optimization variable rather than a constant.

@@ -4,6 +4,7 @@ description: "Architectural separation of reflection (context generation) and ev
 date: 2025-12-15 00:00:00 +0000
 mermaid:
   enabled: true
+math: true
 ---
 
 Imagine an AI research agent tasked with "analyzing the risks of a new technology." On the first iteration, it finds a well-written, authoritative article claiming the technology is perfectly safe. The agent checks its metrics: source authority is high, content is clear, relevance is perfect.
