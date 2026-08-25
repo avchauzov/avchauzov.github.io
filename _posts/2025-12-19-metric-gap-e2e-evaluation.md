@@ -31,7 +31,6 @@ flowchart LR
     E --> F(["User outcome<br/>~78% success"])
 ```
 
-
 The diagram illustrates error compounding in a typical RAG pipeline. Each component's failure probability multiplies, creating a "probability leak" where system-level performance degrades faster than component metrics suggest.
 
 This creates a hidden cost inefficiency. If the embedding model fails to capture the user's intent, the downstream components (reranker and LLM) are processing noise.
@@ -60,7 +59,6 @@ flowchart TD
     I3 --> O
     O --> RE([Re-evaluate E2E])
 ```
-
 
 ### Step 1: defining success criteria
 
